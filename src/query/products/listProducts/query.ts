@@ -10,13 +10,21 @@ import { keys } from "../config";
  * useInfiniteQuery(listProductsOptions())
  * ```
  */
-export const listProductsOptions = (options?: { admin: boolean }) =>
+export const listProductsOptions = ({
+  limit = 10,
+  ...options
+}: {
+  admin?: boolean;
+  limit: number;
+}) =>
   infiniteQueryOptions({
     queryKey: options?.admin
-      ? [...keys.listProducts, "admin"]
-      : keys.listProducts,
+      ? [...keys.listProducts(limit), "admin"]
+      : keys.listProducts(limit),
     queryFn: async ({ pageParam = 0 }) =>
-      $fetch<Products.ListProducts>(`/api/products?cursor=${pageParam}`),
+      $fetch<Products.ListProducts>(
+        `/api/products?cursor=${pageParam}&limit=${limit}`
+      ),
     getNextPageParam: (lastPage) => lastPage?.nextCursor || null,
     initialPageParam: 0,
   });

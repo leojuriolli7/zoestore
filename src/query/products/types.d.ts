@@ -10,4 +10,6 @@ export declare namespace Products {
   };
 
   type ListProducts = API.InfiniteListResult<Products.Product>;
+
+  type AddProduct = { success: boolean; product: Product };
 }

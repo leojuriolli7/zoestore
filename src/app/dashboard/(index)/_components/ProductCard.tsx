@@ -4,13 +4,13 @@ import { Products } from "@/query/products/types";
 
 interface ProductCardProps {
   product: Products.Product;
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
 }
 
 export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
   return (
-    <div className="flex items-center gap-4 p-4 border rounded-lg bg-white dark:bg-zinc-900 shadow">
+    <div className="flex items-center gap-4 p-4 border rounded-lg bg-card shadow">
       <img
         src={product.image_url}
         alt={product.name}
@@ -26,7 +26,7 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
           Editar
         </Button>
 
-        <Button variant="destructive" onClick={() => onDelete(product.id)}>
+        <Button variant="outline" onClick={() => onDelete(product.id)}>
           Excluir
         </Button>
       </div>

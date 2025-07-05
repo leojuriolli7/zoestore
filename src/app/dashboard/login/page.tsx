@@ -35,7 +35,6 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginWithAdminKeySchema) => {
     try {
       const { success } = await sendPassword(data);
-      console.log(" success:", success);
 
       if (success === true) {
         router.replace("/dashboard");
@@ -47,7 +46,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-sm p-8 rounded-lg shadow bg-white dark:bg-zinc-900">
+      <div className="w-full max-w-sm p-8 rounded-lg shadow bg-card">
         <h1 className="text-2xl font-bold mb-6 text-center">
           ZOE | Entrar na Dashboard de Produtos
         </h1>

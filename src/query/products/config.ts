@@ -1,4 +1,5 @@
 export const keys = {
   base: ["products"],
-  listProducts: ["products", "listProducts"],
+  listProducts: (limit: number) => ["products", "listProducts", { limit }],
+  addProduct: ["products", "addProduct"],
 };

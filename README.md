@@ -2,7 +2,271 @@
 
 This is the repository for the Brazillian storefront called Zoe Store. This website does not have cart/checkout functionality, it's as simple as just rendering all products from the store, with a private dashboard where managers can add/remove products.
 
-The database uses Drizzle as the ORM. We use React Query for data fetching and Next.js as the framework.
+---
+
+> **Note for AI/Contributors:**  
+> Always follow the patterns and folder structure described here. Reuse schemas and types, and never bypass validation or type inference. If in doubt, refer to the checklist below.
+
+---
+
+### Project Structure and Conventions
+
+- **Domains:** Each business domain (e.g., Products, Authentication) has its own folder under `src/query/`.
+- **Service Structure:** Each service (endpoint) within a domain has its own folder, containing:
+  - `schema.ts` (Zod schema + type for input)
+  - `handler.ts` (business logic, always using the schema/type)
+  - `query.ts` or `mutation.ts` (React Query integration)
+- **Types:** All return types must be declared in the domain's `types.d.ts` namespace. Never inline types in handlers or routes.
+- **Naming:**
+  - Service folders/files: `camelCase`
+  - Types: namespaced under the domain
+
+#### Example Domain Structure
+
+```
+src/query/products/
+  config.ts
+  types.d.ts
+  listProducts/
+    schema.ts
+    handler.ts
+    query.ts
+```
+
+---
+
+### Checklist: Adding a New Service (Endpoint)
+
+1. **Add a query/mutation key** in the relevant domain's `config.ts`.
+2. **Create a Zod schema** and type in `schema.ts` for input validation.
+3. **Declare the return type** in the domain's `types.d.ts` namespace.
+4. **Implement the handler** in `handler.ts`, always using the schema and return type.
+5. **Create a query.ts or mutation.ts** for React Query integration.
+6. **Write the route handler** in `/api/[domain]/[service]/route.ts`, using the schema, handler, and error/success response utilities.
+
+> - **Never** redefine schemas or types inline in handlers or routes. Always import from the domain's `schema.ts` and `types.d.ts`.
+
+---
+
+### Admin-Only Endpoints
+
+If an endpoint is admin-only (e.g., product management), you **must** check admin status at the top of the route handler using `checkAdminKey`. If not admin, throw `UnauthorizedError` before proceeding:
+
+```ts
+export async function POST(
+  req: NextRequest
+): Promise<API.Response<Products.AddProduct>> {
+  try {
+    // Always check admin first:
+    const { isAdmin } = await checkAdminKey();
+    if (!isAdmin) throw new UnauthorizedError();
+    // ...existing code...
+  } catch (error) {
+    return parseErrorResponse(error);
+  }
+}
+```
+
+---
+
+### React Query Usage (Important)
+
+- **Always use `mutateAsync` for mutations.**
+- **Never use `onSuccess`, `onError`, or `useEffect` for mutation side effects.**
+- Handle mutation results and errors inside the form's submit handler (async function):
+
+```ts
+const { mutateAsync: sendPassword, isPending: checkingPassword } = useMutation(
+  loginWithAdminKeyOptions()
+);
+
+const onSubmit = async (data: LoginWithAdminKeySchema) => {
+  try {
+    const { success } = await sendPassword(data);
+    if (success === true) {
+      router.replace("/dashboard");
+    }
+  } catch (error) {
+    toastError(error);
+  }
+};
+```
+
+- **Always use `toastError` in the catch block** to display errors. This utility narrows the error to `BaseError` and ensures consistent error handling UX.
+
+---
+
+### Example: Query Service (GET /api/products)
+
+````ts
+import { infiniteQueryOptions } from "@tanstack/react-query";
+import type { Products } from "../types";
+import { $fetch } from "@/query/core/fetch";
+import { keys } from "../config";
+
+/**
+ * Client-side query options. Usage:
+ *
+ * ```ts
+ * useInfiniteQuery(listProductsOptions())
+ * ```
+ */
+export const listProductsOptions = (options?: { admin: boolean }) =>
+  infiniteQueryOptions({
+    queryKey: options?.admin
+      ? [...keys.listProducts, "admin"]
+      : keys.listProducts,
+    queryFn: async ({ pageParam = 0 }) =>
+      $fetch<Products.ListProducts>(`/api/products?cursor=${pageParam}`),
+    getNextPageParam: (lastPage) => lastPage?.nextCursor || null,
+    initialPageParam: 0,
+  });
+````
+
+```ts
+import { parseErrorResponse } from "@/query/core/parseResponse/error";
+import { parseSuccessResponse } from "@/query/core/parseResponse/success";
+import { API } from "@/query/core/query";
+import { BadRequestError } from "@/query/errors/BadRequestError";
+import { listProducts } from "@/query/products/listProducts/handler";
+import { listProductsSchema } from "@/query/products/listProducts/schema";
+import type { Products } from "@/query/products/types";
+import { NextRequest } from "next/server";
+
+export async function GET(
+  req: NextRequest
+): Promise<API.Response<Products.ListProducts>> {
+  try {
+    const { searchParams } = new URL(req.url);
+
+    const cursor = searchParams.get("cursor") || null;
+    const limit = searchParams.get("limit") || null;
+
+    const parsed = listProductsSchema.safeParse({ cursor, limit });
+
+    if (!parsed.success) {
+      throw new BadRequestError("Parâmetros inválidos.");
+    }
+
+    const { cursor: parsedCursor, limit: parsedLimit } = parsed.data;
+
+    const result = await listProducts({
+      cursor: parsedCursor,
+      limit: parsedLimit,
+    });
+
+    return parseSuccessResponse(result);
+  } catch (error) {
+    return parseErrorResponse(error);
+  }
+}
+```
+
+---
+
+### Example: Mutation Service (POST /api/products)
+
+```ts
+// FILENAME: query/products/addProduct/schema.ts
+import z from "zod";
+
+export const addProductSchema = z.object({
+  name: z.string(),
+  image_url: z.string().url(),
+  description: z.string().nullable(),
+  price: z.string(),
+});
+
+export type AddProductSchema = z.infer<typeof addProductSchema>;
+```
+
+```ts
+// FILENAME: query/products/types.d.ts
+export declare namespace Products {
+  // ...existing code...
+  type AddProduct = { success: boolean; product: Product };
+}
+```
+
+```ts
+// FILENAME: query/products/addProduct/handler.ts
+import "server-only";
+import { db } from "@/query/db";
+import { InternalServerError } from "@/query/errors/InternalServerError";
+import type { AddProductSchema } from "./schema";
+import type { Products } from "../types";
+
+export async function addProduct(
+  params: AddProductSchema
+): Promise<Products.AddProduct> {
+  try {
+    const product = await db.insertProduct(params);
+    return { success: true, product };
+  } catch (error) {
+    throw new InternalServerError();
+  }
+}
+```
+
+```ts
+// FILENAME: query/products/addProduct/mutation.ts
+import { keys } from "../config";
+import type { AddProductSchema } from "./schema";
+import type { Products } from "../types";
+import { $fetch } from "../../core/fetch";
+
+export const addProductOptions = () => ({
+  mutationKey: keys.addProduct,
+  mutationFn: (data: AddProductSchema) =>
+    $fetch<Products.AddProduct>("/api/products", {
+      method: "POST",
+      body: data,
+    }),
+});
+```
+
+```ts
+// FILENAME: app/api/products/route.ts
+import { parseErrorResponse } from "@/query/core/parseResponse/error";
+import { parseSuccessResponse } from "@/query/core/parseResponse/success";
+import { API } from "@/query/core/query";
+import { BadRequestError } from "@/query/errors/BadRequestError";
+import { addProduct } from "@/query/products/addProduct/handler";
+import { addProductSchema } from "@/query/products/addProduct/schema";
+import type { Products } from "@/query/products/types";
+import { NextRequest } from "next/server";
+
+export async function POST(
+  req: NextRequest
+): Promise<API.Response<Products.AddProduct>> {
+  try {
+    // Always check admin first:
+    const { isAdmin } = await checkAdminKey();
+    if (!isAdmin) throw new UnauthorizedError();
+
+    const body = await req.json();
+    const parsed = addProductSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new BadRequestError("Parâmetros inválidos.");
+    }
+    const result = await addProduct(parsed.data);
+    return parseSuccessResponse(result);
+  } catch (error) {
+    return parseErrorResponse(error);
+  }
+}
+```
+
+---
+
+### Error Handling
+
+- All errors must extend `BaseError` and be handled in the route handler using `parseErrorResponse`.
+- Never throw raw errors from handlers or routes.
+
+---
+
+### Authentication
 
 Authentication works by typing the secret admin password into the login page. Then, the user will have a cookie set with that password, and can access the private pages:
 

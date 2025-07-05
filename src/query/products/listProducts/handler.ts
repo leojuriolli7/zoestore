@@ -10,12 +10,14 @@ export async function listProducts(
   params: ListProductsSchema
 ): Promise<Products.ListProducts> {
   try {
-    const { cursor = 1, limit = 10 } = params;
+    const { cursor = 1, limit: _limit } = params;
+
+    const limit = _limit || 10;
 
     const result = await db.query.products.findMany({
       where: (product, { gt }) => (cursor ? gt(product.id, cursor) : undefined),
       orderBy: (product, { asc }) => asc(product.id),
-      limit: limit || 10,
+      limit: limit,
     });
 
     const nextCursor =
