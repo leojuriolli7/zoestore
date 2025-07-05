@@ -1,13 +1,14 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ProductCard } from "./ProductCard";
 import { useOnScreen } from "@/hooks/useOnScreen";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { listProductsOptions } from "@/query/products/listProducts/query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddProductDialog } from "./AddProductDialog";
+import { UpsertProductDialog } from "./UpsertProductDialog/UpsertProductDialog";
 import Image from "next/image";
+import { ProductsTable } from "./ProductsTable/ProductsTable";
+import { DeleteProductDialog } from "./DeleteProductDialog/DeleteProductDialog";
 
 export function DashboardProductList() {
   const {
@@ -17,7 +18,7 @@ export function DashboardProductList() {
     isFetchingNextPage,
     status,
     error,
-  } = useInfiniteQuery(listProductsOptions({ admin: true, limit: 10 }));
+  } = useInfiniteQuery(listProductsOptions({ limit: 10 }));
 
   const { ref: bottomRef, isIntersecting: isBottomVisible } =
     useOnScreen<HTMLDivElement>({ rootMargin: "100px" });
@@ -28,21 +29,15 @@ export function DashboardProductList() {
     }
   }, [isBottomVisible, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const handleEdit = useCallback((id: number) => {
-    alert(`Editar produto ${id}`);
-  }, []);
-
-  const handleDelete = useCallback((id: number) => {
-    alert(`Excluir produto ${id}`);
-  }, []);
-
   if (status === "error") {
     return `ERROR: ${error.message}`;
   }
 
+  const products = data?.pages.flatMap((p) => p.results);
+
   return (
     <div className="flex flex-col gap-4 md:p-10 p-4 max-w-[1800px] mx-auto">
-      <header className="flex justify-between items-center mb-6">
+      <header className="flex justify-between items-center pb-6 border-b">
         <div className="flex items-center gap-2">
           <Image
             src="/zoe_store_logo.jpg"
@@ -54,7 +49,8 @@ export function DashboardProductList() {
 
           <h1 className="sm:text-2xl text-xl font-bold">Gerenciar Produtos</h1>
         </div>
-        <AddProductDialog />
+
+        <UpsertProductDialog />
       </header>
 
       {status === "pending" && (
@@ -65,24 +61,13 @@ export function DashboardProductList() {
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
-        {data?.pages?.map((page, i) => (
-          <React.Fragment key={i}>
-            {page?.results?.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            ))}
-          </React.Fragment>
-        ))}
-      </div>
+      {products && <ProductsTable data={products} />}
 
       <div ref={bottomRef} />
 
       {isFetchingNextPage && <div>Carregando mais...</div>}
+
+      <DeleteProductDialog />
     </div>
   );
 }

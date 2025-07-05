@@ -1,5 +1,14 @@
 ## Zoe Store
 
+### TODOS:
+
+1. Table pagination
+2. Search products
+3. Sort/search by tags (Combined search with text query)
+4. Sort by creation/edit date
+5. Select many (For quick deletion)
+6. Create storefront public page
+
 This is the repository for the Brazillian storefront called Zoe Store. This website does not have cart/checkout functionality, it's as simple as just rendering all products from the store, with a private dashboard where managers can add/remove products.
 
 ---

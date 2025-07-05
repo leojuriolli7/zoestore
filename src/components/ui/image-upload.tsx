@@ -5,18 +5,29 @@ import { useDropzone } from "react-dropzone";
 import { RefreshCw, Trash2Icon, Upload } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
 import { ExpandButton } from "../expand-button";
+import { appConfig } from "@/config";
 
 export const ImageUpload = ({
   onChange,
+  defaultValue,
 }: {
   onChange?: (files: (File | null)[]) => void;
+  defaultValue?: File;
 }) => {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(defaultValue || null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (newFiles: File[]) => {
-    const imageFile = newFiles[0] || null;
+    const originalFile = newFiles[0] || null;
+
+    const imageFile = originalFile
+      ? new File([originalFile], appConfig.images.updateImageName, {
+          type: originalFile.type,
+          lastModified: originalFile.lastModified,
+        })
+      : null;
+
     setFile(imageFile);
 
     if (imageFile) onChange?.([imageFile]);
@@ -56,11 +67,11 @@ export const ImageUpload = ({
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <div
                   className={cn(
-                    "relative overflow-hidden z-40 bg-card flex flex-row items-center md:h-32 p-4 w-full mx-auto rounded-md",
+                    "relative overflow-hidden z-40 bg-accent flex flex-row items-center md:h-32 pr-4 w-full mx-auto rounded-md",
                     "shadow-sm"
                   )}
                 >
-                  <div className="w-24 h-24 flex items-center justify-center bg-card rounded-md overflow-hidden mr-4">
+                  <div className="h-32 aspect-[2/3] flex items-center justify-center bg-card overflow-hidden hover:opacity-70">
                     <DialogTrigger asChild>
                       <img
                         src={URL.createObjectURL(file)}
@@ -103,7 +114,7 @@ export const ImageUpload = ({
                   <img
                     src={URL.createObjectURL(file)}
                     alt={file.name}
-                    className="max-w-full max-h-[80vh] rounded-lg"
+                    className="max-w-full max-h-[80vh] aspect-[2/3] object-cover rounded-lg"
                   />
                 </DialogContent>
               </Dialog>

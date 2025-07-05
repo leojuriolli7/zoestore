@@ -18,13 +18,28 @@ export async function listProducts(
       where: (product, { gt }) => (cursor ? gt(product.id, cursor) : undefined),
       orderBy: (product, { asc }) => asc(product.id),
       limit: limit,
+      with: {
+        productTags: {
+          with: {
+            tag: true,
+          },
+        },
+      },
     });
+
+    const toProductsDTO = result.map((product) => ({
+      ...product,
+      tags: product.productTags.map((pt) => ({
+        id: pt.tag.id,
+        name: pt.tag.name,
+      })),
+    }));
 
     const nextCursor =
       result.length === limit ? result[result.length - 1].id : null;
 
     return {
-      results: result,
+      results: toProductsDTO,
       nextCursor,
     };
   } catch (error) {

@@ -10,17 +10,9 @@ import { keys } from "../config";
  * useInfiniteQuery(listProductsOptions())
  * ```
  */
-export const listProductsOptions = ({
-  limit = 10,
-  ...options
-}: {
-  admin?: boolean;
-  limit: number;
-}) =>
+export const listProductsOptions = ({ limit = 10 }: { limit: number }) =>
   infiniteQueryOptions({
-    queryKey: options?.admin
-      ? [...keys.listProducts(limit), "admin"]
-      : keys.listProducts(limit),
+    queryKey: keys.listProducts,
     queryFn: async ({ pageParam = 0 }) =>
       $fetch<Products.ListProducts>(
         `/api/products?cursor=${pageParam}&limit=${limit}`
