@@ -1,34 +1,30 @@
-import { ADMIN_KEY_COOKIE_NAME } from "@/lib/adminKey";
-import { A_YEAR } from "@/lib/time";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { loginWithAdminKey } from "@/query/authentication/loginWithAdminKey/handler";
+import { BadRequestError } from "@/query/errors/BadRequestError";
+import { parseErrorResponse } from "@/query/core/parseResponse/error";
+import { parseSuccessResponse } from "@/query/core/parseResponse/success";
+import { loginWithAdminKeySchema } from "@/query/authentication/loginWithAdminKey/schema";
+import { API } from "@/query/core/query";
+import { Authentication } from "@/query/authentication/types";
 
-export async function POST(req: NextRequest) {
-  const { password } = await req.json();
+export async function POST(
+  req: NextRequest
+): Promise<API.Response<Authentication.LoginWithAdminKey>> {
+  try {
+    const body = await req.json();
 
-  if (typeof password !== "string") {
-    return NextResponse.json(
-      { success: false, message: "Requisição inválida" },
-      { status: 400 }
-    );
-  }
+    const parsed = loginWithAdminKeySchema.safeParse(body);
 
-  if (password === process.env.ADMIN_KEY) {
-    const cookieStore = await cookies();
+    if (!parsed.success) {
+      throw new BadRequestError("Requisição de Login inválida");
+    }
 
-    cookieStore.set({
-      name: ADMIN_KEY_COOKIE_NAME,
-      expires: Date.now() + A_YEAR,
-      value: password,
-      sameSite: "none",
-      secure: true,
+    const { success } = await loginWithAdminKey({
+      password: parsed.data.password,
     });
 
-    return NextResponse.json({ success: true });
+    return parseSuccessResponse({ success });
+  } catch (error) {
+    return parseErrorResponse(error);
   }
-
-  return NextResponse.json(
-    { success: false, message: "Não autorizado." },
-    { status: 401 }
-  );
 }

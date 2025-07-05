@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -14,44 +13,35 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { $fetch } from "@/lib/fetch";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
-const schema = z.object({
-  password: z.string().min(1, "Senha é obrigatória"),
-});
-
-type FormValues = z.infer<typeof schema>;
+import { toastError } from "@/query/core/toastError";
+import {
+  LoginWithAdminKeySchema,
+  loginWithAdminKeySchema,
+} from "@/query/authentication/loginWithAdminKey/schema";
+import { loginWithAdminKeyOptions } from "@/query/authentication/loginWithAdminKey/mutation";
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+  const form = useForm<LoginWithAdminKeySchema>({
+    resolver: zodResolver(loginWithAdminKeySchema),
     defaultValues: { password: "" },
   });
 
   const { mutateAsync: sendPassword, isPending: checkingPassword } =
-    useMutation({
-      mutationFn: (data: FormValues) =>
-        $fetch<{ success: boolean }>("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }),
-    });
+    useMutation(loginWithAdminKeyOptions());
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: LoginWithAdminKeySchema) => {
     try {
       const { success } = await sendPassword(data);
+      console.log(" success:", success);
 
       if (success === true) {
         router.replace("/dashboard");
       }
     } catch (error) {
-      const e = error as { message: string };
-      toast.error(e.message);
+      toastError(error);
     }
   };
 
