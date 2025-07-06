@@ -72,7 +72,7 @@ export default function ProductPage({
             )
           )}
 
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-neutral-foreground/90">
             {isLoading ? <Skeleton className="h-10 w-2/3" /> : product?.name}
           </h1>
 
@@ -115,7 +115,7 @@ export default function ProductPage({
             <Skeleton className="h-6 w-full mb-2" />
           ) : (
             product?.description && (
-              <p className="text-muted-foreground whitespace-break-spaces">
+              <p className="text-neutral-foreground/80 whitespace-break-spaces">
                 {product.description}
               </p>
             )

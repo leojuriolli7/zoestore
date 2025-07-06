@@ -36,7 +36,7 @@ export default function Homepage({
   }, [isBottomVisible, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <Header />
 
       <section className="relative">
@@ -46,10 +46,10 @@ export default function Homepage({
       <section className="py-8 px-4">
         <div className="container mx-auto">
           <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl text-center font-bold tracking-tight mb-2">
+            <h2 className="text-2xl md:text-3xl text-neutral-foreground text-center font-bold tracking-tight mb-2">
               Nossos produtos
             </h2>
-            <p className="text-muted-foreground text-center">
+            <p className="text-neutral-foreground/80 text-center">
               Peças selecionadas para a mulher moderna
             </p>
           </div>

@@ -29,7 +29,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
             </Button>
           </div>
           <div className="p-3 md:p-4">
-            <h3 className="font-medium text-sm md:text-base mb-2 line-clamp-2">
+            <h3 className="font-medium text-sm md:text-base mb-2 line-clamp-2 text-neutral-foreground">
               {product.name}
             </h3>
             {/* <div className="flex items-center mb-2">
@@ -41,7 +41,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
                       </div>
                     </div> */}
             <div className="flex items-center space-x-2">
-              <span className="font-bold text-sm md:text-base">
+              <span className="font-bold text-sm md:text-base text-foreground">
                 R$ {Number(product.price).toFixed(2)}
               </span>
               {/* {product.originalPrice && (
