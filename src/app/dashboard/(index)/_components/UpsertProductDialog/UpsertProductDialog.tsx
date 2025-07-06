@@ -152,13 +152,13 @@ function UpsertProductForm() {
               id="price"
               {...form.register("price")}
               onBlur={(event) => {
-                const value = Number(event.currentTarget.value);
+                // Replace comma with dot for decimal separator
+                const valueStr = event.currentTarget.value.replace(/,/g, ".");
+                const value = Number(valueStr);
 
                 if (isNaN(value)) {
                   event.currentTarget.value = "";
-                }
-
-                if (!isNaN(value)) {
+                } else {
                   event.currentTarget.value = value.toFixed(2);
                 }
               }}
