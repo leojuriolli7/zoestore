@@ -53,7 +53,9 @@ export function TagsSelector({
         <PopoverContent className="w-full p-0">
           <Command>
             <CommandInput placeholder="Buscar categoria..." />
-            <CommandEmpty>Nenhuma categoria encontrada.</CommandEmpty>
+            <CommandEmpty className="px-2">
+              Nenhuma categoria encontrada
+            </CommandEmpty>
             <CommandGroup>
               {tags.map((tag) => (
                 <CommandItem

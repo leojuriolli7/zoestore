@@ -4,7 +4,7 @@
 
 - [] Sort/search by tags (Combined search with text query)
 - [] Sort by creation/edit date
-- [] Add tag creation UI, add images to tags
+- [] Add images to tags
 - [] Render tags in homepage
 - [] Rich-text for product description
 - [] Multiple images per product, carousel on details page
