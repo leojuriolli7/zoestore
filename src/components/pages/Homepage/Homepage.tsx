@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { listProductsOptions } from "@/query/products/listProducts/query";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { HomepageSlider } from "./HomepageSlider";
@@ -9,10 +9,20 @@ import { ProductCard } from "./ProductCard";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/spinner";
+import { Products } from "@/query/products/types";
 
-export default function Homepage() {
+export default function Homepage({
+  products: initialProducts,
+}: {
+  products: InfiniteData<Products.ListProducts, number>;
+}) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(listProductsOptions({ limit: 20 }));
+    useInfiniteQuery({
+      ...listProductsOptions({ limit: 20 }),
+      ...(initialProducts && {
+        initialData: initialProducts,
+      }),
+    });
 
   const products = data?.pages.flatMap((p) => p.results);
 

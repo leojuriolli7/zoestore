@@ -1,12 +1,5 @@
-import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
 import { ProductPage } from "@/components/pages/ProductPage";
-
-const queryClient = new QueryClient();
+import { getProductBySlug } from "@/query/products/getProductBySlug/handler";
 
 export default async function ProductById({
   params,
@@ -15,11 +8,7 @@ export default async function ProductById({
 }) {
   const { slug } = await params;
 
-  await queryClient.prefetchQuery(getProductBySlugOptions(slug));
+  const product = await getProductBySlug(slug);
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductPage />
-    </HydrationBoundary>
-  );
+  return <ProductPage product={product} />;
 }

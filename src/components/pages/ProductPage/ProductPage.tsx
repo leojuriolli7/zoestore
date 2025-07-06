@@ -10,12 +10,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { appConfig } from "@/config";
 import { Skeleton } from "@/components/ui/skeleton";
-// import { unstable_ViewTransition as ViewTransition } from "react";
+import { Products } from "@/query/products/types";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
-export default function ProductPage() {
+export default function ProductPage({
+  product: initialProduct,
+}: {
+  product: Products.Product | null;
+}) {
   const params = useParams();
   const slug = params?.slug as string;
-  const { data: product, isLoading } = useQuery(getProductBySlugOptions(slug));
+  const { data: product, isLoading } = useQuery({
+    ...getProductBySlugOptions(slug),
+    enabled: !initialProduct,
+    ...(initialProduct && { initialData: initialProduct }),
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,15 +35,15 @@ export default function ProductPage() {
           {isLoading ? (
             <Skeleton className="w-full h-full absolute top-0 left-0" />
           ) : product?.image_url ? (
-            // <ViewTransition name={`product-image-${product?.id}`}>
-            <Image
-              src={product.image_url}
-              alt={product?.name || "Produto"}
-              fill
-              className="object-cover w-full h-full"
-            />
+            <ViewTransition name={`product-image-${product?.id}`}>
+              <Image
+                src={product.image_url}
+                alt={product?.name || "Produto"}
+                fill
+                className="object-cover w-full h-full"
+              />
+            </ViewTransition>
           ) : (
-            // </ViewTransition>
             <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
               Imagem não disponível
             </div>

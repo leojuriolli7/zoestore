@@ -1,19 +1,14 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import { listProductsOptions } from "@/query/products/listProducts/query";
 import { Homepage } from "@/components/pages/Homepage";
+import { listProducts } from "@/query/products/listProducts/handler";
 
 export default async function Index() {
-  const client = new QueryClient();
+  const result = await listProducts({
+    limit: 20,
+    cursor: null,
+    search: null,
+  });
 
-  await client.prefetchInfiniteQuery(listProductsOptions({ limit: 20 }));
+  const toInfiniteData = { pageParams: [], pages: [result] };
 
-  return (
-    <HydrationBoundary state={dehydrate(client)}>
-      <Homepage />
-    </HydrationBoundary>
-  );
+  return <Homepage products={toInfiniteData} />;
 }
