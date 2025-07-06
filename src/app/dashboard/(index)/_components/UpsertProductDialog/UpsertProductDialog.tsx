@@ -250,7 +250,19 @@ function UpsertProductForm() {
               </FormLabel>
 
               <FormControl>
-                <Textarea placeholder="Descrição do produto" {...field} />
+                <Textarea
+                  placeholder="Descrição do produto"
+                  {...field}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key === "Enter" &&
+                      (event.metaKey || event.ctrlKey)
+                    ) {
+                      event.preventDefault();
+                      form.handleSubmit(onSubmit)();
+                    }
+                  }}
+                />
               </FormControl>
 
               <FormMessage />
