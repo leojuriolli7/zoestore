@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
               fill
               src={product.image_url}
               alt={product.name}
-              className="object-cover rounded-md"
+              className="object-cover rounded-md select-none"
             />
             <Button
               variant="default"

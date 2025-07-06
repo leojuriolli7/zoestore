@@ -11,6 +11,9 @@ export function HomepageSlider() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
+    // Only run carousel on mobile (below md)
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    if (!mediaQuery.matches) return;
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % carouselImages.length);
     }, 3500);
@@ -18,39 +21,71 @@ export function HomepageSlider() {
   }, []);
 
   return (
-    <div className="relative aspect-[2/3] md:aspect-[5/2] overflow-hidden">
-      <div
-        className="flex h-full w-full transition-transform duration-700 ease-in-out"
-        style={{
-          width: `${carouselImages.length * 100}%`,
-          transform: `translateX(-${current * (100 / carouselImages.length)}%)`,
-        }}
-      >
+    <div className="relative w-full aspect-[2/3] md:aspect-[2/1] md:max-h-[600px] overflow-hidden">
+      {/* Mobile carousel */}
+      <div className="block md:hidden h-full w-full">
+        <div
+          className="flex h-full w-full transition-transform duration-700 ease-in-out"
+          style={{
+            width: `${carouselImages.length * 100}%`,
+            transform: `translateX(-${
+              current * (100 / carouselImages.length)
+            }%)`,
+          }}
+        >
+          {carouselImages.map((img) => (
+            <div
+              key={img}
+              className="relative w-full h-full flex-shrink-0"
+              style={{ width: `calc(100% / ${carouselImages.length})` }}
+            >
+              <Image
+                src={img}
+                alt="ZOE STORE - Elegant Fashion"
+                fill
+                className="object-cover select-none object-top"
+                priority
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white px-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
+              Peças que vestem elegância
+            </h2>
+            <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
+              Descubra nossa coleção exclusiva
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: 3 images side by side */}
+      <div className="hidden md:flex h-full w-full">
         {carouselImages.map((img) => (
-          <div
-            key={img}
-            className="relative w-full h-full flex-shrink-0"
-            style={{ width: `calc(100% / ${carouselImages.length})` }}
-          >
+          <div key={img} className="relative h-full flex-1">
             <Image
               src={img}
               alt="ZOE STORE - Elegant Fashion"
               fill
-              className="object-cover object-top"
+              className="object-cover select-none object-top"
               priority
             />
+            <div className="absolute inset-0 bg-black/30" />
           </div>
         ))}
-      </div>
-      <div className="absolute inset-0 bg-black/30" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white px-4">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
-            Peças que vestem elegância
-          </h2>
-          <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
-            Descubra nossa coleção exclusiva
-          </p>
+
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="text-center text-white px-4 w-full">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
+              Peças que vestem elegância
+            </h2>
+            <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
+              Descubra nossa coleção exclusiva
+            </p>
+          </div>
         </div>
       </div>
     </div>
