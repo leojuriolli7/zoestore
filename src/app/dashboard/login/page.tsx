@@ -97,12 +97,6 @@ export default function LoginPage() {
                         Senha
                       </Label>
 
-                      {form.formState.errors.password && (
-                        <span className="text-sm text-red-500">
-                          {form.formState.errors.password.message}
-                        </span>
-                      )}
-
                       <div className="relative">
                         <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 
@@ -135,6 +129,7 @@ export default function LoginPage() {
                           </span>
                         </Button>
                       </div>
+
                       <FormMessage />
                     </FormItem>
                   )}
