@@ -25,10 +25,10 @@ export const metadata: Metadata = {
     siteName: "ZOE STORE",
     images: [
       {
-        url: "/zoe_store_logo.jpg",
-        width: 800,
-        height: 600,
-        alt: "ZOE STORE Logo",
+        url: "/model.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ZOE STORE",
       },
     ],
     locale: "pt_BR",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ZOE STORE",
     description: "Peças que vestem elegância, Enviamos para todo o Brasil.",
-    images: ["/zoe_store_logo.jpg"],
+    images: ["/model.jpg"],
   },
   icons: {
     icon: "/favicon.ico",
