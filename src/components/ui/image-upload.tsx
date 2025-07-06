@@ -51,7 +51,7 @@ export const ImageUpload = ({
 
   return (
     <div className="w-full" {...getRootProps()}>
-      <div className="p-4 group/file block rounded-lg w-full relative overflow-hidden">
+      <div className="p-2 group/file block rounded-lg w-full relative overflow-hidden">
         <input
           ref={fileInputRef}
           id="file-upload-handle"

@@ -11,7 +11,7 @@ export function ProductCell({ product }: ProductCellProps) {
       <img
         src={product.image_url}
         alt={product.name}
-        className="w-12 h-12 object-cover rounded shrink-0"
+        className="w-12 aspect-[2/3] object-cover rounded shrink-0"
       />
       <div className="flex-1">
         <h2 className="font-bold text-md">{product.name}</h2>

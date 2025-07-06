@@ -8,11 +8,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductOptions } from "@/query/products/addProduct/mutation";
@@ -123,125 +129,134 @@ function UpsertProductForm() {
         className="flex flex-col gap-5"
         autoComplete="off"
       >
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name">Nome</Label>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nome</FormLabel>
 
-          {form.formState.errors.name && (
-            <span className="text-sm text-red-500">
-              {form.formState.errors.name.message}
-            </span>
+              <FormControl>
+                <Input placeholder="Nome do produto" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
           )}
+        />
 
-          <Input
-            id="name"
-            {...form.register("name")}
-            placeholder="Nome do produto"
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Preço</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground font-medium border-r pr-1">
+                    R$
+                  </div>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="price">Preço</Label>
+                  <Input
+                    {...field}
+                    onInput={(event) => {
+                      event.currentTarget.value =
+                        event.currentTarget.value.replace(/,/g, ".");
+                      field.onChange(event.currentTarget.value);
+                    }}
+                    onBlur={(event) => {
+                      field.onBlur();
+                      const value = Number(event.currentTarget.value);
 
-          {form.formState.errors.price && (
-            <span className="text-sm text-red-500">
-              {form.formState.errors.price.message}
-            </span>
+                      if (isNaN(value)) {
+                        event.currentTarget.value = "";
+                        field.onChange("");
+                      } else {
+                        const formattedValue = value.toFixed(2);
+                        event.currentTarget.value = formattedValue;
+                        field.onChange(formattedValue);
+                      }
+                    }}
+                    className="pl-11"
+                    inputMode="decimal"
+                  />
+                </div>
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
           )}
+        />
 
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground font-medium border-r pr-1">
-              R$
-            </div>
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Imagem
+                <span className="text-xs text-muted-foreground">
+                  (Aspecto recomendado: 2/3)
+                </span>
+              </FormLabel>
+              <FormControl>
+                <ImageUpload
+                  defaultValue={product?.imageFile}
+                  onChange={(files) => {
+                    field.onChange(files[0]);
+                  }}
+                />
+              </FormControl>
 
-            <Input
-              id="price"
-              {...form.register("price")}
-              /** Replace comma with dot to ensure validation is consistent. Most `decimal` mobile keyboard render commas. */
-              onInput={(event) => {
-                event.currentTarget.value = event.currentTarget.value.replace(
-                  /,/g,
-                  "."
-                );
-              }}
-              onBlur={(event) => {
-                const value = Number(event.currentTarget.value);
-
-                if (isNaN(value)) {
-                  event.currentTarget.value = "";
-                } else {
-                  event.currentTarget.value = value.toFixed(2);
-                }
-              }}
-              className="pl-11"
-              inputMode="decimal"
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="image">
-            Imagem
-            <span className="text-xs text-muted-foreground">
-              (Aspecto recomendado: 2/3)
-            </span>
-          </Label>
-
-          {form.formState.errors.image && (
-            <span className="text-sm text-red-500">
-              {form.formState.errors.image.message as string}
-            </span>
+              <FormMessage />
+            </FormItem>
           )}
+        />
 
-          <Controller
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <ImageUpload
-                defaultValue={product?.imageFile}
-                onChange={(files) => {
-                  field.onChange(files[0]);
-                }}
-              />
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Categorias
+                <span className="text-xs text-muted-foreground">
+                  (Opcional)
+                </span>
+              </FormLabel>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="tags">
-            Categorias
-            <span className="text-xs text-muted-foreground">(Opcional)</span>
-          </Label>
+              <FormControl>
+                <TagsSelector
+                  value={field.value || []}
+                  onChange={field.onChange}
+                />
+              </FormControl>
 
-          <Controller
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <TagsSelector
-                value={field.value || []}
-                onChange={field.onChange}
-              />
-            )}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="description">
-            Descrição
-            <span className="text-xs text-muted-foreground">(Opcional)</span>
-          </Label>
-
-          {form.formState.errors.description && (
-            <span className="text-sm text-red-500">
-              {form.formState.errors.description.message}
-            </span>
+              <FormMessage />
+            </FormItem>
           )}
+        />
 
-          <Textarea
-            id="description"
-            {...form.register("description")}
-            placeholder="Descrição do produto"
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Descrição
+                <span className="text-xs text-muted-foreground">
+                  (Opcional)
+                </span>
+              </FormLabel>
+
+              <FormControl>
+                <Textarea placeholder="Descrição do produto" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button loading={isSubmitting} type="submit" className="mt-2 w-full">
           {product ? "Atualizar produto" : "Adicionar Produto"}

@@ -2,7 +2,7 @@ import "server-only";
 import { db } from "@/query/db";
 import { InternalServerError } from "@/query/errors/InternalServerError";
 import type { Products } from "../types";
-import { products } from "@/query/db/schema";
+import { productTags, products } from "@/query/db/schema";
 import { inArray } from "drizzle-orm";
 import { DeleteProductsSchema } from "./schema";
 
@@ -11,6 +11,8 @@ export async function deleteProduct({
 }: DeleteProductsSchema): Promise<Products.DeleteProduct> {
   try {
     const deleted = await db.transaction(async (tx) => {
+      await tx.delete(productTags).where(inArray(productTags.productId, ids));
+
       return await tx
         .delete(products)
         .where(inArray(products.id, ids))
