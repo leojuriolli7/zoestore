@@ -42,7 +42,7 @@ export function HomepageSlider() {
       {/* Mobile carousel */}
       <div className="block md:hidden h-full w-full">
         <div
-          className="flex h-full w-full transition-transform duration-700 ease-in-out"
+          className="flex h-full w-full transition-transform duration-700 ease-in-out will-change-transform"
           style={{
             width: `${carouselImages.length * 100}%`,
             transform: `translateX(-${
