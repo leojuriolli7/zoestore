@@ -4,7 +4,6 @@ import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import React, { useEffect } from "react";
 import { listProductsOptions } from "@/query/products/listProducts/query";
-import { Skeleton } from "@/components/ui/skeleton";
 import { UpsertProductDialog } from "./UpsertProductDialog/UpsertProductDialog";
 import Image from "next/image";
 import { ProductsTable } from "./ProductsTable/ProductsTable";
@@ -83,10 +82,8 @@ export function DashboardProductList() {
       </header>
 
       {status === "pending" && (
-        <div className="flex flex-col gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="h-32 w-full" />
-          ))}
+        <div className="w-full flex justify-center align-center mt-20">
+          <LoadingSpinner className="size-8" />
         </div>
       )}
 

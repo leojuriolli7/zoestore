@@ -119,7 +119,7 @@ export function TableFilters({
       )}
 
       <Input
-        placeholder="Pesquisar..."
+        placeholder="Pesquisar todos os produtos..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
