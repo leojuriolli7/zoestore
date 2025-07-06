@@ -152,9 +152,7 @@ function UpsertProductForm() {
               id="price"
               {...form.register("price")}
               onBlur={(event) => {
-                // Replace comma with dot for decimal separator
-                const valueStr = event.currentTarget.value.replace(/,/g, ".");
-                const value = Number(valueStr);
+                const value = Number(event.currentTarget.value);
 
                 if (isNaN(value)) {
                   event.currentTarget.value = "";
