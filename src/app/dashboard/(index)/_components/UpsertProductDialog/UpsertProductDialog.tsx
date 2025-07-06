@@ -23,6 +23,7 @@ import { appConfig } from "@/config";
 import { updateProductOptions } from "@/query/products/updateProduct/mutation";
 import { useUpertProductStore } from "./store";
 import { formSchema, FormSchema } from "./schema";
+import { Textarea } from "@/components/ui/textarea";
 
 function UpsertProductForm() {
   const { setOpen, product } = useUpertProductStore();
@@ -206,7 +207,7 @@ function UpsertProductForm() {
             </span>
           )}
 
-          <Input
+          <Textarea
             id="description"
             {...form.register("description")}
             placeholder="Descrição do produto"

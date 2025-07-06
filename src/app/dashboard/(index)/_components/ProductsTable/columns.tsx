@@ -6,11 +6,12 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { ProductCard } from "./ProductCard";
 
 import { Button } from "@/components/ui/button";
-import { EditIcon, Trash2 } from "lucide-react";
+import { ArrowUpRightFromSquareIcon, EditIcon, Trash2 } from "lucide-react";
 import { useUpertProductStore } from "../UpsertProductDialog/store";
 import { useDeleteProductDialogStore } from "../DeleteProductDialog/store";
 import { useCallback } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
 
 async function urlToBlob(url: string): Promise<Blob> {
   const response = await fetch(url);
@@ -39,7 +40,13 @@ const Actions = ({ row }: { row: Row<Products.Product> }) => {
   }, [product, setDeleteProductOpen]);
 
   return (
-    <div className="flex gap-2 items-center justify-center">
+    <div className="flex gap-2 items-center justify-center pr-2">
+      <Link href={`/products/${product.id}`} target="_blank" prefetch={false}>
+        <Button size="icon" variant="outline">
+          <ArrowUpRightFromSquareIcon />
+        </Button>
+      </Link>
+
       <Button size="icon" variant="secondary" onClick={openUpsertProductModal}>
         <EditIcon />
       </Button>

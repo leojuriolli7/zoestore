@@ -47,7 +47,7 @@ export default function ProductPage() {
             <Skeleton className="h-6 w-full mb-4" />
           ) : (
             product?.description && (
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground whitespace-break-spaces mb-4">
                 {product.description}
               </p>
             )

@@ -84,7 +84,8 @@ export function TableFilters({
           </Button>
 
           <Button onClick={openConfirmationDialog} variant="destructive">
-            Deletar {selected?.length} produtos
+            Deletar {selected?.length}{" "}
+            {selected.length === 1 ? "produto" : "produtos"}
           </Button>
           <AlertDialog
             open={confirmDeleteOpen}
