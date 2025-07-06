@@ -6,13 +6,12 @@ import { BadRequestError } from "@/query/errors/BadRequestError";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";
 import { updateProduct } from "@/query/products/updateProduct/handler";
 import { updateProductSchema } from "@/query/products/updateProduct/schema";
-import { deleteProduct } from "@/query/products/deleteProduct/handler";
 import type { Products } from "@/query/products/types";
 import { NextRequest } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<API.Response<Products.UpdateProduct>> {
   try {
     const { isAdmin } = await checkAdminKey();
@@ -25,22 +24,9 @@ export async function POST(
       throw new BadRequestError("Requisição de Produto inválida");
     }
 
-    const result = await updateProduct(Number(params.id), parsed.data);
-    return parseSuccessResponse(result);
-  } catch (error) {
-    return parseErrorResponse(error);
-  }
-}
+    const { id } = await params;
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-): Promise<API.Response<Products.DeleteProduct>> {
-  try {
-    const { isAdmin } = await checkAdminKey();
-    if (!isAdmin) throw new UnauthorizedError();
-
-    const result = await deleteProduct(Number(params.id));
+    const result = await updateProduct(Number(id), parsed.data);
     return parseSuccessResponse(result);
   } catch (error) {
     return parseErrorResponse(error);

@@ -3,31 +3,23 @@ import { db } from "@/query/db";
 import { InternalServerError } from "@/query/errors/InternalServerError";
 import type { Products } from "../types";
 import { products } from "@/query/db/schema";
-import { eq } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
+import { DeleteProductsSchema } from "./schema";
 
-export async function deleteProduct(
-  id: number
-): Promise<Products.DeleteProduct> {
+export async function deleteProduct({
+  ids,
+}: DeleteProductsSchema): Promise<Products.DeleteProduct> {
   try {
-    const [deleted] = await db
-      .delete(products)
-      .where(eq(products.id, id))
-      .returning();
-
-    if (!deleted) throw new InternalServerError();
-
-    // Fetch tags for the deleted product (if any)
-    const tags = await db.query.productTags.findMany({
-      where: (pt) => eq(pt.productId, id),
-      with: { tag: true },
+    const deleted = await db.transaction(async (tx) => {
+      return await tx
+        .delete(products)
+        .where(inArray(products.id, ids))
+        .returning();
     });
 
-    const product = {
-      ...deleted,
-      tags: tags.map((pt) => ({ id: pt.tag.id, name: pt.tag.name })),
-    };
+    if (!deleted || deleted.length === 0) throw new InternalServerError();
 
-    return { success: true, product };
+    return { success: true };
   } catch (error) {
     console.error(error);
     throw new InternalServerError();

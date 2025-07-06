@@ -15,7 +15,9 @@ export function ProductCard({ product }: ProductCardProps) {
       />
       <div className="flex-1">
         <h2 className="font-bold text-md">{product.name}</h2>
-        <p className="text-zinc-500 text-sm mb-1">{product.description}</p>
+        <p className="text-card-foreground/80 text-sm mb-1">
+          {product.description}
+        </p>
       </div>
     </div>
   );

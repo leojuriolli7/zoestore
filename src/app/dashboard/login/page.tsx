@@ -46,7 +46,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-sm p-8 rounded-lg shadow bg-card">
+      <div className="w-full max-w-sm p-8 rounded-lg shadow bg-muted">
         <h1 className="text-2xl font-bold mb-6 text-center">
           ZOE | Entrar na Dashboard de Produtos
         </h1>

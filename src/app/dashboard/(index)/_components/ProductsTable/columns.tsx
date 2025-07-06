@@ -10,6 +10,7 @@ import { EditIcon, Trash2 } from "lucide-react";
 import { useUpertProductStore } from "../UpsertProductDialog/store";
 import { useDeleteProductDialogStore } from "../DeleteProductDialog/store";
 import { useCallback } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 async function urlToBlob(url: string): Promise<Blob> {
   const response = await fetch(url);
@@ -51,6 +52,30 @@ const Actions = ({ row }: { row: Row<Products.Product> }) => {
 };
 
 export const columns: ColumnDef<Products.Product>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <div className="ml-3 flex align-center justify-start">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div className="ml-3 flex align-center justify-start">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      </div>
+    ),
+  },
   {
     accessorKey: "name",
     header: "Produto",

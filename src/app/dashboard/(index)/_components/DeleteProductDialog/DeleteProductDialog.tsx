@@ -16,6 +16,7 @@ import { useCallback } from "react";
 import { toastError } from "@/query/core/toastError";
 import { keys } from "@/query/products/config";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export function DeleteProductDialog() {
   const { open, product, setOpen } = useDeleteProductDialogStore();
@@ -23,13 +24,18 @@ export function DeleteProductDialog() {
   const queryClient = useQueryClient();
 
   const { mutateAsync: deleteProduct, isPending: deleting } = useMutation(
-    deleteProductOptions(product?.id as number)
+    deleteProductOptions()
   );
 
   const deleteFromDatabase = useCallback(() => {
-    deleteProduct()
+    if (!product) return;
+
+    deleteProduct({ ids: [product.id] })
       .then(() => {
         setOpen(false);
+
+        toast.success("Produto deletado com sucesso.");
+
         queryClient.invalidateQueries({
           queryKey: keys.listProducts,
           exact: false,
@@ -38,7 +44,7 @@ export function DeleteProductDialog() {
       .catch((error) => {
         toastError(error.message);
       });
-  }, [setOpen, deleteProduct, queryClient]);
+  }, [setOpen, deleteProduct, product, queryClient]);
 
   return (
     <AlertDialog open={open} onOpenChange={(v: boolean) => setOpen(v)}>

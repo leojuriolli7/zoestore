@@ -18,6 +18,8 @@ export declare namespace Products {
   type ListProducts = API.InfiniteListResult<Products.Product>;
 
   type AddProduct = { success: boolean; product: Product };
+
   type UpdateProduct = { success: boolean; product: Product };
-  type DeleteProduct = { success: boolean; product: Product };
+
+  type DeleteProduct = { success: boolean };
 }

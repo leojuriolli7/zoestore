@@ -10,12 +10,20 @@ export async function listProducts(
   params: ListProductsSchema
 ): Promise<Products.ListProducts> {
   try {
-    const { cursor = 1, limit: _limit } = params;
+    const { cursor = 1, limit: _limit, search } = params;
 
     const limit = _limit || 10;
 
     const result = await db.query.products.findMany({
-      where: (product, { gt }) => (cursor ? gt(product.id, cursor) : undefined),
+      where: (product, { gt, and, ilike }) => {
+        const conditions = [];
+
+        if (cursor) conditions.push(gt(product.id, cursor));
+
+        if (search) conditions.push(ilike(product.name, `%${search}%`));
+
+        return conditions.length > 0 ? and(...conditions) : undefined;
+      },
       orderBy: (product, { asc }) => asc(product.id),
       limit: limit,
       with: {

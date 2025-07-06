@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import React, { useEffect } from "react";
 import { listProductsOptions } from "@/query/products/listProducts/query";
@@ -9,8 +9,20 @@ import { UpsertProductDialog } from "./UpsertProductDialog/UpsertProductDialog";
 import Image from "next/image";
 import { ProductsTable } from "./ProductsTable/ProductsTable";
 import { DeleteProductDialog } from "./DeleteProductDialog/DeleteProductDialog";
+import { LoadingSpinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { logout } from "@/lib/logout";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useProductsSearchInputStore } from "./ProductsTable/TableFilters";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export function DashboardProductList() {
+  const router = useRouter();
+
+  const query = useProductsSearchInputStore((s) => s.query);
+  const debouncedQuery = useDebounce(query, 400);
+
   const {
     data,
     fetchNextPage,
@@ -18,7 +30,10 @@ export function DashboardProductList() {
     isFetchingNextPage,
     status,
     error,
-  } = useInfiniteQuery(listProductsOptions({ limit: 10 }));
+  } = useInfiniteQuery({
+    ...listProductsOptions({ limit: 10, search: debouncedQuery }),
+    placeholderData: keepPreviousData,
+  });
 
   const { ref: bottomRef, isIntersecting: isBottomVisible } =
     useOnScreen<HTMLDivElement>({ rootMargin: "100px" });
@@ -50,7 +65,21 @@ export function DashboardProductList() {
           <h1 className="sm:text-2xl text-xl font-bold">Gerenciar Produtos</h1>
         </div>
 
-        <UpsertProductDialog />
+        <div className="flex items-center gap-2">
+          <UpsertProductDialog />
+
+          <ThemeToggle />
+
+          <Button
+            variant="outline"
+            onClick={async () => {
+              await logout();
+              router.replace("/dashboard/login");
+            }}
+          >
+            Sair
+          </Button>
+        </div>
       </header>
 
       {status === "pending" && (
@@ -65,7 +94,11 @@ export function DashboardProductList() {
 
       <div ref={bottomRef} />
 
-      {isFetchingNextPage && <div>Carregando mais...</div>}
+      {isFetchingNextPage && (
+        <div className="flex justify-center w-full">
+          <LoadingSpinner />
+        </div>
+      )}
 
       <DeleteProductDialog />
     </div>
