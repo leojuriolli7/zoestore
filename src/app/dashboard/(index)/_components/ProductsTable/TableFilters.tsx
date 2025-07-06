@@ -132,7 +132,7 @@ export function TableFilters({
         placeholder="Pesquisar todos os produtos..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full sm:w-80"
+        className="w-full sm:w-80 bg-background"
       />
       <TagFilterSelector value={tags} onChange={setTags} />
     </div>

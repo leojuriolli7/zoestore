@@ -5,7 +5,7 @@ import { TableFilters } from "./TableFilters";
 
 export function ProductsTable({ data }: { data: Products.Product[] }) {
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-6">
       <DataTable columns={columns} data={data} renderFilters={TableFilters} />
     </div>
   );
