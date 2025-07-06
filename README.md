@@ -523,3 +523,25 @@ export async function GET(
   }
 }
 ```
+
+### Server-side rendering / React Server Components
+
+For React Server Components, we avoid calling the server endpoint, and instead use the handler function directly. This is because if we call the route handler from our server-rendered page, we are doing a round-trip (Since we are already on the server). Not only is this slower, but can lead to issues. So we call handlers directly, and pass the result as props so the React Query hook can receive it as the `initialData` property:
+
+```ts
+import { ProductPage } from "@/components/pages/ProductPage";
+import { getProductBySlug } from "@/query/products/getProductBySlug/handler";
+
+export default async function ProductById({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
+  // Handler directly calls the database, fetches products:
+  const product = await getProductBySlug(slug);
+
+  return <ProductPage product={product} />;
+}
+```
