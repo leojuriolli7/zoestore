@@ -151,6 +151,13 @@ function UpsertProductForm() {
             <Input
               id="price"
               {...form.register("price")}
+              /** Replace comma with dot to ensure validation is consistent. Most `decimal` mobile keyboard render commas. */
+              onInput={(event) => {
+                event.currentTarget.value = event.currentTarget.value.replace(
+                  /,/g,
+                  "."
+                );
+              }}
               onBlur={(event) => {
                 const value = Number(event.currentTarget.value);
 
