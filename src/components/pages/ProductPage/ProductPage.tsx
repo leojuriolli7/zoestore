@@ -102,7 +102,7 @@ export default function ProductPage({
               >
                 <Button
                   size="lg"
-                  className="w-full md:w-auto bg-green-600 dark:bg-green-700 hover:bg-green-800"
+                  className="w-full md:w-auto bg-green-500 dark:bg-green-700 hover:bg-green-600/90 dark:hover:bg-green-700/70"
                 >
                   Contatar via WhatsApp
                 </Button>
