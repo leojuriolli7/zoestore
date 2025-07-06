@@ -21,6 +21,8 @@ export function ProductCard({ product }: { product: Products.Product }) {
             </ViewTransition>
             <Button
               variant="default"
+              tabIndex={-1}
+              aria-hidden="true"
               className="absolute w-10/12 left-1/2 bottom-[-3rem] -translate-x-1/2 px-4 py-2 text-xs md:text-sm rounded-md shadow transition-all duration-300 opacity-0 group-hover/image:bottom-4 group-hover/image:opacity-100"
             >
               Clique para ver mais
