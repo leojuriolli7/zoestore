@@ -7,7 +7,7 @@ import { unstable_ViewTransition as ViewTransition } from "react";
 
 export function ProductCard({ product }: { product: Products.Product }) {
   return (
-    <Link prefetch={false} href={`/products/${product.slug}`} key={product.id}>
+    <Link href={`/products/${product.slug}`} key={product.id}>
       <Card className="group cursor-pointer border-0 bg-transparent shadow-none py-0">
         <CardContent className="p-0 w-full h-auto">
           <div className="relative overflow-hidden rounded-t-lg aspect-[2/3] w-full group/image">
