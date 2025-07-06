@@ -41,7 +41,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
                       </div>
                     </div> */}
             <div className="flex items-center space-x-2">
-              <span className="font-medium text-sm md:text-base text-neutral-foreground">
+              <span className="font-light text-sm md:text-base text-neutral-foreground">
                 R$ {Number(product.price).toFixed(2)}
               </span>
               {/* {product.originalPrice && (
