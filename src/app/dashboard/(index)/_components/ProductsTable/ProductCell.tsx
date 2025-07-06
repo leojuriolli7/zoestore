@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { Products } from "@/query/products/types";
 
-interface ProductCardProps {
+interface ProductCellProps {
   product: Products.Product;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCell({ product }: ProductCellProps) {
   return (
     <div className="flex items-center gap-4 p-2">
       <img

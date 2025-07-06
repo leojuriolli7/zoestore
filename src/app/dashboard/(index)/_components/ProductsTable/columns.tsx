@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Products } from "@/query/products/types";
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ProductCard } from "./ProductCard";
+import { ProductCell } from "./ProductCell";
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpRightFromSquareIcon, EditIcon, Trash2 } from "lucide-react";
@@ -86,7 +86,7 @@ export const columns: ColumnDef<Products.Product>[] = [
   {
     accessorKey: "name",
     header: "Produto",
-    cell: ({ row }) => <ProductCard product={row.original} />,
+    cell: ({ row }) => <ProductCell product={row.original} />,
   },
   {
     accessorKey: "tags",

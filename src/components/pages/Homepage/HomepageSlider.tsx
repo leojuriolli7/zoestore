@@ -26,7 +26,7 @@ export function HomepageSlider() {
           transform: `translateX(-${current * (100 / carouselImages.length)}%)`,
         }}
       >
-        {carouselImages.map((img, idx) => (
+        {carouselImages.map((img) => (
           <div
             key={img}
             className="relative w-full h-full flex-shrink-0"
@@ -37,7 +37,7 @@ export function HomepageSlider() {
               alt="ZOE STORE - Elegant Fashion"
               fill
               className="object-cover object-top"
-              priority={current === idx}
+              priority
             />
           </div>
         ))}
