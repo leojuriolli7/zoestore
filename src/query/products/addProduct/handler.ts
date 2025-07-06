@@ -4,8 +4,8 @@ import { InternalServerError } from "@/query/errors/InternalServerError";
 import { generateSlug } from "@/query/core/generateSlug";
 import type { AddProductSchema } from "./schema";
 import type { Products } from "../types";
-import { products } from "@/query/db/schema";
-import { eq } from "drizzle-orm";
+import { products, productTags, tags as tagsSchema } from "@/query/db/schema";
+import { eq, inArray } from "drizzle-orm";
 
 export async function addProduct(
   params: AddProductSchema
@@ -21,6 +21,19 @@ export async function addProduct(
         description: params.description ?? null,
       })
       .returning();
+
+    if (params.tags && params.tags.length > 0) {
+      const tagsResult = await db.query.tags.findMany({
+        where: inArray(tagsSchema.name, params.tags),
+      });
+
+      await db.insert(productTags).values(
+        tagsResult.map((tag) => ({
+          productId: result.id,
+          tagId: tag.id,
+        }))
+      );
+    }
 
     const productWithTags = await db.query.products.findFirst({
       where: eq(products.id, result.id),

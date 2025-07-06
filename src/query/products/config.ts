@@ -5,4 +5,6 @@ export const keys = {
   addProduct: ["products", "addProduct"],
   updateProduct: (slug: string) => ["products", "updateProduct", { slug }],
   deleteProduct: ["products", "deleteProduct"],
+  listTags: ["products", "listTags"],
+  upsertTags: ["products", "upsertTags"],
 };

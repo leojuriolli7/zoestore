@@ -4,21 +4,14 @@ import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import React, { useEffect } from "react";
 import { listProductsOptions } from "@/query/products/listProducts/query";
-import { UpsertProductDialog } from "./UpsertProductDialog/UpsertProductDialog";
-import Image from "next/image";
 import { ProductsTable } from "./ProductsTable/ProductsTable";
 import { DeleteProductDialog } from "./DeleteProductDialog/DeleteProductDialog";
 import { LoadingSpinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { logout } from "@/lib/logout";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useProductsSearchInputStore } from "./ProductsTable/TableFilters";
 import { useDebounce } from "@/hooks/useDebounce";
+import { DashboardHeader } from "./DashboardHeader";
 
 export function DashboardProductList() {
-  const router = useRouter();
-
   const query = useProductsSearchInputStore((s) => s.query);
   const debouncedQuery = useDebounce(query, 400);
 
@@ -51,37 +44,7 @@ export function DashboardProductList() {
 
   return (
     <div className="flex flex-col gap-4 md:p-10 p-4 max-w-[1800px] mx-auto">
-      <header className="flex justify-between items-center pb-6 border-b">
-        <div className="flex items-center gap-2">
-          <Image
-            src="/zoe_store_logo.jpg"
-            className="rounded-full object-cover"
-            width={48}
-            height={48}
-            alt="Zoe Store"
-          />
-
-          <h1 className="sm:text-2xl text-xl hidden sm:block font-bold">
-            Gerenciar Produtos
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <UpsertProductDialog />
-
-          <ThemeToggle />
-
-          <Button
-            variant="outline"
-            onClick={async () => {
-              await logout();
-              router.replace("/dashboard/login");
-            }}
-          >
-            Sair
-          </Button>
-        </div>
-      </header>
+      <DashboardHeader />
 
       {status === "pending" && (
         <div className="w-full flex justify-center align-center mt-20">

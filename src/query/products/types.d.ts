@@ -23,4 +23,8 @@ export declare namespace Products {
   type UpdateProduct = { success: boolean; product: Product };
 
   type DeleteProduct = { success: boolean };
+
+  type ListTags = { tags: Tag[] };
+
+  type UpsertTags = { success: boolean };
 }

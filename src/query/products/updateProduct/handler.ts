@@ -3,8 +3,8 @@ import { db } from "@/query/db";
 import { InternalServerError } from "@/query/errors/InternalServerError";
 import type { UpdateProductSchema } from "./schema";
 import type { Products } from "../types";
-import { products } from "@/query/db/schema";
-import { eq } from "drizzle-orm";
+import { products, productTags, tags as tagsSchema } from "@/query/db/schema";
+import { eq, inArray } from "drizzle-orm";
 import { generateSlug } from "@/query/core/generateSlug";
 
 export async function updateProduct(
@@ -34,6 +34,25 @@ export async function updateProduct(
       })
       .where(eq(products.id, currentProduct.id))
       .returning();
+
+    if (params.tags) {
+      await db
+        .delete(productTags)
+        .where(eq(productTags.productId, currentProduct.id));
+
+      if (params.tags.length > 0) {
+        const tagsResult = await db.query.tags.findMany({
+          where: inArray(tagsSchema.name, params.tags),
+        });
+
+        await db.insert(productTags).values(
+          tagsResult.map((tag) => ({
+            productId: currentProduct.id,
+            tagId: tag.id,
+          }))
+        );
+      }
+    }
 
     const productWithTags = await db.query.products.findFirst({
       where: eq(products.id, currentProduct.id),

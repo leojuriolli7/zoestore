@@ -545,3 +545,31 @@ export default async function ProductById({
   return <ProductPage product={product} />;
 }
 ```
+
+ProductPage code:
+
+```ts
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
+import { useParams } from "next/navigation";
+import type { Products } from "@/query/products/types";
+
+export default function ProductPage({
+  product: initialProduct,
+}: {
+  product: Products.Product | null;
+}) {
+  const params = useParams();
+  const slug = params?.slug as string;
+
+  const { data: product, isLoading } = useQuery({
+    ...getProductBySlugOptions(slug),
+    enabled: !initialProduct,
+    ...(initialProduct && { initialData: initialProduct }),
+  });
+
+  // etc...
+}
+```

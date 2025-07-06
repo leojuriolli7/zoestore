@@ -25,6 +25,7 @@ import { useUpertProductStore } from "./store";
 import { formSchema, FormSchema } from "./schema";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "lucide-react";
+import { TagsSelector } from "./TagsSelector";
 
 function UpsertProductForm() {
   const { setOpen, product } = useUpertProductStore();
@@ -37,12 +38,14 @@ function UpsertProductForm() {
           description: product.description || undefined,
           price: product?.price,
           image: product?.imageFile,
+          tags: product?.tags.map((t) => t.name),
         }
       : {
           name: "",
           price: "",
           image: undefined,
           description: "",
+          tags: [],
         },
   });
 
@@ -77,6 +80,7 @@ function UpsertProductForm() {
           name: data.name,
           price: data.price,
           description: data?.description,
+          tags: data.tags,
         });
       } catch (error) {
         toastError(error);
@@ -96,6 +100,7 @@ function UpsertProductForm() {
           name: data.name,
           price: data.price,
           description: data?.description,
+          tags: data.tags,
         });
       } catch (error) {
         toastError(error);
@@ -196,6 +201,24 @@ function UpsertProductForm() {
                 onChange={(files) => {
                   field.onChange(files[0]);
                 }}
+              />
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="tags">
+            Categorias
+            <span className="text-xs text-muted-foreground">(Opcional)</span>
+          </Label>
+
+          <Controller
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <TagsSelector
+                value={field.value || []}
+                onChange={field.onChange}
               />
             )}
           />

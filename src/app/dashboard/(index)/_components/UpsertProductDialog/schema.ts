@@ -21,6 +21,7 @@ export const formSchema = z.object({
             `Envie um arquivo de imagem`
           ),
   description: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
