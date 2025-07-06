@@ -6,6 +6,7 @@ import {
   AlertDialogTitle,
   AlertDialogFooter,
   AlertDialogCancel,
+  AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,6 +103,10 @@ export function TableFilters({
                   Tem certeza que deseja deletar {selected.length}{" "}
                   {selected.length === 1 ? "produto" : "produtos"}?
                 </AlertDialogTitle>
+
+                <AlertDialogDescription>
+                  Esta ação é permanente e não pode ser desfeita.
+                </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel
