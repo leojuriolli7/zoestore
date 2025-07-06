@@ -4,7 +4,10 @@
 
 - [] Sort/search by tags (Combined search with text query)
 - [] Sort by creation/edit date
-- [] Create storefront public page
+- [] Add images to tags
+- [] Render tags in homepage
+- [] Add multiple images per product
+- [] Add analytics
 
 This is the repository for the Brazillian storefront called Zoe Store. This website does not have cart/checkout functionality, it's as simple as just rendering all products from the store, with a private dashboard where managers can add/remove products.
 

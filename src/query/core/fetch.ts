@@ -1,5 +1,11 @@
 import { BaseError } from "../errors/BaseError";
 
+function getBaseUrl() {
+  if (typeof window !== "undefined") return window.location.origin;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
 interface FetchOptions extends Omit<RequestInit, "body"> {
   body?: object;
 }
@@ -21,7 +27,7 @@ export async function $fetch<T>(
   };
 
   try {
-    const res = await fetch(url, {
+    const res = await fetch(`${getBaseUrl()}/${url}`, {
       credentials,
       ...restOptions,
       headers: finalHeaders,

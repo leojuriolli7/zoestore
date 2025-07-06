@@ -6,6 +6,7 @@ import { BadRequestError } from "@/query/errors/BadRequestError";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";
 import { updateProduct } from "@/query/products/updateProduct/handler";
 import { updateProductSchema } from "@/query/products/updateProduct/schema";
+import { getProductById } from "@/query/products/getProductById/handler";
 import type { Products } from "@/query/products/types";
 import { NextRequest } from "next/server";
 
@@ -28,6 +29,23 @@ export async function POST(
 
     const result = await updateProduct(Number(id), parsed.data);
     return parseSuccessResponse(result);
+  } catch (error) {
+    return parseErrorResponse(error);
+  }
+}
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<API.Response<Products.Product | null>> {
+  try {
+    const { id } = await params;
+    const productId = Number(id);
+
+    if (isNaN(productId)) throw new BadRequestError("ID inválido.");
+
+    const product = await getProductById(productId);
+    return parseSuccessResponse(product);
   } catch (error) {
     return parseErrorResponse(error);
   }
