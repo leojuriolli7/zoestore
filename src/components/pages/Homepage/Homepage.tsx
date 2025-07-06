@@ -6,10 +6,24 @@ import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { HomepageSlider } from "./HomepageSlider";
 import { Header } from "@/components/header";
 import { ProductCard } from "./ProductCard";
+import { useOnScreen } from "@/hooks/useOnScreen";
+import { useEffect } from "react";
+import { LoadingSpinner } from "@/components/ui/spinner";
 
 export default function Homepage() {
-  const { data } = useInfiniteQuery(listProductsOptions({ limit: 20 }));
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery(listProductsOptions({ limit: 20 }));
+
   const products = data?.pages.flatMap((p) => p.results);
+
+  const { ref: bottomRef, isIntersecting: isBottomVisible } =
+    useOnScreen<HTMLDivElement>({ rootMargin: "100px" });
+
+  useEffect(() => {
+    if (isBottomVisible && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [isBottomVisible, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,6 +49,14 @@ export default function Homepage() {
               <ProductCard product={product} key={product.id} />
             ))}
           </div>
+
+          {(isLoading || isFetchingNextPage) && (
+            <div className="flex w-full justify-center mt-4">
+              <LoadingSpinner />
+            </div>
+          )}
+
+          <div ref={bottomRef} />
         </div>
       </section>
 

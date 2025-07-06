@@ -7,16 +7,33 @@ const carouselImages = [
   "/right_desktop.jpg",
 ];
 
+function SliderOverlay() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="text-center text-white px-4 w-full">
+        <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
+          Peças que vestem elegância
+        </h2>
+        <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
+          Descubra nossa coleção exclusiva
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function HomepageSlider() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    // Only run carousel on mobile (below md)
     const mediaQuery = window.matchMedia("(max-width: 767px)");
+
     if (!mediaQuery.matches) return;
+
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % carouselImages.length);
     }, 3500);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -50,16 +67,7 @@ export function HomepageSlider() {
           ))}
         </div>
         <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-4">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
-              Peças que vestem elegância
-            </h2>
-            <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
-              Descubra nossa coleção exclusiva
-            </p>
-          </div>
-        </div>
+        <SliderOverlay />
       </div>
 
       {/* Desktop: 3 images side by side */}
@@ -77,15 +85,8 @@ export function HomepageSlider() {
           </div>
         ))}
 
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-center text-white px-4 w-full">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
-              Peças que vestem elegância
-            </h2>
-            <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
-              Descubra nossa coleção exclusiva
-            </p>
-          </div>
+        <div className="absolute inset-0 pointer-events-none">
+          <SliderOverlay />
         </div>
       </div>
     </div>
