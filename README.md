@@ -2,7 +2,6 @@
 
 ### TODOS:
 
-- [] Sort/search by tags (Combined search with text query)
 - [] Sort by creation/edit date
 - [] Add images to tags
 - [] Render tags in homepage

@@ -16,15 +16,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { create } from "zustand";
+import { TagFilterSelector } from "./TagFilterSelector";
 
 type Store = {
   query: string;
   setQuery: (value: string) => void;
+  tags: string[];
+  setTags: (tags: string[]) => void;
 };
 
 export const useProductsSearchInputStore = create<Store>((set) => ({
   query: "",
   setQuery: (val) => set({ query: val }),
+  tags: [],
+  setTags: (tags) => set({ tags }),
 }));
 
 export function TableFilters({
@@ -73,10 +78,10 @@ export function TableFilters({
     selected,
   ]);
 
-  const { query, setQuery } = useProductsSearchInputStore();
+  const { query, setQuery, tags, setTags } = useProductsSearchInputStore();
 
   return (
-    <div className="flex flex-col sm:flex-row w-full justify-between gap-4 items-stretch sm:items-center">
+    <div className="flex flex-col sm:flex-row w-full gap-2 items-stretch sm:items-center">
       {selected?.length > 0 && (
         <div className="flex items-center gap-2 order-1 sm:-order-1">
           <Button variant="outline" onClick={clearSelection}>
@@ -122,7 +127,9 @@ export function TableFilters({
         placeholder="Pesquisar todos os produtos..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        className="w-full sm:w-80"
       />
+      <TagFilterSelector value={tags} onChange={setTags} />
     </div>
   );
 }

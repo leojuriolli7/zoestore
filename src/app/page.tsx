@@ -6,6 +6,7 @@ export default async function Index() {
     limit: 20,
     cursor: null,
     search: null,
+    tags: [],
   });
 
   const toInfiniteData = { pageParams: [], pages: [result] };

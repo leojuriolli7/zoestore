@@ -12,8 +12,9 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { DashboardHeader } from "./DashboardHeader";
 
 export function DashboardProductList() {
-  const query = useProductsSearchInputStore((s) => s.query);
+  const { query, tags } = useProductsSearchInputStore();
   const debouncedQuery = useDebounce(query, 400);
+  const debouncedTags = useDebounce(tags, 400);
 
   const {
     data,
@@ -23,7 +24,11 @@ export function DashboardProductList() {
     status,
     error,
   } = useInfiniteQuery({
-    ...listProductsOptions({ limit: 10, search: debouncedQuery }),
+    ...listProductsOptions({
+      limit: 10,
+      search: debouncedQuery,
+      tags: debouncedTags,
+    }),
     placeholderData: keepPreviousData,
   });
 

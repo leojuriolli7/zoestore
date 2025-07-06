@@ -94,17 +94,30 @@ export const columns: ColumnDef<Products.Product>[] = [
     cell: ({ row }) => {
       const tags = row.original.tags;
 
-      if (!tags) return <p>Nenhuma</p>;
+      if (!tags?.length) return <p>Nenhuma</p>;
+
+      const chunkedTags = tags.reduce((acc, _, index) => {
+        if (index % 3 === 0) {
+          acc.push(tags.slice(index, index + 3));
+        }
+        return acc;
+      }, [] as (typeof tags)[]);
 
       return (
-        <div className="flex gap-2 items-center">
-          {tags.map((tag, index) => (
-            <Badge
-              variant={index % 2 === 0 ? "default" : "secondary"}
-              key={tag.id}
-            >
-              {tag.name}
-            </Badge>
+        <div className="flex flex-col gap-2">
+          {chunkedTags.map((chunk, chunkIndex) => (
+            <div className="flex gap-2 items-center" key={chunkIndex}>
+              {chunk.map((tag, index) => (
+                <Badge
+                  variant={
+                    (chunkIndex * 3 + index) % 2 === 0 ? "default" : "secondary"
+                  }
+                  key={tag.id}
+                >
+                  {tag.name}
+                </Badge>
+              ))}
+            </div>
           ))}
         </div>
       );

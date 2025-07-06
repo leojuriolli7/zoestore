@@ -22,8 +22,14 @@ export async function GET(
     const cursor = searchParams.get("cursor") || null;
     const limit = searchParams.get("limit") || null;
     const search = searchParams.get("search") || null;
+    const tags = searchParams.getAll("tags") || null;
 
-    const parsed = listProductsSchema.safeParse({ cursor, limit, search });
+    const parsed = listProductsSchema.safeParse({
+      cursor,
+      limit,
+      search,
+      tags,
+    });
 
     if (!parsed.success) {
       throw new BadRequestError("Parâmetros inválidos.");
@@ -33,12 +39,14 @@ export async function GET(
       cursor: parsedCursor,
       limit: parsedLimit,
       search: parsedSearch,
+      tags: parsedTags,
     } = parsed.data;
 
     const result = await listProducts({
       cursor: parsedCursor,
       limit: parsedLimit,
       search: parsedSearch,
+      tags: parsedTags,
     });
 
     return parseSuccessResponse(result);
