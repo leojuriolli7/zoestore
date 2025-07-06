@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { toast } from "sonner";
 import { useCallback } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Products } from "@/query/products/types";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
@@ -12,20 +11,13 @@ import { ArrowUpRightFromSquareIcon, EditIcon, Trash2 } from "lucide-react";
 import { useUpertProductStore } from "../UpsertProductDialog/store";
 import { useDeleteProductDialogStore } from "../DeleteProductDialog/store";
 import { ProductCell } from "./ProductCell";
+import { TagsCell } from "./TagsCell";
 
 async function urlToBlob(url: string): Promise<Blob> {
   const response = await fetch(url);
   const blob = await response.blob();
   return blob;
 }
-
-const badgeColorClasses = [
-  "bg-chart-1 text-primary-foreground",
-  "bg-chart-2 text-primary-foreground",
-  "bg-chart-3 text-primary-foreground",
-  "bg-chart-4 text-secondary-foreground",
-  "bg-chart-5 text-secondary-foreground",
-];
 
 const Actions = ({ row }: { row: Row<Products.Product> }) => {
   const product = row.original;
@@ -104,39 +96,7 @@ export const columns: ColumnDef<Products.Product>[] = [
   {
     accessorKey: "tags",
     header: "Categorias",
-    cell: ({ row }) => {
-      const tags = row.original.tags;
-
-      if (!tags?.length) return <p>Nenhuma</p>;
-
-      const chunkedTags = tags.reduce((acc, _, index) => {
-        if (index % 3 === 0) {
-          acc.push(tags.slice(index, index + 3));
-        }
-        return acc;
-      }, [] as (typeof tags)[]);
-
-      return (
-        <div className="flex flex-col gap-2">
-          {chunkedTags.map((chunk, chunkIndex) => (
-            <div className="flex gap-2 items-center" key={chunkIndex}>
-              {chunk.map((tag, index) => (
-                <Badge
-                  key={tag.id}
-                  className={
-                    badgeColorClasses[
-                      (chunkIndex * 3 + index) % badgeColorClasses.length
-                    ]
-                  }
-                >
-                  {tag.name}
-                </Badge>
-              ))}
-            </div>
-          ))}
-        </div>
-      );
-    },
+    cell: TagsCell,
   },
   {
     accessorKey: "price",
