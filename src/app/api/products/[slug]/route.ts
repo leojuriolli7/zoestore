@@ -6,13 +6,13 @@ import { BadRequestError } from "@/query/errors/BadRequestError";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";
 import { updateProduct } from "@/query/products/updateProduct/handler";
 import { updateProductSchema } from "@/query/products/updateProduct/schema";
-import { getProductById } from "@/query/products/getProductById/handler";
+import { getProductBySlug } from "@/query/products/getProductBySlug/handler";
 import type { Products } from "@/query/products/types";
 import { NextRequest } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<API.Response<Products.UpdateProduct>> {
   try {
     const { isAdmin } = await checkAdminKey();
@@ -25,9 +25,9 @@ export async function POST(
       throw new BadRequestError("Requisição de Produto inválida");
     }
 
-    const { id } = await params;
+    const { slug } = await params;
 
-    const result = await updateProduct(Number(id), parsed.data);
+    const result = await updateProduct(slug, parsed.data);
     return parseSuccessResponse(result);
   } catch (error) {
     return parseErrorResponse(error);
@@ -36,15 +36,14 @@ export async function POST(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<API.Response<Products.Product | null>> {
   try {
-    const { id } = await params;
-    const productId = Number(id);
+    const { slug } = await params;
 
-    if (isNaN(productId)) throw new BadRequestError("ID inválido.");
+    if (!slug) throw new BadRequestError("Slug inválido.");
 
-    const product = await getProductById(productId);
+    const product = await getProductBySlug(slug);
     return parseSuccessResponse(product);
   } catch (error) {
     return parseErrorResponse(error);

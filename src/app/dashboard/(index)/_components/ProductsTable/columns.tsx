@@ -41,7 +41,7 @@ const Actions = ({ row }: { row: Row<Products.Product> }) => {
 
   return (
     <div className="flex gap-2 items-center justify-center pr-2">
-      <Link href={`/products/${product.id}`} target="_blank" prefetch={false}>
+      <Link href={`/products/${product.slug}`} target="_blank" prefetch={false}>
         <Button size="icon" variant="outline">
           <ArrowUpRightFromSquareIcon />
         </Button>

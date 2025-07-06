@@ -3,10 +3,10 @@ import type { UpdateProductSchema } from "./schema";
 import type { Products } from "../types";
 import { $fetch } from "../../core/fetch";
 
-export const updateProductOptions = (id: number) => ({
-  mutationKey: keys.updateProduct(id),
+export const updateProductOptions = (slug: string) => ({
+  mutationKey: keys.updateProduct(slug),
   mutationFn: (data: UpdateProductSchema) =>
-    $fetch<Products.UpdateProduct>(`/api/products/${id}`, {
+    $fetch<Products.UpdateProduct>(`/api/products/${slug}`, {
       method: "POST",
       body: data,
     }),

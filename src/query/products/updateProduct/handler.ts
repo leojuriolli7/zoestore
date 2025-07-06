@@ -5,12 +5,19 @@ import type { UpdateProductSchema } from "./schema";
 import type { Products } from "../types";
 import { products } from "@/query/db/schema";
 import { eq } from "drizzle-orm";
+import { generateSlug } from "@/query/core/generateSlug";
 
 export async function updateProduct(
-  id: number,
+  slug: string,
   params: UpdateProductSchema
 ): Promise<Products.UpdateProduct> {
   try {
+    const currentProduct = await db.query.products.findFirst({
+      where: eq(products.slug, slug),
+    });
+
+    if (!currentProduct) throw new InternalServerError();
+
     await db
       .update(products)
       .set({
@@ -20,11 +27,16 @@ export async function updateProduct(
         ...(params.description !== undefined && {
           description: params.description,
         }),
+        ...(params.name !== undefined &&
+          params.name !== currentProduct.name && {
+            slug: generateSlug(params.name),
+          }),
       })
-      .where(eq(products.id, id));
+      .where(eq(products.id, currentProduct.id))
+      .returning();
 
     const productWithTags = await db.query.products.findFirst({
-      where: eq(products.id, id),
+      where: eq(products.id, currentProduct.id),
       with: {
         productTags: {
           with: {

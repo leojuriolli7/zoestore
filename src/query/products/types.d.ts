@@ -13,6 +13,7 @@ export declare namespace Products {
     description: string | null;
     price: string;
     tags: Tag[];
+    slug: string;
   };
 
   type ListProducts = API.InfiniteListResult<Products.Product>;

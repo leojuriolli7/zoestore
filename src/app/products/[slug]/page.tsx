@@ -1,4 +1,4 @@
-import { getProductByIdOptions } from "@/query/products/getProductById/query";
+import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
 import {
   dehydrate,
   HydrationBoundary,
@@ -11,11 +11,11 @@ const queryClient = new QueryClient();
 export default async function ProductById({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  await queryClient.prefetchQuery(getProductByIdOptions(Number(id)));
+  await queryClient.prefetchQuery(getProductBySlugOptions(slug));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

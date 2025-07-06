@@ -7,11 +7,11 @@ import { keys } from "../config";
  * Client-side query options. Usage:
  *
  * ```ts
- * useQuery(getProductByIdOptions(1))
+ * useQuery(getProductBySlugOptions('slug'))
  * ```
  */
-export const getProductByIdOptions = (id: number) =>
+export const getProductBySlugOptions = (slug: string) =>
   queryOptions({
-    queryKey: keys.getById(id),
-    queryFn: async () => $fetch<Products.Product>(`/api/products/${id}`),
+    queryKey: keys.getBySlug(slug),
+    queryFn: async () => $fetch<Products.Product>(`/api/products/${slug}`),
   });

@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { getProductByIdOptions } from "@/query/products/getProductById/query";
+import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,8 +14,8 @@ import { unstable_ViewTransition as ViewTransition } from "react";
 
 export default function ProductPage() {
   const params = useParams();
-  const id = Number(params?.id);
-  const { data: product, isLoading } = useQuery(getProductByIdOptions(id));
+  const slug = params?.slug as string;
+  const { data: product, isLoading } = useQuery(getProductBySlugOptions(slug));
 
   return (
     <div className="min-h-screen bg-background">

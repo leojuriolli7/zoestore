@@ -49,7 +49,7 @@ function UpsertProductForm() {
   const { mutateAsync: addProduct } = useMutation(addProductOptions());
 
   const { mutateAsync: updateProduct } = useMutation(
-    updateProductOptions(product?.id as number)
+    updateProductOptions(product?.slug as string)
   );
   const queryClient = useQueryClient();
 
@@ -152,11 +152,7 @@ function UpsertProductForm() {
               id="price"
               {...form.register("price")}
               onBlur={(event) => {
-                const value = Number(
-                  // Allow commas, as most mobile devices' keyboards render
-                  // commas and not periods.
-                  event.currentTarget.value.replace(",", ".")
-                );
+                const value = Number(event.currentTarget.value);
 
                 if (isNaN(value)) {
                   event.currentTarget.value = "";
