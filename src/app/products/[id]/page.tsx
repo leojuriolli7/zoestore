@@ -4,7 +4,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { ProductPage } from "@/pages/ProductPage";
+import { ProductPage } from "@/components/pages/ProductPage";
 
 const queryClient = new QueryClient();
 

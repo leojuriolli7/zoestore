@@ -4,7 +4,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { listProductsOptions } from "@/query/products/listProducts/query";
-import { Homepage } from "@/pages/Homepage";
+import { Homepage } from "@/components/pages/Homepage";
 
 export default async function Index() {
   const client = new QueryClient();
