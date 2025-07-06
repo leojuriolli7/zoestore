@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import { appConfig } from "@/config";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -91,7 +90,7 @@ export default function ProductPage({
             {isLoading ? (
               <Skeleton className="h-12 w-full md:w-48" />
             ) : product ? (
-              <Link
+              <a
                 href={`https://wa.me/${
                   appConfig.contact.whatsappNumber
                 }?text=Olá! Tenho interesse no produto: ${encodeURIComponent(
@@ -102,11 +101,11 @@ export default function ProductPage({
               >
                 <Button
                   size="lg"
-                  className="w-full md:w-auto bg-green-500 dark:bg-green-700 hover:bg-green-600/90 dark:hover:bg-green-700/70"
+                  className="w-full md:w-auto text-white bg-whatsapp hover:bg-whatsapp/90"
                 >
                   Contatar via WhatsApp
                 </Button>
-              </Link>
+              </a>
             ) : (
               <span className="text-destructive">Produto não encontrado.</span>
             )}
