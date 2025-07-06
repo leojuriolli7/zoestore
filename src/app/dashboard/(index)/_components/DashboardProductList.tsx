@@ -61,7 +61,9 @@ export function DashboardProductList() {
             alt="Zoe Store"
           />
 
-          <h1 className="sm:text-2xl text-xl font-bold">Gerenciar Produtos</h1>
+          <h1 className="sm:text-2xl text-xl hidden sm:block font-bold">
+            Gerenciar Produtos
+          </h1>
         </div>
 
         <div className="flex items-center gap-2">

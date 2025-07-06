@@ -39,22 +39,8 @@ export default function ProductPage() {
         </div>
 
         <div className="flex flex-col md:justify-start justify-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            {isLoading ? <Skeleton className="h-10 w-2/3" /> : product?.name}
-          </h1>
-
           {isLoading ? (
-            <Skeleton className="h-6 w-full mb-4" />
-          ) : (
-            product?.description && (
-              <p className="text-muted-foreground whitespace-break-spaces mb-4">
-                {product.description}
-              </p>
-            )
-          )}
-
-          {isLoading ? (
-            <div className="mb-4 flex flex-wrap gap-2">
+            <div className="mb-2 flex flex-wrap gap-2">
               {[...Array(3)].map((_, i) => (
                 <Skeleton key={i} className="h-6 w-16 rounded-full" />
               ))}
@@ -62,7 +48,7 @@ export default function ProductPage() {
           ) : (
             product?.tags &&
             product.tags.length > 0 && (
-              <div className="mb-4 flex flex-wrap gap-2">
+              <div className="mb-2 flex flex-wrap gap-2">
                 {product.tags.map((tag) => (
                   <span
                     key={tag.id}
@@ -75,7 +61,11 @@ export default function ProductPage() {
             )
           )}
 
-          <div className="flex items-center mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            {isLoading ? <Skeleton className="h-10 w-2/3" /> : product?.name}
+          </h1>
+
+          <div className="flex items-center mb-4">
             {isLoading ? (
               <Skeleton className="h-8 w-24" />
             ) : (
@@ -85,27 +75,39 @@ export default function ProductPage() {
             )}
           </div>
 
-          {isLoading ? (
-            <Skeleton className="h-12 w-full md:w-48" />
-          ) : product ? (
-            <Link
-              href={`https://wa.me/${
-                appConfig.contact.whatsappNumber
-              }?text=Olá! Tenho interesse no produto: ${encodeURIComponent(
-                product?.name || ""
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                size="lg"
-                className="w-full md:w-auto bg-green-600 dark:bg-green-700 hover:bg-green-800"
+          <div className="mb-4">
+            {isLoading ? (
+              <Skeleton className="h-12 w-full md:w-48" />
+            ) : product ? (
+              <Link
+                href={`https://wa.me/${
+                  appConfig.contact.whatsappNumber
+                }?text=Olá! Tenho interesse no produto: ${encodeURIComponent(
+                  product?.name || ""
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Contatar via WhatsApp
-              </Button>
-            </Link>
+                <Button
+                  size="lg"
+                  className="w-full md:w-auto bg-green-600 dark:bg-green-700 hover:bg-green-800"
+                >
+                  Contatar via WhatsApp
+                </Button>
+              </Link>
+            ) : (
+              <span className="text-destructive">Produto não encontrado.</span>
+            )}
+          </div>
+
+          {isLoading ? (
+            <Skeleton className="h-6 w-full mb-2" />
           ) : (
-            <span className="text-destructive">Produto não encontrado.</span>
+            product?.description && (
+              <p className="text-muted-foreground whitespace-break-spaces">
+                {product.description}
+              </p>
+            )
           )}
         </div>
       </div>

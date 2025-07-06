@@ -76,9 +76,9 @@ export function TableFilters({
   const { query, setQuery } = useProductsSearchInputStore();
 
   return (
-    <div className="flex w-full justify-between gap-4 items-center">
+    <div className="flex flex-col sm:flex-row w-full justify-between gap-4 items-stretch sm:items-center">
       {selected?.length > 0 && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 order-1 sm:-order-1">
           <Button variant="outline" onClick={clearSelection}>
             Limpar seleção
           </Button>

@@ -24,6 +24,7 @@ import { updateProductOptions } from "@/query/products/updateProduct/mutation";
 import { useUpertProductStore } from "./store";
 import { formSchema, FormSchema } from "./schema";
 import { Textarea } from "@/components/ui/textarea";
+import { PlusIcon } from "lucide-react";
 
 function UpsertProductForm() {
   const { setOpen, product } = useUpertProductStore();
@@ -151,7 +152,11 @@ function UpsertProductForm() {
               id="price"
               {...form.register("price")}
               onBlur={(event) => {
-                const value = Number(event.currentTarget.value);
+                const value = Number(
+                  // Allow commas, as most mobile devices' keyboards render
+                  // commas and not periods.
+                  event.currentTarget.value.replace(",", ".")
+                );
 
                 if (isNaN(value)) {
                   event.currentTarget.value = "";
@@ -228,7 +233,11 @@ export function UpsertProductDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Adicionar produto</Button>
+        <Button variant="default">
+          <span className="hidden sm:block">Adicionar produto</span>
+
+          <PlusIcon className="block sm:hidden" />
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="w-full">
