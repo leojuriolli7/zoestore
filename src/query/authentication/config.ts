@@ -1,4 +1,4 @@
-export const keys = {
+export const authenticationKeys = {
   base: ["authentication"],
   loginWithAdminKey: ["authentication", "loginWithAdminKey"],
 };

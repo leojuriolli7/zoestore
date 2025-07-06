@@ -1,7 +1,7 @@
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import type { Products } from "../types";
 import { $fetch } from "@/query/core/fetch";
-import { keys } from "../config";
+import { productKeys } from "../config";
 
 /**
  * Client-side query options. Usage:
@@ -20,7 +20,7 @@ export const listProductsOptions = ({
   tags?: string[];
 }) =>
   infiniteQueryOptions({
-    queryKey: [...keys.listProducts, { search, tags, limit }],
+    queryKey: [...productKeys.listProducts, { search, tags, limit }],
     queryFn: async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
       searchParams.set("cursor", pageParam.toString());

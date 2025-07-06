@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProductOptions } from "@/query/products/deleteProduct/mutation";
 import { useCallback } from "react";
 import { toastError } from "@/query/core/toastError";
-import { keys } from "@/query/products/config";
+import { productKeys } from "@/query/products/config";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -37,7 +37,7 @@ export function DeleteProductDialog() {
         toast.success("Produto deletado com sucesso.");
 
         queryClient.invalidateQueries({
-          queryKey: keys.listProducts,
+          queryKey: productKeys.listProducts,
           exact: false,
         });
       })

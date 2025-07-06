@@ -15,7 +15,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { toastError } from "@/query/core/toastError";
-import { keys } from "@/query/products/config";
+import { productKeys } from "@/query/products/config";
 import { Input } from "@/components/ui/input";
 import { listTagsOptions } from "@/query/products/listTags/query";
 import { upsertTagsOptions } from "@/query/products/upsertTags/mutation";
@@ -49,8 +49,8 @@ function UpsertTagsForm({ setOpen }: { setOpen: (open: boolean) => void }) {
     e.preventDefault();
     try {
       await upsertTags({ tags });
-      queryClient.invalidateQueries({ queryKey: keys.listTags });
-      queryClient.invalidateQueries({ queryKey: keys.listProducts });
+      queryClient.invalidateQueries({ queryKey: productKeys.listTags });
+      queryClient.invalidateQueries({ queryKey: productKeys.listProducts });
       setOpen(false);
     } catch (error) {
       toastError(error);

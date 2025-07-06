@@ -1,4 +1,4 @@
-export const keys = {
+export const productKeys = {
   base: ["products"],
   listProducts: ["products", "listProducts"],
   getBySlug: (slug: string) => ["products", { slug }],

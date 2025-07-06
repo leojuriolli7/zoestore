@@ -1,4 +1,4 @@
-import { keys } from "../config";
+import { productKeys } from "../config";
 import type { UpsertTagsSchema } from "./schema";
 import type { Products } from "../types";
 import { $fetch } from "../../core/fetch";
@@ -9,7 +9,7 @@ export const upsertTagsOptions = (): MutationOptions<
   Error,
   UpsertTagsSchema
 > => ({
-  mutationKey: keys.upsertTags,
+  mutationKey: productKeys.upsertTags,
   mutationFn: (data: UpsertTagsSchema) =>
     $fetch<Products.UpsertTags>("/api/products/tags", {
       method: "POST",

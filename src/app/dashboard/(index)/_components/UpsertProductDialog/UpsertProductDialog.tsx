@@ -24,7 +24,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductOptions } from "@/query/products/addProduct/mutation";
 import { upload } from "@vercel/blob/client";
 import { toastError } from "@/query/core/toastError";
-import { keys } from "@/query/products/config";
+import { productKeys } from "@/query/products/config";
 import { appConfig } from "@/config";
 import { updateProductOptions } from "@/query/products/updateProduct/mutation";
 import { useUpertProductStore } from "./store";
@@ -117,7 +117,7 @@ function UpsertProductForm() {
     form.reset();
 
     queryClient.invalidateQueries({
-      queryKey: keys.listProducts,
+      queryKey: productKeys.listProducts,
       exact: false,
     });
   };

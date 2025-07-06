@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { keys } from "@/query/products/config";
+import { productKeys } from "@/query/products/config";
 import { deleteProductOptions } from "@/query/products/deleteProduct/mutation";
 import { Products } from "@/query/products/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -58,7 +58,7 @@ export function TableFilters({
   const handleDelete = useCallback(() => {
     deleteProducts({ ids: selected.map((p) => p.original.id) }).then(() => {
       queryClient.invalidateQueries({
-        queryKey: keys.listProducts,
+        queryKey: productKeys.listProducts,
         exact: false,
       });
 
