@@ -1,23 +1,31 @@
 "use client";
 
+import Link from "next/link";
+import { toast } from "sonner";
+import { useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Products } from "@/query/products/types";
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ProductCell } from "./ProductCell";
-
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpRightFromSquareIcon, EditIcon, Trash2 } from "lucide-react";
 import { useUpertProductStore } from "../UpsertProductDialog/store";
 import { useDeleteProductDialogStore } from "../DeleteProductDialog/store";
-import { useCallback } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
+import { ProductCell } from "./ProductCell";
 
 async function urlToBlob(url: string): Promise<Blob> {
   const response = await fetch(url);
   const blob = await response.blob();
   return blob;
 }
+
+const badgeColorClasses = [
+  "bg-chart-1 text-primary-foreground",
+  "bg-chart-2 text-primary-foreground",
+  "bg-chart-3 text-primary-foreground",
+  "bg-chart-4 text-secondary-foreground",
+  "bg-chart-5 text-secondary-foreground",
+];
 
 const Actions = ({ row }: { row: Row<Products.Product> }) => {
   const product = row.original;
@@ -26,13 +34,18 @@ const Actions = ({ row }: { row: Row<Products.Product> }) => {
   const setDeleteProductOpen = useDeleteProductDialogStore((s) => s.setOpen);
 
   const openUpsertProductModal = useCallback(async () => {
-    const blob = await urlToBlob(product.image_url);
+    try {
+      const blob = await urlToBlob(product.image_url);
 
-    const file = new File([blob], "product_image", {
-      type: blob.type || "image/jpeg",
-    });
+      const file = new File([blob], "product_image", {
+        type: blob.type || "image/jpeg",
+      });
 
-    setUpsertProductOpen(true, { ...product, imageFile: file });
+      setUpsertProductOpen(true, { ...product, imageFile: file });
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao tentar editar produto:");
+    }
   }, [product, setUpsertProductOpen]);
 
   const openDeleteModal = useCallback(() => {
@@ -109,10 +122,12 @@ export const columns: ColumnDef<Products.Product>[] = [
             <div className="flex gap-2 items-center" key={chunkIndex}>
               {chunk.map((tag, index) => (
                 <Badge
-                  variant={
-                    (chunkIndex * 3 + index) % 2 === 0 ? "default" : "secondary"
-                  }
                   key={tag.id}
+                  className={
+                    badgeColorClasses[
+                      (chunkIndex * 3 + index) % badgeColorClasses.length
+                    ]
+                  }
                 >
                   {tag.name}
                 </Badge>
