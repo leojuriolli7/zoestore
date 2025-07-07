@@ -2,7 +2,9 @@ import { ProductPage } from "@/components/pages/ProductPage";
 import { getProductBySlug } from "@/query/products/getProductBySlug/handler";
 import { listProducts } from "@/query/products/listProducts/handler";
 
-export const revalidate = 60;
+// Revalidated on-demand via `revalidatePath`:
+export const revalidate = false;
+
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

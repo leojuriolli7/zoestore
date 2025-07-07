@@ -22,7 +22,10 @@ export declare namespace Products {
 
   type UpdateProduct = { success: boolean; product: Product };
 
-  type DeleteProduct = { success: boolean };
+  type DeleteProduct = {
+    success: boolean;
+    products: Array<Omit<Product, "tags">>;
+  };
 
   type ListTags = { tags: Tag[] };
 

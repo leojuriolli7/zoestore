@@ -11,6 +11,7 @@ import { deleteProductsSchema } from "@/query/products/deleteProduct/schema";
 import { listProducts } from "@/query/products/listProducts/handler";
 import { listProductsSchema } from "@/query/products/listProducts/schema";
 import type { Products } from "@/query/products/types";
+import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -91,6 +92,12 @@ export async function DELETE(
     }
 
     const result = await deleteProduct({ ids: parsed.data.ids });
+    revalidatePath(`/`);
+
+    result.products.forEach((p) => {
+      revalidatePath(`/products/${p.slug}`);
+    });
+
     return parseSuccessResponse(result);
   } catch (error) {
     return parseErrorResponse(error);

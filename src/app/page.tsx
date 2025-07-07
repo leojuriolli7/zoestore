@@ -1,7 +1,8 @@
 import { Homepage } from "@/components/pages/Homepage";
 import { listProducts } from "@/query/products/listProducts/handler";
 
-export const revalidate = 60;
+// Every 30 minutes, revalidate this page:
+export const revalidate = 1800;
 
 export default async function Index() {
   const result = await listProducts({

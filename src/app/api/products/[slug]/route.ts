@@ -30,6 +30,7 @@ export async function POST(
 
     const result = await updateProduct(slug, parsed.data);
     revalidatePath(`/products/${result.product.slug}`);
+    revalidatePath(`/`);
 
     return parseSuccessResponse(result);
   } catch (error) {
