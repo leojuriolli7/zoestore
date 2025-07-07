@@ -11,6 +11,7 @@ import { appConfig } from "@/config";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Products } from "@/query/products/types";
 import { unstable_ViewTransition as ViewTransition } from "react";
+import Link from "next/link";
 
 export default function ProductPage({
   product: initialProduct,
@@ -61,12 +62,11 @@ export default function ProductPage({
             product.tags.length > 0 && (
               <div className="mb-2 flex flex-wrap gap-2">
                 {product.tags.map((tag) => (
-                  <span
-                    key={tag.id}
-                    className="bg-secondary text-xs px-2 py-1 rounded-full"
-                  >
-                    {tag.name}
-                  </span>
+                  <Link href={`/products?tag=${tag.name}`} key={tag.id}>
+                    <span className="bg-secondary text-xs px-2 py-1 rounded-full hover:bg-secondary/80 cursor-pointer">
+                      {tag.name}
+                    </span>
+                  </Link>
                 ))}
               </div>
             )

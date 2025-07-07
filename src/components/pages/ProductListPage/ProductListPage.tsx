@@ -72,7 +72,7 @@ export function ProductListPage() {
         <div className="mb-6">
           <Link
             href="/"
-            className="items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors  md:inline-flex hidden"
+            className="items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex cursor-pointer md:static absolute top-8 left-4"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar
@@ -99,7 +99,11 @@ export function ProductListPage() {
                 onInputChange.cancel();
                 onInputChange(e.target.value);
               }}
-              placeholder="Pesquisar nesta categoria..."
+              placeholder={
+                tagName
+                  ? "Pesquisar nesta categoria..."
+                  : "Pesquisar produtos..."
+              }
               className="w-full"
             />
           </div>
