@@ -129,7 +129,10 @@ export function ShoppingBagSheet() {
           <ShoppingBagIcon className="size-6 text-neutral-foreground" />
 
           {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+            <span
+              key={totalItems}
+              className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white text-xs  animate-badge-bounce font-medium"
+            >
               {totalItems}
             </span>
           )}
