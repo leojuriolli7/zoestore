@@ -24,8 +24,6 @@ export async function upsertTags(
           .filter((t) => !existingTagNames.includes(t))
           .map((name) => ({ name }));
 
-        console.log(" newTags:", newTags);
-
         if (newTags.length > 0) {
           await tx.insert(tagsSchema).values(newTags);
         }

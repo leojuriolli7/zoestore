@@ -10,13 +10,7 @@ import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { Products } from "@/query/products/types";
-import dynamic from "next/dynamic";
-import HomepageTagsSkeleton from "./HomepageTagsSkeleton";
-
-const HomepageTags = dynamic(() => import("./HomepageTags"), {
-  ssr: false,
-  loading: HomepageTagsSkeleton,
-});
+import HomepageTags from "./HomepageTags";
 
 export default function Homepage({
   products: initialProducts,
