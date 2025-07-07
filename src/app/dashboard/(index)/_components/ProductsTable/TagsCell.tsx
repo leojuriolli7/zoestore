@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Products } from "@/query/products/types";
 import { Row } from "@tanstack/react-table";
+import Link from "next/link";
 
 const badgeColorClasses = [
   "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
@@ -54,12 +55,20 @@ export function TagsCell({ row }: { row: Row<Products.Product> }) {
       {chunkedTags.map((chunk, chunkIndex) => (
         <div className="flex gap-2 items-center" key={chunkIndex}>
           {chunk.map((tag) => (
-            <Badge
+            <Link
+              href={`/products?tag=${tag.name}`}
+              target="_blank"
               key={tag.id}
-              className={cn(getDeterministicColorClass(tag.name), "shadow-xs")}
             >
-              {tag.name}
-            </Badge>
+              <Badge
+                className={cn(
+                  getDeterministicColorClass(tag.name),
+                  "shadow-xs"
+                )}
+              >
+                {tag.name}
+              </Badge>
+            </Link>
           ))}
         </div>
       ))}
