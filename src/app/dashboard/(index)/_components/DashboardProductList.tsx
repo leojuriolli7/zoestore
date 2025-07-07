@@ -48,7 +48,7 @@ export function DashboardProductList() {
   const products = data?.pages.flatMap((p) => p.results);
 
   return (
-    <div className="flex flex-col gap-4 md:p-10 p-4 max-w-[1800px] mx-auto">
+    <div className="flex flex-col gap-4 md:p-6 p-4 max-w-[1800px] mx-auto">
       <DashboardHeader />
 
       {status === "pending" && (

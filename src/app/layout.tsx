@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { ReactQueryProvider } from "./ReactQueryProvider";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Header } from "@/components/Header";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -56,7 +57,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
+              <Header />
+              {children}
+            </div>
+          </ReactQueryProvider>
         </ThemeProvider>
         <Toaster />
       </body>

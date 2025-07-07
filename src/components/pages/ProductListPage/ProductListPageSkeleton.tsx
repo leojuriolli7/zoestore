@@ -1,12 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductCardSkeleton } from "@/components/ProductCard";
-import { Header } from "@/components/Header";
 
 export function ProductListPageSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
-      <Header />
-
+    <div className="w-full">
       <main className="container mx-auto px-4 pb-8">
         <div className="mb-8 flex flex-col items-center gap-4">
           <Skeleton className="h-8 w-60" />

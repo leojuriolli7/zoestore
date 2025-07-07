@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useShoppingBagStore } from "@/app/stores/cart";
 import Link from "next/link";
 import { A_MINUTE } from "@/lib/time";
+import { appClientConfig } from "@/config/client";
 
 function ShoppingBag() {
   const { products, removeProduct } = useShoppingBagStore();
@@ -109,6 +110,14 @@ export function ShoppingBagSheet() {
     0
   );
 
+  const whatsappText = useMemo(() => {
+    return encodeURIComponent(
+      `Olá! Gostaria de saber mais informações dos seguintes produtos:\n${products
+        .map((p, i) => `${i + 1}. ${p.name}\n`)
+        .join("")}`
+    );
+  }, [products]);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -149,12 +158,20 @@ export function ShoppingBagSheet() {
                     R$ {totalPrice.toFixed(2)}
                   </span>
                 </div>
-                <Button
-                  className="w-full text-white bg-whatsapp hover:bg-whatsapp/90"
-                  size="lg"
+
+                <a
+                  href={`https://wa.me/${appClientConfig.contact.whatsappNumber}?text=${whatsappText}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full"
                 >
-                  Ir para o WhatsApp
-                </Button>
+                  <Button
+                    className="w-full text-white bg-whatsapp hover:bg-whatsapp/90"
+                    size="lg"
+                  >
+                    Ir para o WhatsApp
+                  </Button>
+                </a>
               </div>
             </>
           )}

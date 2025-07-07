@@ -1,6 +1,5 @@
 "use client";
 
-import { Header } from "@/components/Header";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -36,9 +35,7 @@ export default function ProductPage({
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <div className="w-full">
       <div className="container mx-auto py-8 px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="w-full aspect-[2/3] relative rounded-lg overflow-hidden shadow-md md:max-w-[400px] md:mx-auto">
           {isLoading ? (

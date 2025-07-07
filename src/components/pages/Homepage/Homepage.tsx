@@ -4,7 +4,6 @@ import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { listProductsOptions } from "@/query/products/listProducts/query";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { HomepageSlider } from "./HomepageSlider";
-import { Header } from "@/components/Header";
 import { ProductCard } from "@/components/ProductCard";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";
@@ -39,9 +38,7 @@ export default function Homepage({
   }, [isBottomVisible, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
-      <Header />
-
+    <div className="w-full">
       <section className="relative">
         <HomepageSlider />
       </section>

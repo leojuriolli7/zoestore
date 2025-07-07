@@ -1,6 +1,5 @@
 "use client";
 
-import { Header } from "@/components/Header";
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
 import { LoadingSpinner } from "@/components/ui/spinner";
@@ -63,9 +62,7 @@ export function ProductListPage() {
   const otherTags = tags?.filter((tag) => tag.name !== tagName) || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
-      <Header />
-
+    <div className="w-full">
       <main className="container mx-auto px-4 pb-8">
         <div className="mb-6 md:mt-4 mt-0">
           <Link
