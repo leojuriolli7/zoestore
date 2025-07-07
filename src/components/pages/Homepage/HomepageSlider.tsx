@@ -61,7 +61,7 @@ export function HomepageSlider() {
                 alt="ZOE STORE - Elegant Fashion"
                 fill
                 className="object-cover select-none object-top"
-                priority={index === 0}
+                priority
                 fetchPriority={index === 0 ? "high" : undefined}
                 loading="eager"
               />
