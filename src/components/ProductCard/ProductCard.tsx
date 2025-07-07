@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AddToBagButton } from "./AddToBagButton";
 
 export function ProductCardSkeleton() {
   return (
@@ -41,32 +42,19 @@ export function ProductCard({ product }: { product: Products.Product }) {
             >
               Clique para ver mais
             </Button>
+
+            <AddToBagButton product={product} />
           </div>
           <div className="p-3 md:p-4">
             <h3 className="font-semibold text-sm md:text-base mb-2 line-clamp-2 text-neutral-foreground">
               {product.name}
             </h3>
-            {/* <div className="flex items-center mb-2">
-                      <div className="flex items-center">
-                        <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs md:text-sm text-muted-foreground ml-1">
-                          {product.rating} ({product.reviews})
-                        </span>
-                      </div>
-                    </div> */}
+
             <div className="flex items-center space-x-2">
               <span className="font-light text-sm md:text-base text-neutral-foreground">
                 R$ {Number(product.price).toFixed(2)}
               </span>
-              {/* {product.originalPrice && (
-                        <span className="text-xs md:text-sm text-muted-foreground line-through">
-                          R$ {product.originalPrice.toFixed(2)}
-                        </span>
-                      )} */}
             </div>
-            {/* <p className="text-xs text-muted-foreground mt-1">
-                      ou 3x de R$ {(product.price / 3).toFixed(2)}
-                    </p> */}
           </div>
         </CardContent>
       </Card>

@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductCardSkeleton } from "@/components/ProductCard";
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 
 export function ProductListPageSkeleton() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
 import { LoadingSpinner } from "@/components/ui/spinner";
@@ -67,10 +67,10 @@ export function ProductListPage() {
       <Header />
 
       <main className="container mx-auto px-4 pb-8">
-        <div className="mb-6">
+        <div className="mb-6 md:mt-4 mt-0">
           <Link
             href="/"
-            className="items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex cursor-pointer md:static absolute top-8 left-4"
+            className="items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex cursor-pointer md:static absolute top-[30px] left-4 md:z-auto z-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar

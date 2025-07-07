@@ -8,4 +8,5 @@ export const productKeys = {
   listTags: ["products", "listTags"],
   listHomepageTags: ["products", "listTags", "homepage"],
   upsertTags: ["products", "upsertTags"],
+  cartIntegrity: ["products", "cartIntegrity"],
 };

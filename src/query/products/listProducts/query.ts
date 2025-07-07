@@ -24,8 +24,8 @@ export const listProductsOptions = ({
     queryFn: async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
       searchParams.set("cursor", pageParam.toString());
-      searchParams.set("limit", limit.toString());
 
+      if (limit) searchParams.set("limit", limit.toString());
       if (search) searchParams.set("search", search);
       if (tags) tags.forEach((tag) => searchParams.append("tags", tag));
 

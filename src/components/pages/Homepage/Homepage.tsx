@@ -4,7 +4,7 @@ import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { listProductsOptions } from "@/query/products/listProducts/query";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { HomepageSlider } from "./HomepageSlider";
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 import { ProductCard } from "@/components/ProductCard";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";

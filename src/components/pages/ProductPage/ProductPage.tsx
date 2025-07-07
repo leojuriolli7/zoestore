@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Products } from "@/query/products/types";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const AddToBagButton = dynamic(
+  () => import("./AddToBagButton").then((mod) => mod.AddToBagButton),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-10 w-full md:w-[180px]" />,
+  }
+);
 
 export default function ProductPage({
   product: initialProduct,
@@ -88,26 +97,34 @@ export default function ProductPage({
             )}
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 flex flex-wrap gap-2 items-center">
             {isLoading ? (
-              <Skeleton className="h-12 w-full md:w-48" />
+              <>
+                <Skeleton className="h-12 w-full md:w-48" />
+                <Skeleton className="h-12 w-full md:w-48" />
+              </>
             ) : product ? (
-              <a
-                href={`https://wa.me/${
-                  appClientConfig.contact.whatsappNumber
-                }?text=Olá! Tenho interesse no produto: ${encodeURIComponent(
-                  product?.name || ""
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  size="lg"
-                  className="w-full md:w-auto text-white bg-whatsapp hover:bg-whatsapp/90"
+              <>
+                <a
+                  href={`https://wa.me/${
+                    appClientConfig.contact.whatsappNumber
+                  }?text=Olá! Tenho interesse no produto: ${encodeURIComponent(
+                    product?.name || ""
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full md:w-auto"
                 >
-                  Contatar via WhatsApp
-                </Button>
-              </a>
+                  <Button
+                    size="lg"
+                    className="w-full md:w-auto text-white bg-whatsapp hover:bg-whatsapp/90"
+                  >
+                    Contatar via WhatsApp
+                  </Button>
+                </a>
+
+                <AddToBagButton product={product} />
+              </>
             ) : (
               <span className="text-destructive">Produto não encontrado.</span>
             )}

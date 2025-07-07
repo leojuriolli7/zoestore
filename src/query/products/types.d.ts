@@ -42,4 +42,9 @@ export declare namespace Products {
   };
 
   type ListHomepageTags = { tags: HomepageTag[] };
+
+  type CardIntegrityStatus = {
+    valid: number[];
+    invalid: number[];
+  };
 }
