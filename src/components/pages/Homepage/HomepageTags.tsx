@@ -34,6 +34,7 @@ function TagCard({
             className="object-cover object-top"
             width={96}
             height={96}
+            loading="eager"
           />
         ) : (
           <div className="w-full h-full bg-accent flex justify-center items-center">
