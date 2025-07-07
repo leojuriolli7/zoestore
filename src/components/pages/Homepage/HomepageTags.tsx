@@ -1,23 +1,28 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { listHomepageTagsOptions } from "@/query/products/listHomepageTags/query";
 import Link from "next/link";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TagIcon } from "lucide-react";
+import { useCallback } from "react";
+import { listProductsOptions } from "@/query/products/listProducts/query";
 
 function TagCard({
   name,
   imageUrl,
   tagName,
+  onMouseDown,
 }: {
   name: string;
+  onMouseDown?: () => void;
   imageUrl?: string;
   tagName?: string;
 }) {
   return (
     <Link
+      onMouseDown={onMouseDown}
       href={`/products${tagName ? `?tag=${tagName}` : ""}`}
       className="flex flex-col items-center gap-2"
     >
@@ -44,6 +49,16 @@ function TagCard({
 
 export default function HomepageTags() {
   const { data, isLoading } = useQuery(listHomepageTagsOptions());
+  const queryClient = useQueryClient();
+
+  const prefetchProductsByTag = useCallback(
+    (tag: string) => () => {
+      queryClient.prefetchInfiniteQuery(
+        listProductsOptions({ limit: 20, tags: [tag] })
+      );
+    },
+    [queryClient]
+  );
 
   if (!data?.tags?.length && !isLoading) {
     return null;
@@ -68,6 +83,7 @@ export default function HomepageTags() {
             : data?.tags.map((tag) => (
                 <TagCard
                   name={tag.name}
+                  onMouseDown={prefetchProductsByTag(tag.name)}
                   tagName={tag.name}
                   imageUrl={tag.product_image}
                   key={tag.name}
