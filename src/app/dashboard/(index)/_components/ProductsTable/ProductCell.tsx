@@ -6,7 +6,6 @@ interface ProductCellProps {
 }
 
 export function ProductCell({ product }: ProductCellProps) {
-  console.log(" product:", product);
   return (
     <div className="flex items-center gap-4 p-2">
       <div className="w-12 h-[72px] relative">
