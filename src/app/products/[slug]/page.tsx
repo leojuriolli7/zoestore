@@ -6,6 +6,9 @@ export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
+  /** Don't waste resources generating pages when not in production. */
+  if (process.env.VERCEL_ENV !== "production") return [];
+
   const products = await listProducts({
     limit: 999,
     cursor: null,
