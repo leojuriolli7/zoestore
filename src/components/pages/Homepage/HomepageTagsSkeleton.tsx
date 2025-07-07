@@ -13,11 +13,8 @@ export default function HomepageTagsSkeleton() {
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4">
-          {[1, 2, 3, 4, 5].map((val) => (
-            <div key={val} className="flex flex-col items-center gap-2">
-              <Skeleton className="w-24 h-24 rounded-full" />
-              <Skeleton className="w-20 h-5" />
-            </div>
+          {[1, 2, 3, 4].map((val) => (
+            <Skeleton className="w-24 h-24 rounded-full mb-8" key={val} />
           ))}
         </div>
       </div>
