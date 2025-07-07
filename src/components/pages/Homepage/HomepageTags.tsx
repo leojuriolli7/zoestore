@@ -25,9 +25,10 @@ function TagCard({
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={name}
+            alt={`Modelo vestindo uma roupa da categoria ${name}`}
             className="object-cover object-top"
-            fill
+            width={96}
+            height={96}
           />
         ) : (
           <div className="w-full h-full bg-accent flex justify-center items-center">
