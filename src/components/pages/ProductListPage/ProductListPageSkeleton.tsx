@@ -8,10 +8,6 @@ export function ProductListPageSkeleton() {
       <Header />
 
       <main className="container mx-auto px-4 pb-8">
-        <div className="mb-6 pt-6">
-          <Skeleton className="h-5 w-20" />
-        </div>
-
         <div className="mb-8 flex flex-col items-center gap-4">
           <Skeleton className="h-8 w-60" />
           <Skeleton className="h-10 w-full md:max-w-sm" />
@@ -30,10 +26,6 @@ export function ProductListPageSkeleton() {
           {Array.from({ length: 8 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
-        </div>
-
-        <div className="mt-8 flex w-full justify-center">
-          <Skeleton className="h-8 w-8 rounded-full" />
         </div>
       </main>
     </div>

@@ -41,7 +41,7 @@ function TagCard({
   );
 }
 
-export function HomepageTags() {
+export default function HomepageTags() {
   const { data, isLoading } = useQuery(listHomepageTagsOptions());
 
   if (!data?.tags?.length && !isLoading) {
