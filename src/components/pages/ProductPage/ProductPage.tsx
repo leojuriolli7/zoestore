@@ -72,7 +72,7 @@ export default function ProductPage({
             )
           )}
 
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-neutral-foreground/90">
+          <h1 className="text-3xl md:text-4xl font-semibold mb-2 text-neutral-foreground/90">
             {isLoading ? <Skeleton className="h-10 w-2/3" /> : product?.name}
           </h1>
 
