@@ -5,11 +5,12 @@ import { listProductsOptions } from "@/query/products/listProducts/query";
 import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { HomepageSlider } from "./HomepageSlider";
 import { Header } from "@/components/header";
-import { ProductCard } from "./ProductCard";
+import { ProductCard } from "@/components/ProductCard";
 import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { Products } from "@/query/products/types";
+import { HomepageTags } from "./HomepageTags";
 
 export default function Homepage({
   products: initialProducts,
@@ -42,6 +43,8 @@ export default function Homepage({
       <section className="relative">
         <HomepageSlider />
       </section>
+
+      <HomepageTags />
 
       <section className="py-8 px-4">
         <div className="container mx-auto">

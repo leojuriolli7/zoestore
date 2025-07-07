@@ -27,4 +27,12 @@ export declare namespace Products {
   type ListTags = { tags: Tag[] };
 
   type UpsertTags = { success: boolean };
+
+  type HomepageTag = {
+    id: number;
+    name: string;
+    product_image: string;
+  };
+
+  type ListHomepageTags = { tags: HomepageTag[] };
 }

@@ -4,6 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { unstable_ViewTransition as ViewTransition } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export function ProductCardSkeleton() {
+  return (
+    <div className="flex flex-col space-y-3">
+      <Skeleton className="aspect-[2/3] w-full rounded-lg" />
+      <div className="space-y-2 p-1">
+        <Skeleton className="h-4 w-4/5" />
+        <Skeleton className="h-4 w-2/5" />
+      </div>
+    </div>
+  );
+}
 
 export function ProductCard({ product }: { product: Products.Product }) {
   return (
