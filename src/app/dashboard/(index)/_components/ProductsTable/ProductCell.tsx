@@ -8,14 +8,16 @@ interface ProductCellProps {
 export function ProductCell({ product }: ProductCellProps) {
   return (
     <div className="flex items-center gap-4 p-2">
-      <div className="w-12 h-[72px] relative">
+      <div className="w-12 h-[72px]">
         <Image
-          fill
+          width={48}
+          height={72}
           src={product.image_url}
           alt={product.name}
           className="object-cover rounded shrink-0"
         />
       </div>
+
       <div className="flex-1">
         <h2 className="font-bold text-md">{product.name}</h2>
         <p className="text-card-foreground/80 text-sm mb-1 overflow-hidden overflow-ellipsis line-clamp-2">

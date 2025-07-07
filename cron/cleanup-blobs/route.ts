@@ -12,6 +12,9 @@ import { appServerConfig } from "@/config/server";
  * and check if any image file isn't attached to a product on the database.
  *
  * Every unused image file will be deleted from the store.
+ *
+ * TODO: This can be integrated into `/app/api` directory later. First, we would need to separate
+ * blob stores between production and staging environment to ensure no data loss on either.
  */
 
 interface DeletionResult {
