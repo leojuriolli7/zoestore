@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TagIcon } from "lucide-react";
 import { useCallback } from "react";
 import { listProductsOptions } from "@/query/products/listProducts/query";
+import type { Products } from "@/query/products/types";
 
 function TagCard({
   name,
@@ -48,8 +49,17 @@ function TagCard({
   );
 }
 
-export default function HomepageTags() {
-  const { data, isLoading } = useQuery(listHomepageTagsOptions());
+export default function HomepageTags({
+  initialTags,
+}: {
+  initialTags: Products.ListHomepageTags;
+}) {
+  const { data, isLoading } = useQuery({
+    ...listHomepageTagsOptions(),
+    initialData: initialTags,
+    enabled: !initialTags?.tags?.length,
+  });
+
   const queryClient = useQueryClient();
 
   const prefetchProductsByTag = useCallback(

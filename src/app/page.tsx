@@ -1,18 +1,24 @@
 import { Homepage } from "@/components/pages/Homepage";
+import { listHomepageTags } from "@/query/products/listHomepageTags/handler";
 import { listProducts } from "@/query/products/listProducts/handler";
 
-// Every 30 minutes, revalidate this page:
-export const revalidate = 1800;
+export const revalidate = 60;
 
 export default async function Index() {
-  const result = await listProducts({
-    limit: 20,
-    cursor: null,
-    search: null,
-    tags: [],
-  });
+  const [homepageTags, products] = await Promise.all([
+    // If the homepage tags query fails, we still render the homepage.
+    listHomepageTags().catch(() => {
+      return { tags: [] };
+    }),
+    listProducts({
+      limit: 20,
+      cursor: null,
+      search: null,
+      tags: [],
+    }),
+  ]);
 
-  const toInfiniteData = { pageParams: [], pages: [result] };
+  const toInfiniteData = { pageParams: [], pages: [products] };
 
-  return <Homepage products={toInfiniteData} />;
+  return <Homepage products={toInfiniteData} tags={homepageTags} />;
 }

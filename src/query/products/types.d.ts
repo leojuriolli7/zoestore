@@ -29,7 +29,11 @@ export declare namespace Products {
 
   type ListTags = { tags: Tag[] };
 
-  type UpsertTags = { success: boolean };
+  type UpsertTags = {
+    success: boolean;
+    affectedProducts: Array<{ slug: string }>;
+    deletedTags: Array<{ id: number }>;
+  };
 
   type HomepageTag = {
     id: number;

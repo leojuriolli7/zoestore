@@ -20,8 +20,10 @@ const HomepageTags = dynamic(() => import("./HomepageTags"), {
 
 export default function Homepage({
   products: initialProducts,
+  tags: initialTags,
 }: {
   products: InfiniteData<Products.ListProducts, number>;
+  tags: Products.ListHomepageTags;
 }) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
@@ -50,7 +52,7 @@ export default function Homepage({
         <HomepageSlider />
       </section>
 
-      <HomepageTags />
+      <HomepageTags initialTags={initialTags} />
 
       <section className="py-8 px-4">
         <div className="container mx-auto">

@@ -36,6 +36,17 @@ export async function POST(
 
     const result = await upsertTags(parsed.data);
 
+    // A tag was deleted, so we invalidate the homepage cache.
+    // if (result.deletedTags?.length > 0) {
+    //   revalidatePath("/");
+    // }
+
+    // A product was affected (Tag added or removed), so we invalidate
+    // that product's route cache.
+    // result.affectedProducts.forEach((p) => {
+    //   revalidatePath(`/products/${p.slug}`);
+    // });
+
     return parseSuccessResponse(result);
   } catch (error) {
     return parseErrorResponse(error);

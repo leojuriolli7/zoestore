@@ -9,7 +9,6 @@ import { updateProductSchema } from "@/query/products/updateProduct/schema";
 import { getProductBySlug } from "@/query/products/getProductBySlug/handler";
 import type { Products } from "@/query/products/types";
 import { NextRequest } from "next/server";
-import { revalidatePath } from "next/cache";
 
 export async function POST(
   req: NextRequest,
@@ -29,8 +28,11 @@ export async function POST(
     const { slug } = await params;
 
     const result = await updateProduct(slug, parsed.data);
-    revalidatePath(`/products/${result.product.slug}`);
-    revalidatePath(`/`);
+
+    // When updating a product, revalidate that product's route cache
+    // and homepage cache.
+    // revalidatePath(`/products/${result.product.slug}`);
+    // revalidatePath(`/`);
 
     return parseSuccessResponse(result);
   } catch (error) {
