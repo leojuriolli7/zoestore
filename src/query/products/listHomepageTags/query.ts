@@ -5,7 +5,7 @@ import { productKeys } from "../config";
 
 export const listHomepageTagsOptions = () =>
   queryOptions({
-    queryKey: [...productKeys.listTags, "homepage"],
+    queryKey: productKeys.listHomepageTags,
     queryFn: async () =>
       $fetch<Products.ListHomepageTags>("/api/products/tags/home"),
   });

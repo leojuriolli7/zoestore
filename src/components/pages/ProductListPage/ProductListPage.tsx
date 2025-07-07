@@ -30,14 +30,12 @@ export function ProductListPage() {
   const onInputChange = useMemo(
     () =>
       debounce((value: string) => {
-        router.replace(
-          pathname +
-            "?" +
-            new URLSearchParams({
-              tag: tagName,
-              search: value,
-            })
-        );
+        const params = new URLSearchParams();
+
+        if (tagName) params.set("tag", tagName);
+        if (value) params.set("search", value);
+
+        router.replace(pathname + "?" + params);
       }, 500),
     [router, pathname, tagName]
   );
@@ -115,6 +113,14 @@ export function ProductListPage() {
               <span className="text-xs text-muted-foreground">
                 Outras categorias:
               </span>{" "}
+              {tagName && (
+                <Link
+                  href={`/products` + query ? `?search=${query}` : ""}
+                  className="text-xs text-muted-foreground hover:text-foreground underline transition-colors"
+                >
+                  Todos os produtos
+                </Link>
+              )}
               {fetchingTags
                 ? [1, 2, 3, 4].map((n) => (
                     <Skeleton key={n} className="h-4 w-12 rounded-sm" />
