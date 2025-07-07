@@ -5,7 +5,7 @@ import { ShoppingBagSheet } from "./ShoppingBag";
 export function Header() {
   return (
     <header className="w-full sticky top-0 z-50 backdrop-blur-md bg-muted/85">
-      <div className="w-full flex h-20 items-center justify-center px-4 relative">
+      <div className="w-full flex h-16 items-center justify-center px-4 relative">
         <Link href="/" prefetch={false}>
           <Image
             priority
