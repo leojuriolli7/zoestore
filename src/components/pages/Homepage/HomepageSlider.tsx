@@ -80,6 +80,7 @@ export function HomepageSlider() {
               src={img}
               alt="ZOE STORE - Elegant Fashion"
               fill
+              priority
               className="object-cover select-none object-top"
             />
             <div className="absolute inset-0 bg-black/30" />
