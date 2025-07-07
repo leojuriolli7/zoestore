@@ -1,6 +1,6 @@
 import "server-only";
 
-import { appConfig } from "@/config";
+import { appServerConfig } from "@/config/server";
 import { A_YEAR } from "@/lib/time";
 import { cookies } from "next/headers";
 import { LoginWithAdminKeySchema } from "./schema";
@@ -11,14 +11,14 @@ import { Authentication } from "../types";
 export async function loginWithAdminKey({
   password,
 }: LoginWithAdminKeySchema): Promise<Authentication.LoginWithAdminKey> {
-  if (password !== process.env.ADMIN_KEY) {
+  if (password !== appServerConfig.auth.adminKey) {
     throw new UnauthorizedError("Senha incorreta.");
   }
 
   const cookieStore = await cookies();
 
   cookieStore.set({
-    name: appConfig.auth.adminKeyCookieName,
+    name: appServerConfig.auth.adminKeyCookieName,
     expires: Date.now() + A_YEAR,
     value: password,
     sameSite: "none",

@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { appConfig } from "@/config";
+import { appClientConfig } from "@/config/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Products } from "@/query/products/types";
 import { unstable_ViewTransition as ViewTransition } from "react";
@@ -92,7 +92,7 @@ export default function ProductPage({
             ) : product ? (
               <a
                 href={`https://wa.me/${
-                  appConfig.contact.whatsappNumber
+                  appClientConfig.contact.whatsappNumber
                 }?text=Olá! Tenho interesse no produto: ${encodeURIComponent(
                   product?.name || ""
                 )}`}

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { appConfig } from "@/config";
+import { appServerConfig } from "@/config/server";
 import { cookies } from "next/headers";
 
 export async function checkAdminKey() {
@@ -8,8 +8,8 @@ export async function checkAdminKey() {
 
   /** Authorization is based on the `admin_key` cookie. */
   const hasAdminCookie =
-    cookiesStore.get(appConfig.auth.adminKeyCookieName)?.value ===
-    process.env.ADMIN_KEY;
+    cookiesStore.get(appServerConfig.auth.adminKeyCookieName)?.value ===
+    appServerConfig.auth.adminKey;
 
   return { isAdmin: hasAdminCookie };
 }

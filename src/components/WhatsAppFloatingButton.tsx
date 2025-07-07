@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { appConfig } from "@/config";
+import { appClientConfig } from "@/config/client";
 
 export function WhatsAppFloatingButton() {
   return (
     <div className="fixed bottom-4 right-4 shrink-0 z-50">
       <a
-        href={`https://wa.me/${appConfig.contact.whatsappNumber}?text=Olá! Eu vim do site da Zoe Store e queria saber mais informações.`}
+        href={`https://wa.me/${appClientConfig.contact.whatsappNumber}?text=Olá! Eu vim do site da Zoe Store e queria saber mais informações.`}
         target="_blank"
         className="group relative flex items-center"
       >

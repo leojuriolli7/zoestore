@@ -25,7 +25,7 @@ import { addProductOptions } from "@/query/products/addProduct/mutation";
 import { upload } from "@vercel/blob/client";
 import { toastError } from "@/query/core/toastError";
 import { productKeys } from "@/query/products/config";
-import { appConfig } from "@/config";
+import { appClientConfig } from "@/config/client";
 import { updateProductOptions } from "@/query/products/updateProduct/mutation";
 import { useUpertProductStore } from "./store";
 import { formSchema, FormSchema } from "./schema";
@@ -72,7 +72,7 @@ function UpsertProductForm() {
       let newImageUrl = product.image_url;
 
       try {
-        if (imageFile.name === appConfig.images.updateImageName) {
+        if (imageFile.name === appClientConfig.images.updateImageName) {
           const { url } = await upload(imageFile.name, imageFile, {
             access: "public",
             handleUploadUrl: "/api/uploads/image",

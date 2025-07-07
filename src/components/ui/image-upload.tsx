@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { RefreshCw, Trash2Icon, Upload } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
 import { ExpandButton } from "../expand-button";
-import { appConfig } from "@/config";
+import { appClientConfig } from "@/config/client";
 
 export const ImageUpload = ({
   onChange,
@@ -22,7 +22,7 @@ export const ImageUpload = ({
     const originalFile = newFiles[0] || null;
 
     const imageFile = originalFile
-      ? new File([originalFile], appConfig.images.updateImageName, {
+      ? new File([originalFile], appClientConfig.images.updateImageName, {
           type: originalFile.type,
           lastModified: originalFile.lastModified,
         })
