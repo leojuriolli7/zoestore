@@ -13,6 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import debounce from "lodash.debounce";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProductListPage() {
   const { data: _tags, isLoading: fetchingTags } = useQuery(listTagsOptions());
@@ -104,21 +105,25 @@ export function ProductListPage() {
           </div>
         </div>
 
-        {!fetchingTags && otherTags.length > 0 && (
+        {(fetchingTags || otherTags.length > 0) && (
           <div className="mb-8">
             <div className="flex flex-wrap gap-x-4 gap-y-1">
               <span className="text-xs text-muted-foreground">
                 Outras categorias:
               </span>{" "}
-              {otherTags.map((tag) => (
-                <Link
-                  key={tag.id}
-                  href={`/products?tag=${tag.name}`}
-                  className="text-xs text-muted-foreground hover:text-foreground underline capitalize transition-colors"
-                >
-                  {tag.name}
-                </Link>
-              ))}
+              {fetchingTags
+                ? [1, 2, 3, 4].map((n) => (
+                    <Skeleton key={n} className="h-4 w-12 rounded-sm" />
+                  ))
+                : otherTags?.map((tag) => (
+                    <Link
+                      key={tag.id}
+                      href={`/products?tag=${tag.name}`}
+                      className="text-xs text-muted-foreground hover:text-foreground underline capitalize transition-colors"
+                    >
+                      {tag.name}
+                    </Link>
+                  ))}
             </div>
           </div>
         )}
