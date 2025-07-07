@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
-import { useShoppingBagStore } from "@/app/stores/cart";
+import { useShoppingBagStore } from "@/app/stores/shoppingBag";
 import { useCallback } from "react";
 import type { Products } from "@/query/products/types";
 

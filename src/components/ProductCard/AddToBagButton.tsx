@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ShoppingBag } from "lucide-react";
-import { useShoppingBagStore } from "@/app/stores/cart";
+import { useShoppingBagStore } from "@/app/stores/shoppingBag";
 import { cn } from "@/lib/utils";
 import { MouseEvent, useCallback } from "react";
 import type { Products } from "@/query/products/types";

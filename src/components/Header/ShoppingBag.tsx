@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShoppingBagIcon, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useShoppingBagStore } from "@/app/stores/cart";
+import { useShoppingBagStore } from "@/app/stores/shoppingBag";
 import Link from "next/link";
 import { A_MINUTE } from "@/lib/time";
 import { appClientConfig } from "@/config/client";
@@ -33,7 +33,7 @@ function ShoppingBag() {
 
   if (checkingIntegrity) {
     return (
-      <div className="space-y-6 p-4">
+      <div className="space-y-6 p-4 h-[calc(100dvh-240px)]">
         {[1, 2, 3, 4].map((p) => (
           <div key={p} className="flex items-center space-x-4">
             <Skeleton className="h-16 w-16 rounded-md" />
@@ -88,7 +88,11 @@ function ShoppingBag() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => removeProduct(product.id)}
+                onClick={(e) => {
+                  removeProduct(product.id);
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
                 className="h-8 w-8 text-destructive hover:text-destructive"
               >
                 <Trash2 className="h-4 w-4" />
