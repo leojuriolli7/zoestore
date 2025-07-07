@@ -21,6 +21,7 @@ export function WhatsAppFloatingButton() {
           className="h-14 w-14 rounded-full transition-transform group-hover:scale-110"
         >
           <Image
+            priority
             src="/whatsapp.png"
             width={48}
             height={48}

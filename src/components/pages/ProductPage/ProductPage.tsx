@@ -37,6 +37,8 @@ export default function ProductPage({
           ) : product?.image_url ? (
             <ViewTransition name={`product-image-${product?.id}`}>
               <Image
+                priority
+                fetchPriority="high"
                 src={product.image_url}
                 alt={product?.name || "Produto"}
                 fill

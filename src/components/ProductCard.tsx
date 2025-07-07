@@ -27,6 +27,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
             <ViewTransition name={`product-image-${product.id}`}>
               <Image
                 fill
+                priority
                 src={product.image_url}
                 alt={product.name}
                 className="object-cover rounded-md select-none"

@@ -33,6 +33,7 @@ function TagCard({
             src={imageUrl}
             alt={`Modelo vestindo uma roupa da categoria ${name}`}
             className="object-cover object-top"
+            priority
             width={96}
             height={96}
             loading="eager"
