@@ -50,7 +50,7 @@ export function HomepageSlider() {
             }%)`,
           }}
         >
-          {carouselImages.map((img) => (
+          {carouselImages.map((img, index) => (
             <div
               key={img}
               className="relative w-full h-full flex-shrink-0"
@@ -61,7 +61,8 @@ export function HomepageSlider() {
                 alt="ZOE STORE - Elegant Fashion"
                 fill
                 className="object-cover select-none object-top"
-                priority
+                priority={index === 1}
+                loading="eager"
               />
             </div>
           ))}
@@ -72,14 +73,15 @@ export function HomepageSlider() {
 
       {/* Desktop: 3 images side by side */}
       <div className="hidden md:flex h-full w-full">
-        {carouselImages.map((img) => (
+        {carouselImages.map((img, index) => (
           <div key={img} className="relative h-full flex-1">
             <Image
               src={img}
               alt="ZOE STORE - Elegant Fashion"
               fill
               className="object-cover select-none object-top"
-              priority
+              priority={index === 1}
+              loading="eager"
             />
             <div className="absolute inset-0 bg-black/30" />
           </div>
