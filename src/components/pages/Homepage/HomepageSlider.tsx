@@ -50,7 +50,7 @@ export function HomepageSlider() {
             }%)`,
           }}
         >
-          {carouselImages.map((img, index) => (
+          {carouselImages.map((img) => (
             <div
               key={img}
               className="relative w-full h-full flex-shrink-0"
@@ -61,8 +61,7 @@ export function HomepageSlider() {
                 alt="ZOE STORE - Elegant Fashion"
                 fill
                 className="object-cover select-none object-top"
-                priority={index === 0}
-                fetchPriority={index === 0 ? "high" : undefined}
+                priority
               />
             </div>
           ))}
@@ -81,7 +80,6 @@ export function HomepageSlider() {
               fill
               className="object-cover select-none object-top"
               priority
-              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-black/30" />
           </div>
