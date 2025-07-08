@@ -7,6 +7,8 @@ export declare namespace Products {
   };
 
   type Product = {
+    createdAt: Date;
+    updatedAt: Date;
     id: number;
     name: string;
     image_url: string;
@@ -44,7 +46,7 @@ export declare namespace Products {
   type ListHomepageTags = { tags: HomepageTag[] };
 
   type CardIntegrityStatus = {
-    valid: number[];
-    invalid: number[];
+    valid: string[];
+    invalid: string[];
   };
 }

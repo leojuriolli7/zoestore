@@ -12,20 +12,20 @@ export async function GET(
 ): Promise<API.Response<Products.CardIntegrityStatus>> {
   try {
     const { searchParams } = new URL(req.url);
-    const ids = searchParams.getAll("productIds") || null;
+    const slugs = searchParams.getAll("productSlugs") || null;
 
     const parsed = checkCartIntegritySchema.safeParse({
-      productIds: ids,
+      productSlugs: slugs,
     });
 
     if (!parsed.success) {
       throw new BadRequestError("Parâmetros inválidos.");
     }
 
-    const { productIds } = parsed.data;
+    const { productSlugs } = parsed.data;
 
     const result = await checkCartIntegrity({
-      productIds,
+      productSlugs,
     });
 
     return parseSuccessResponse(result);

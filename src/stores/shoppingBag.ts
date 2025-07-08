@@ -7,7 +7,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 type CartStore = {
   products: Products.Product[];
   addProduct: (p: Products.Product) => void;
-  removeProduct: (id: number) => void;
+  removeProduct: (id: string) => void;
   toggleProduct: (p: Products.Product) => void;
 };
 
@@ -24,9 +24,9 @@ export const useShoppingBagStore = create(
               }
         );
       },
-      removeProduct(idToRemove) {
+      removeProduct(slugToRemove) {
         return set((state) => {
-          const removed = state.products.filter((p) => p.id !== idToRemove);
+          const removed = state.products.filter((p) => p.slug !== slugToRemove);
           return { products: removed };
         });
       },

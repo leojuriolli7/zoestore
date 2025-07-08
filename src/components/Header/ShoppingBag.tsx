@@ -2,7 +2,7 @@
 
 import { checkCartIntegrityOptions } from "@/query/products/checkCartIntegrity/query";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   Sheet,
   SheetContent,
@@ -23,13 +23,30 @@ import { appClientConfig } from "@/config/client";
 function ShoppingBag() {
   const { products, removeProduct } = useShoppingBagStore();
 
-  const productIds = useMemo(() => products.map((p) => p.id), [products]);
+  const productSlugs = useMemo(() => products.map((p) => p.slug), [products]);
 
-  const { isLoading: checkingIntegrity } = useQuery({
-    ...checkCartIntegrityOptions({ productIds }),
+  const { data: cartIntegrity, isLoading: checkingIntegrity } = useQuery({
+    ...checkCartIntegrityOptions({ productSlugs }),
     staleTime: A_MINUTE * 5,
-    enabled: productIds.length > 0,
+    enabled: productSlugs.length > 0,
   });
+
+  /**
+   * Whenever we receive the cart integrity data, we will check if the
+   * current user cart has any invalid products. Invalid means products
+   * that have been deleted or had their names and slug changed.
+   */
+  useEffect(() => {
+    if (cartIntegrity) {
+      const { invalid } = cartIntegrity;
+
+      if (invalid?.length > 0) {
+        invalid.forEach((invalidSlug) => {
+          removeProduct(invalidSlug);
+        });
+      }
+    }
+  }, [cartIntegrity, removeProduct]);
 
   if (checkingIntegrity) {
     return (
@@ -89,7 +106,7 @@ function ShoppingBag() {
                 variant="ghost"
                 size="icon"
                 onClick={(e) => {
-                  removeProduct(product.id);
+                  removeProduct(product.slug);
                   e.preventDefault();
                   e.stopPropagation();
                 }}

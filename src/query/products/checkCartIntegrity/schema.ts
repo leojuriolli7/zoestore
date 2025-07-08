@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const checkCartIntegritySchema = z.object({
-  productIds: z.array(z.coerce.number()),
+  productSlugs: z.array(z.coerce.string()),
 });
 
 export type CheckCartIntegritySchema = z.infer<typeof checkCartIntegritySchema>;

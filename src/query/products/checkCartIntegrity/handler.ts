@@ -12,17 +12,17 @@ export async function checkCartIntegrity(
   params: CheckCartIntegritySchema
 ): Promise<Products.CardIntegrityStatus> {
   try {
-    const { productIds } = params;
+    const { productSlugs } = params;
 
     const existingProducts = await db
-      .select({ id: products.id })
+      .select({ slug: products.slug })
       .from(products)
-      .where(inArray(products.id, productIds));
+      .where(inArray(products.slug, productSlugs));
 
-    const existingIds = existingProducts.map((product) => product.id);
+    const existingIds = existingProducts.map((product) => product.slug);
 
     const valid = existingIds;
-    const invalid = productIds.filter((id) => !existingIds.includes(id));
+    const invalid = productSlugs.filter((id) => !existingIds.includes(id));
 
     return {
       valid,

@@ -5,16 +5,16 @@ import { productKeys } from "../config";
 import { CheckCartIntegritySchema } from "./schema";
 
 export const checkCartIntegrityOptions = ({
-  productIds,
+  productSlugs,
 }: CheckCartIntegritySchema) =>
   queryOptions({
     queryKey: productKeys.cartIntegrity,
     queryFn: async () => {
       const searchParams = new URLSearchParams();
 
-      productIds.forEach((id) => searchParams.append("productIds", String(id)));
+      productSlugs.forEach((slug) => searchParams.append("productSlugs", slug));
 
-      return $fetch<Products.ListProducts>(
+      return $fetch<Products.CardIntegrityStatus>(
         `/api/cart/check? + ${searchParams.toString()}`
       );
     },
