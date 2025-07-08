@@ -1,7 +1,6 @@
 import "server-only";
 
 import { db } from "@/query/db";
-import { InternalServerError } from "@/query/errors/InternalServerError";
 import type { Products } from "../types";
 import { desc, eq, inArray, sql } from "drizzle-orm";
 import { products, productTags, tags } from "@/query/db/schema";
