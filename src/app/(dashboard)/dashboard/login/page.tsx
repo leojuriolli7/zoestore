@@ -34,10 +34,15 @@ export default function LoginPage() {
     defaultValues: { password: "" },
   });
 
-  const { mutateAsync: sendPassword, isPending: checkingPassword } =
-    useMutation(loginWithAdminKeyOptions());
+  const { mutateAsync: sendPassword } = useMutation(loginWithAdminKeyOptions());
+
+  const [checkingPassword, setCheckingPassword] = useState(false);
 
   const onSubmit = async (data: LoginWithAdminKeySchema) => {
+    // We set this manually instead of using `isPending` or `formState.isSubmitting`
+    // because we want the loading to persist until the user is redirected to the dashboard.
+    setCheckingPassword(true);
+
     try {
       const { success } = await sendPassword(data);
 
@@ -45,6 +50,7 @@ export default function LoginPage() {
         router.replace("/dashboard");
       }
     } catch (error) {
+      setCheckingPassword(false);
       toastError(error);
     }
   };

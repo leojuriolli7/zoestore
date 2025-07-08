@@ -15,13 +15,13 @@ export default function ServerError() {
             <h2 className="md:text-3xl lg:text-4xl text-2xl font-light text-neutral-foreground mb-4">
               Algo deu errado
             </h2>
-            <p className="md:text-lg text-neutral-foreground/80 leading-relaxed max-w-md mx-auto">
+            <p className="md:text-lg text-neutral-foreground/80 lg:leading-relaxed max-w-md mx-auto">
               Ocorreu um erro interno no servidor. Nossa equipe foi notificada e
               está trabalhando para resolver o problema.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <div className="flex flex-wrap gap-4 justify-center items-center mb-12">
             <Button asChild size="lg" className="px-8 py-3 font-medium">
               <Link href="/">
                 <Home className="w-4 h-4 mr-2" />
