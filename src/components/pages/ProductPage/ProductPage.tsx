@@ -1,6 +1,5 @@
 "use client";
 
-import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
@@ -138,8 +137,6 @@ export default function ProductPage({
           )}
         </div>
       </div>
-
-      <WhatsAppFloatingButton />
     </div>
   );
 }

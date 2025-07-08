@@ -2,7 +2,6 @@
 
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { listProductsOptions } from "@/query/products/listProducts/query";
-import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import { HomepageSlider } from "./HomepageSlider";
 import { ProductCard } from "@/components/ProductCard";
 import { useOnScreen } from "@/hooks/useOnScreen";
@@ -71,8 +70,6 @@ export default function Homepage({
           <div ref={bottomRef} />
         </div>
       </section>
-
-      <WhatsAppFloatingButton />
     </div>
   );
 }
