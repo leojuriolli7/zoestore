@@ -8,7 +8,7 @@ export function WhatsAppFloatingButton() {
   return (
     <div className="fixed bottom-4 right-4 shrink-0 z-50">
       <a
-        href={`https://wa.me/${appClientConfig.contact.whatsappNumber}?text=Olá! Eu vim do site da Zoe Store e queria saber mais informações.`}
+        href={`https://wa.me/${appClientConfig.contact.whatsappNumber}?text=Olá! Vi a loja e me interessei pelas peças. Gostaria de saber mais informações, novidades e formas de pagamento.`}
         target="_blank"
         className="group relative flex items-center"
       >
