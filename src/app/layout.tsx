@@ -1,9 +1,9 @@
-import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/sonner";
 import { Inter } from "next/font/google";
 import { ReactQueryProvider } from "./ReactQueryProvider";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,6 +11,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  /** Without this, we get annoying warnings on the console during development. */
+  ...(process.env.NODE_ENV === "development" && {
+    metadataBase: new URL("https://localhost"),
+  }),
   title: "ZOE STORE",
   description: "Peças que vestem elegância, Enviamos para todo o Brasil.",
   openGraph: {
