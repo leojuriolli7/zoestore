@@ -3,21 +3,32 @@ import { parseSuccessResponse } from "@/query/core/parseResponse/success";
 import type { API } from "@/query/core/query";
 import type { NextRequest } from "next/server";
 
-export function createRouteHandler<TResult, TParams>(
+export function createRouteHandler<T>(
+  handler: (req: NextRequest) => Promise<T>
+): (req: NextRequest) => Promise<API.Response<T>>;
+
+export function createRouteHandler<T, P>(
+  handler: (req: NextRequest, params: P) => Promise<T>
+): (
+  req: NextRequest,
+  context: { params: Promise<P> }
+) => Promise<API.Response<T>>;
+
+export function createRouteHandler<T, P>(
   handler:
-    | ((req: NextRequest) => Promise<TResult>)
-    | ((req: NextRequest, params: TParams) => Promise<TResult>)
+    | ((req: NextRequest) => Promise<T>)
+    | ((req: NextRequest, params: P) => Promise<T>)
 ) {
   return async (
     req: NextRequest,
-    context?: { params: Promise<TParams> }
-  ): Promise<API.Response<TResult>> => {
+    context?: { params: Promise<P> }
+  ): Promise<API.Response<T>> => {
     try {
-      let resolvedParams: TParams | undefined = undefined;
+      let resolvedParams: P | undefined = undefined;
 
       if (context?.params) resolvedParams = await context.params;
 
-      const result = await handler(req, resolvedParams as TParams);
+      const result = await handler(req, resolvedParams as P);
 
       return parseSuccessResponse(result);
     } catch (error) {
