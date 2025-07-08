@@ -50,7 +50,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-[calc(100dvh-160px)] w-screen flex items-center justify-center bg-muted/50 p-4">
+    <div className="h-[100dvh] w-screen flex items-center justify-center bg-muted/50 p-4">
       <Card className="md:full max-w-4xl md:grid md:grid-cols-2 shadow-xl rounded-lg overflow-hidden py-0 bg-background">
         <div className="hidden md:block relative min-h-[500px]">
           <Image
