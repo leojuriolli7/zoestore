@@ -67,7 +67,7 @@ export function ProductListPage() {
         <div className="mb-6 md:mt-4 mt-0">
           <Link
             href="/"
-            className="items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex cursor-pointer md:static absolute top-[30px] left-4 md:z-auto z-50"
+            className="items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex cursor-pointer md:static fixed top-[30px] left-4 md:z-auto z-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar
