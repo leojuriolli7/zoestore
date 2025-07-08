@@ -12,7 +12,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ShoppingBagIcon, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useShoppingBagStore } from "@/stores/shoppingBag";
@@ -25,7 +24,7 @@ function ShoppingBag() {
 
   const productSlugs = useMemo(() => products.map((p) => p.slug), [products]);
 
-  const { data: cartIntegrity, isLoading: checkingIntegrity } = useQuery({
+  const { data: cartIntegrity } = useQuery({
     ...checkCartIntegrityOptions({ productSlugs }),
     staleTime: A_MINUTE * 5,
     enabled: productSlugs.length > 0,
@@ -48,26 +47,9 @@ function ShoppingBag() {
     }
   }, [cartIntegrity, removeProduct]);
 
-  if (checkingIntegrity) {
-    return (
-      <div className="space-y-6 p-4 h-[calc(100dvh-240px)]">
-        {[1, 2, 3, 4].map((p) => (
-          <div key={p} className="flex items-center space-x-4">
-            <Skeleton className="h-16 w-16 rounded-md" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-3 w-1/2" />
-            </div>
-            <Skeleton className="h-8 w-8" />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
   if (products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center text-center">
+      <div className="flex flex-col items-center justify-center text-center pt-10 text-pretty">
         <ShoppingBagIcon className="h-16 w-16 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold mb-2">Sua sacola está vazia</h3>
         <p className="text-muted-foreground mb-4">
