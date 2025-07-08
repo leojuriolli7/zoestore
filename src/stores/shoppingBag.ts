@@ -9,12 +9,16 @@ type CartStore = {
   addProduct: (p: Products.Product) => void;
   removeProduct: (id: string) => void;
   toggleProduct: (p: Products.Product) => void;
+  clearBag: () => void;
 };
 
 export const useShoppingBagStore = create(
   persist<CartStore>(
     (set) => ({
       products: [],
+      clearBag() {
+        return set({ products: [] });
+      },
       addProduct(p) {
         return set((state) =>
           state.products.some((product) => product.id === p.id)

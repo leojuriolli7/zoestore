@@ -6,7 +6,6 @@ import { useEffect, useMemo } from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -61,7 +60,7 @@ function ShoppingBag() {
 
   return (
     <div className="flex-1">
-      <div className="space-y-6 p-4 h-[calc(100dvh-240px)] overflow-y-scroll scrollbar-hide">
+      <div className="space-y-6 pb-4 px-4 h-[calc(100dvh-210px)] overflow-y-scroll scrollbar-hide">
         {products.map((product) => (
           <SheetTrigger asChild key={product.id}>
             <Link
@@ -79,8 +78,10 @@ function ShoppingBag() {
               </div>
 
               <div className="flex-1 hover:underline">
-                <h4 className="font-medium line-clamp-2">{product.name}</h4>
-                <p className="text-sm text-muted-foreground">
+                <h4 className="font-medium line-clamp-2 leading-snug">
+                  {product.name}
+                </h4>
+                <p className="text-sm font-normal text-muted-foreground">
                   R$ {Number(product.price).toFixed(2)}
                 </p>
               </div>
@@ -92,7 +93,7 @@ function ShoppingBag() {
                   e.preventDefault();
                   e.stopPropagation();
                 }}
-                className="h-8 w-8 text-destructive hover:text-destructive"
+                className="h-8 w-8 text-foreground/60"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -141,26 +142,25 @@ export function ShoppingBagSheet() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <ShoppingBagIcon className="h-5 w-5" />
-            Sacola ({totalItems})
+      <SheetContent side="right" className="w-full sm:max-w-md gap-0">
+        <SheetHeader className="pt-12">
+          <SheetTitle className="flex items-center text-xl gap-2 font-normal justify-between">
+            Sacola
+            <span className="text-right font-normal text-base">
+              ({totalItems} items)
+            </span>
           </SheetTitle>
-          <SheetDescription>
-            Gerencie os produtos da sua sacola de compras
-          </SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col h-full mt-6">
+        <div className="flex flex-col h-full">
           <ShoppingBag />
 
           {products.length > 0 && (
             <>
               <div className="space-y-4 p-4 border-t sticky bottom-0 left-0 bg-background">
                 <div className="flex justify-between items-center">
-                  <span className="font-semibold">Total:</span>
-                  <span className="font-bold text-lg">
+                  <span className="font-normal">Total:</span>
+                  <span className="font-normal text-lg">
                     R$ {totalPrice.toFixed(2)}
                   </span>
                 </div>
