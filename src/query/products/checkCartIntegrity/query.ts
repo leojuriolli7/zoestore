@@ -15,7 +15,7 @@ export const checkCartIntegrityOptions = ({
       productSlugs.forEach((slug) => searchParams.append("productSlugs", slug));
 
       return $fetch<Products.CardIntegrityStatus>(
-        `/api/cart/check? + ${searchParams.toString()}`
+        `/api/cart/check?${searchParams.toString()}`
       );
     },
   });

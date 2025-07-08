@@ -19,10 +19,10 @@ export async function checkCartIntegrity(
       .from(products)
       .where(inArray(products.slug, productSlugs));
 
-    const existingIds = existingProducts.map((product) => product.slug);
+    const existingSlugs = existingProducts.map((product) => product.slug);
 
-    const valid = existingIds;
-    const invalid = productSlugs.filter((id) => !existingIds.includes(id));
+    const valid = existingSlugs;
+    const invalid = productSlugs.filter((id) => !existingSlugs.includes(id));
 
     return {
       valid,

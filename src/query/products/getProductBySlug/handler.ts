@@ -8,7 +8,7 @@ import { NotFoundError } from "@/query/errors/NotFoundError";
 /** Server-side fetch function. To be used inside Route Handler. */
 export async function getProductBySlug(
   slug: string
-): Promise<Products.Product | null> {
+): Promise<Products.GetProductBySlug> {
   try {
     const product = await db.query.products.findFirst({
       where: (p, { eq }) => eq(p.slug, slug),

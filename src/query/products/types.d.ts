@@ -18,6 +18,8 @@ export declare namespace Products {
     slug: string;
   };
 
+  type GetProductBySlug = Product;
+
   type ListProducts = API.InfiniteListResult<Products.Product>;
 
   type AddProduct = { success: boolean; product: Product };

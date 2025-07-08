@@ -23,7 +23,7 @@ const AddToBagButton = dynamic(
 export default function ProductPage({
   product: initialProduct,
 }: {
-  product: Products.Product | null;
+  product: Products.Product;
 }) {
   const params = useParams();
   const slug = params?.slug as string;

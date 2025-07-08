@@ -54,8 +54,8 @@ export async function upsertTags(
           success: true,
           deletedTags: tagsToDelete.map((t) => ({ id: t.id })),
           /**
-           * Front uses this to invalidate the cache for the product paths
-           * that were affected.
+           * Front can use this to invalidate the cache for the
+           * product paths that were affected.
            */
           affectedProducts: affectedProductsSlugs
             .filter((p) => p.slug !== null)
