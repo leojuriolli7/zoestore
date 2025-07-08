@@ -58,6 +58,7 @@ export function TagsCell({ row }: { row: Row<Products.Product> }) {
             <Link
               href={`/products?tag=${tag.name}`}
               target="_blank"
+              rel="noopener noreferrer"
               key={tag.id}
             >
               <Badge

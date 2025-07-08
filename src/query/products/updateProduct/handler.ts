@@ -22,6 +22,7 @@ export async function updateProduct(
       await tx
         .update(products)
         .set({
+          updatedAt: new Date(),
           ...(params.name !== undefined && { name: params.name }),
           ...(params.price !== undefined && { price: params.price }),
           ...(params.imageUrl !== undefined && { image_url: params.imageUrl }),

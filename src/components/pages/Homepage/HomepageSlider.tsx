@@ -11,9 +11,9 @@ function SliderOverlay() {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="text-center text-white px-4 w-full">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-shadow-sm text-shadow-black">
           Peças que vestem elegância
-        </h2>
+        </h1>
         <p className="text-lg md:text-xl mb-6 opacity-90 text-shadow-xs text-shadow-black">
           Descubra nossa coleção exclusiva
         </p>

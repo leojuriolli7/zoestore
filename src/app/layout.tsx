@@ -10,16 +10,19 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const META_DESCRIPTION =
+  "Descubra na Zoe Multistore coleções exclusivas de moda feminina. Peças que vestem elegância e empoderam a mulher moderna. Encontre o look perfeito para todas as ocasiões. Enviamos para todo o Brasil com segurança.";
+
 export const metadata: Metadata = {
   /** Without this, we get annoying warnings on the console during development. */
   ...(process.env.NODE_ENV === "development" && {
     metadataBase: new URL("https://localhost"),
   }),
-  title: "ZOE STORE",
-  description: "Peças que vestem elegância, Enviamos para todo o Brasil.",
+  title: "ZOE STORE - Peças que vestem elegância, Enviamos para todo o Brasil",
+  description: META_DESCRIPTION,
   openGraph: {
     title: "ZOE STORE",
-    description: "Peças que vestem elegância, Enviamos para todo o Brasil.",
+    description: META_DESCRIPTION,
     url: "https://zoestore-alpha.vercel.app/",
     siteName: "ZOE STORE",
     images: [
@@ -36,13 +39,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "ZOE STORE",
-    description: "Peças que vestem elegância, Enviamos para todo o Brasil.",
+    description: META_DESCRIPTION,
     images: ["/model.jpg"],
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
   },
 };
 
