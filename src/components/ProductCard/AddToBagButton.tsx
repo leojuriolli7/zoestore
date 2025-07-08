@@ -13,7 +13,7 @@ interface AddToBagButtonProps {
 export function AddToBagButton({ product }: AddToBagButtonProps) {
   const products = useShoppingBagStore((s) => s.products);
   const toggleProduct = useShoppingBagStore((s) => s.toggleProduct);
-  const isAddedToBag = products.some((p) => p.id === product?.id);
+  const isAddedToBag = products.some((p) => p.slug === product?.slug);
 
   const addOrRemoveFromBag = useCallback(
     (e: MouseEvent) => {

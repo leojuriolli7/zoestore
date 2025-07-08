@@ -21,7 +21,7 @@ export const useShoppingBagStore = create(
       },
       addProduct(p) {
         return set((state) =>
-          state.products.some((product) => product.id === p.id)
+          state.products.some((product) => product.slug === p.slug)
             ? { products: state.products }
             : {
                 products: [p, ...state.products],

@@ -9,21 +9,17 @@ import { DeleteProductsSchema } from "./schema";
 export async function deleteProduct({
   ids,
 }: DeleteProductsSchema): Promise<Products.DeleteProduct> {
-  try {
-    const deleted = await db.transaction(async (tx) => {
-      await tx.delete(productTags).where(inArray(productTags.productId, ids));
+  const deleted = await db.transaction(async (tx) => {
+    await tx.delete(productTags).where(inArray(productTags.productId, ids));
 
-      return await tx
-        .delete(products)
-        .where(inArray(products.id, ids))
-        .returning();
-    });
+    return await tx
+      .delete(products)
+      .where(inArray(products.id, ids))
+      .returning();
+  });
 
-    if (!deleted || deleted.length === 0) throw new InternalServerError();
+  if (!deleted || deleted.length === 0)
+    throw new InternalServerError("No deleted products found");
 
-    return { success: true, products: deleted };
-  } catch (error) {
-    console.error(error);
-    throw new InternalServerError();
-  }
+  return { success: true, products: deleted };
 }

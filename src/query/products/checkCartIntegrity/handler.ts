@@ -1,7 +1,6 @@
 import "server-only";
 
 import { db } from "@/query/db";
-import { InternalServerError } from "@/query/errors/InternalServerError";
 import { products } from "@/query/db/schema";
 import { inArray } from "drizzle-orm";
 import type { CheckCartIntegritySchema } from "./schema";
@@ -11,25 +10,20 @@ import type { Products } from "../types";
 export async function checkCartIntegrity(
   params: CheckCartIntegritySchema
 ): Promise<Products.CardIntegrityStatus> {
-  try {
-    const { productSlugs } = params;
+  const { productSlugs } = params;
 
-    const existingProducts = await db
-      .select({ slug: products.slug })
-      .from(products)
-      .where(inArray(products.slug, productSlugs));
+  const existingProducts = await db
+    .select({ slug: products.slug })
+    .from(products)
+    .where(inArray(products.slug, productSlugs));
 
-    const existingSlugs = existingProducts.map((product) => product.slug);
+  const existingSlugs = existingProducts.map((product) => product.slug);
 
-    const valid = existingSlugs;
-    const invalid = productSlugs.filter((id) => !existingSlugs.includes(id));
+  const valid = existingSlugs;
+  const invalid = productSlugs.filter((id) => !existingSlugs.includes(id));
 
-    return {
-      valid,
-      invalid,
-    };
-  } catch (error) {
-    console.error(error);
-    throw new InternalServerError();
-  }
+  return {
+    valid,
+    invalid,
+  };
 }
