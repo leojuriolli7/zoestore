@@ -122,6 +122,12 @@ export function ShoppingBagSheet() {
     );
   }, [products]);
 
+  const getTotalItemsText = () => {
+    if (totalItems === 1) return `1 item`;
+
+    return `${totalItems} itens`;
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -147,7 +153,7 @@ export function ShoppingBagSheet() {
           <SheetTitle className="flex items-center text-xl gap-2 font-normal justify-between">
             Sacola
             <span className="text-right font-normal text-base">
-              ({totalItems} items)
+              ({getTotalItemsText()})
             </span>
           </SheetTitle>
         </SheetHeader>
