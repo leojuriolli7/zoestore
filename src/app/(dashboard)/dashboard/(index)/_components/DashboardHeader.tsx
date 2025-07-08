@@ -6,6 +6,8 @@ import { UpsertTagsDialog } from "./UpsertTagsDialog";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/lib/logout";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 export function DashboardHeader() {
   const router = useRouter();
@@ -13,7 +15,17 @@ export function DashboardHeader() {
   return (
     <header className="flex justify-between items-center pb-6 border-b">
       <div className="flex items-center gap-2">
-        <h1 className="sm:text-2xl text-xl hidden sm:block font-bold">
+        <Link href="/" prefetch={false}>
+          <Image
+            src="/zoe_store_logo.jpg"
+            width={48}
+            height={48}
+            className="rounded-full"
+            alt="ZOE STORE"
+          />
+        </Link>
+
+        <h1 className="text-2xl hidden md:block font-bold">
           Gerenciar Produtos
         </h1>
       </div>

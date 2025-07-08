@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShoppingBagIcon, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useShoppingBagStore } from "@/app/stores/shoppingBag";
+import { useShoppingBagStore } from "@/stores/shoppingBag";
 import Link from "next/link";
 import { A_MINUTE } from "@/lib/time";
 import { appClientConfig } from "@/config/client";
