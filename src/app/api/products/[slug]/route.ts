@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { checkAdminKey } from "@/lib/checkAdminKey";
+import { checkAdminKey } from "@/query/core/checkAdminKey";
 import { BadRequestError } from "@/query/errors/BadRequestError";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";
 import { updateProduct } from "@/query/products/updateProduct/handler";

@@ -1,6 +1,6 @@
 import { listTags } from "@/query/products/listTags/handler";
 import { NextRequest } from "next/server";
-import { checkAdminKey } from "@/lib/checkAdminKey";
+import { checkAdminKey } from "@/query/core/checkAdminKey";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";
 import { upsertTagsSchema } from "@/query/products/upsertTags/schema";
 import { BadRequestError } from "@/query/errors/BadRequestError";

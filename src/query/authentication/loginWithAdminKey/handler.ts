@@ -1,13 +1,12 @@
 import "server-only";
-
 import { appServerConfig } from "@/config/server";
 import { A_YEAR } from "@/lib/time";
 import { cookies } from "next/headers";
 import { LoginWithAdminKeySchema } from "./schema";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";
 import { Authentication } from "../types";
+import { encrypt } from "@/query/core/crypto";
 
-/** Server handler. */
 export async function loginWithAdminKey({
   password,
 }: LoginWithAdminKeySchema): Promise<Authentication.LoginWithAdminKey> {
@@ -16,11 +15,13 @@ export async function loginWithAdminKey({
   }
 
   const cookieStore = await cookies();
+  const encryptedPassword = await encrypt(password);
 
   cookieStore.set({
     name: appServerConfig.auth.adminKeyCookieName,
     expires: Date.now() + A_YEAR,
-    value: password,
+    httpOnly: true,
+    value: encryptedPassword,
     sameSite: "none",
     secure: true,
   });

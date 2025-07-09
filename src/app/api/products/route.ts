@@ -1,4 +1,4 @@
-import { checkAdminKey } from "@/lib/checkAdminKey";
+import { checkAdminKey } from "@/query/core/checkAdminKey";
 import { createRouteHandler } from "@/query/core/createRouteHandler";
 import { BadRequestError } from "@/query/errors/BadRequestError";
 import { UnauthorizedError } from "@/query/errors/UnauthorizedError";

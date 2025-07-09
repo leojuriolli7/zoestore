@@ -8,5 +8,6 @@ export const appServerConfig = {
     adminKeyCookieName: "zoe_store__admin_key",
     adminKey: process.env.ADMIN_KEY!,
     cronSecret: process.env.CRON_SECRET!,
+    encryptionKey: process.env.COOKIE_ENCRYPTION_SECRET!,
   },
 };
