@@ -6,16 +6,17 @@ import { appServerConfig } from "@/config/server";
 const scryptAsync = promisify(scrypt);
 const ALGORITHM = "aes-256-gcm";
 
-async function getKey(): Promise<Buffer> {
+async function getKey(salt: Buffer): Promise<Buffer> {
   return (await scryptAsync(
     appServerConfig.auth.encryptionKey,
-    "salt",
+    salt,
     32
   )) as Buffer;
 }
 
 export async function encrypt(text: string): Promise<string> {
-  const key = await getKey();
+  const salt = randomBytes(16);
+  const key = await getKey(salt);
   const iv = randomBytes(16);
   const cipher = createCipheriv(ALGORITHM, key, iv);
 
@@ -24,17 +25,32 @@ export async function encrypt(text: string): Promise<string> {
 
   const authTag = cipher.getAuthTag();
 
-  return iv.toString("hex") + ":" + authTag.toString("hex") + ":" + encrypted;
+  return (
+    salt.toString("hex") +
+    ":" +
+    iv.toString("hex") +
+    ":" +
+    authTag.toString("hex") +
+    ":" +
+    encrypted
+  );
 }
 
 export async function decrypt(encryptedData: string): Promise<string> {
-  const key = await getKey();
-  const [ivHex, authTagHex, encrypted] = encryptedData.split(":");
+  const parts = encryptedData.split(":");
 
-  if (!ivHex || !authTagHex || !encrypted) {
+  if (parts.length !== 4) {
     throw new Error("Invalid encrypted data format");
   }
 
+  const [saltHex, ivHex, authTagHex, encrypted] = parts;
+
+  if (!saltHex || !ivHex || !authTagHex || !encrypted) {
+    throw new Error("Invalid encrypted data format");
+  }
+
+  const salt = Buffer.from(saltHex, "hex");
+  const key = await getKey(salt);
   const iv = Buffer.from(ivHex, "hex");
   const authTag = Buffer.from(authTagHex, "hex");
 
