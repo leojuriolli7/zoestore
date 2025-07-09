@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AddToBagButton } from "./AddToBagButton";
 
@@ -25,15 +24,13 @@ export function ProductCard({ product }: { product: Products.Product }) {
       <Card className="group cursor-pointer border-0 bg-transparent shadow-none py-0">
         <CardContent className="p-0 w-full h-auto">
           <div className="relative overflow-hidden rounded-t-lg aspect-[2/3] w-full group/image">
-            <ViewTransition name={`product-image-${product.id}`}>
-              <Image
-                fill
-                priority
-                src={product.image_url}
-                alt={product.name}
-                className="object-cover rounded-md select-none"
-              />
-            </ViewTransition>
+            <Image
+              fill
+              priority
+              src={product.image_url}
+              alt={product.name}
+              className="object-cover rounded-md select-none"
+            />
             <Button
               variant="default"
               tabIndex={-1}

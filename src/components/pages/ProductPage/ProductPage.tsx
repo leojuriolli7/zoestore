@@ -8,7 +8,6 @@ import Image from "next/image";
 import { appClientConfig } from "@/config/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Products } from "@/query/products/types";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
@@ -40,16 +39,14 @@ export default function ProductPage({
           {isLoading ? (
             <Skeleton className="w-full h-full absolute top-0 left-0" />
           ) : product?.image_url ? (
-            <ViewTransition name={`product-image-${product?.id}`}>
-              <Image
-                priority
-                fetchPriority="high"
-                src={product.image_url}
-                alt={product?.name || "Produto"}
-                fill
-                className="object-cover w-full h-full"
-              />
-            </ViewTransition>
+            <Image
+              priority
+              fetchPriority="high"
+              src={product.image_url}
+              alt={product?.name || "Produto"}
+              fill
+              className="object-cover w-full h-full"
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
               Imagem não disponível
