@@ -196,7 +196,7 @@ function UpsertProductForm() {
               <FormLabel>
                 Imagem
                 <span className="text-xs text-muted-foreground">
-                  (Aspecto recomendado: 2/3)
+                  (Proporção recomendada: 2/3)
                 </span>
               </FormLabel>
               <FormControl>
