@@ -5,7 +5,6 @@ import { API } from "../query";
 
 export function parseErrorResponse(error: unknown): API.RequestError {
   if (error instanceof BaseError) {
-    console.log(" error:", JSON.stringify(error));
     return NextResponse.json(
       {
         error: {
@@ -18,7 +17,6 @@ export function parseErrorResponse(error: unknown): API.RequestError {
     );
   }
 
-  console.error(error);
   return NextResponse.json(
     { error: new InternalServerError() },
     { status: 500 }
