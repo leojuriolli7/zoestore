@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import { Inter } from "next/font/google";
-import { ReactQueryProvider } from "./ReactQueryProvider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ReactQueryProvider } from "./ReactQueryProvider";
+import { keywords } from "./keywords";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
   }),
   title: "ZOE STORE - Peças que vestem elegância, Enviamos para todo o Brasil",
   description: META_DESCRIPTION,
+  keywords,
   openGraph: {
     title: "ZOE STORE",
     description: META_DESCRIPTION,

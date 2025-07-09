@@ -53,7 +53,7 @@ export default async function NotFound() {
                   <Link
                     key={tag.name}
                     href={`/products?tag=${tag.name}`}
-                    className="transition-colors text-muted-foreground hover:text-foreground hover:underline duration-200 text-sm font-medium capitalize"
+                    className="transition-colors text-muted-foreground hover:text-foreground underline duration-200 text-sm font-medium capitalize"
                   >
                     {tag.name}
                   </Link>

@@ -1,8 +1,10 @@
 import { ProductPage } from "@/components/pages/ProductPage";
 import { getProductBySlug } from "@/query/products/getProductBySlug/handler";
 import { listProducts } from "@/query/products/listProducts/handler";
+import { Products } from "@/query/products/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { productKeywords } from "./keywords";
 
 export const revalidate = 60;
 
@@ -21,6 +23,21 @@ export async function generateStaticParams() {
   }));
 }
 
+const getProductKeywords = (product: Products.Product) => {
+  return [
+    ...productKeywords,
+    product.name.toLowerCase(),
+    ...(product.description
+      ? product.description
+          .toLowerCase()
+          .split(" ")
+          .filter((word) => word.length > 2)
+          .slice(0, 10)
+      : []),
+    ...(product.tags?.map((tag) => tag.name.toLowerCase()) || []),
+  ];
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -33,6 +50,7 @@ export async function generateMetadata({
     return {
       title: product.name,
       description: product.description,
+      keywords: Array.from(new Set(getProductKeywords(product))),
       openGraph: {
         title: `ZOE STORE | ${product.name}`,
         ...(product.description && { description: product.description }),
