@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const addProductSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
-  price: z.string().min(1, "Preço é obrigatório"),
-  imageUrl: z.string().url("URL da imagem inválida"),
+  name: z.string(),
+  price: z.string(),
+  medias: z.array(z.string()),
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });

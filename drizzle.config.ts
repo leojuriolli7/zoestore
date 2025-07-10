@@ -1,4 +1,3 @@
-import { appServerConfig } from "@/config/server";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
@@ -6,6 +5,6 @@ export default defineConfig({
   schema: "./src/query/db/schema.ts",
   dialect: "postgresql",
   dbCredentials: {
-    url: appServerConfig.db.url,
+    url: process.env.DATABASE_URL!,
   },
 });

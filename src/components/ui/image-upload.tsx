@@ -2,138 +2,197 @@
 import { cn } from "@/lib/utils";
 import React, { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { RefreshCw, Trash2Icon, Upload } from "lucide-react";
+import { Trash2Icon, Loader2, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
-import { ExpandButton } from "../expand-button";
-import { appClientConfig } from "@/config/client";
+import { upload } from "@vercel/blob/client";
+import { toast } from "sonner";
+import { useAsyncQueuer } from "@tanstack/react-pacer";
+import { Button } from "./button";
+
+type UploadItem = {
+  key: string;
+  url: string;
+  file?: File;
+  isLoading: boolean;
+};
+
+type UploadTask = {
+  item: UploadItem;
+  tempKey: string;
+};
+
+type ImageUploadProps = {
+  onChange: (urls: string[]) => void;
+  defaultValue: string[];
+};
 
 export const ImageUpload = ({
   onChange,
-  defaultValue,
-}: {
-  onChange?: (files: (File | null)[]) => void;
-  defaultValue?: File;
-}) => {
-  const [file, setFile] = useState<File | null>(defaultValue || null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  defaultValue = [],
+}: ImageUploadProps) => {
+  const [items, setItems] = useState<UploadItem[]>(
+    defaultValue.map((url) => ({
+      key: url,
+      url,
+      isLoading: false,
+    }))
+  );
 
-  const handleFileChange = (newFiles: File[]) => {
-    const originalFile = newFiles[0] || null;
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const imageFile = originalFile
-      ? new File([originalFile], appClientConfig.images.updateImageName, {
-          type: originalFile.type,
-          lastModified: originalFile.lastModified,
-        })
-      : null;
+  const uploadQueuer = useAsyncQueuer(
+    async (task: UploadTask) => {
+      if (!task.item.file) throw new Error("No file to upload.");
 
-    setFile(imageFile);
+      const blob = await upload(task.item.file.name, task.item.file, {
+        access: "public",
+        handleUploadUrl: "/api/uploads/image",
+      });
 
-    if (imageFile) onChange?.([imageFile]);
+      setItems((prev) => {
+        const newItems = prev.map((item) =>
+          item.key === task.tempKey
+            ? {
+                ...item,
+                url: blob.url,
+                isLoading: false,
+                file: undefined,
+              }
+            : item
+        );
+
+        onChange(newItems.map((item) => item.url));
+        return newItems;
+      });
+    },
+    {
+      concurrency: 3,
+      started: true,
+      onError: (_, queuer) => {
+        const activeItems = queuer.peekActiveItems();
+
+        if (activeItems.length > 0) {
+          const failedTask = activeItems[0];
+
+          setItems((prev) =>
+            prev.filter((item) => item.key !== failedTask.tempKey)
+          );
+
+          toast.error(
+            `Falha ao enviar ${failedTask.item.file?.name || "imagem"}`
+          );
+        }
+      },
+    }
+  );
+
+  const startUploadingFiles = (files: File[]) => {
+    const newUploadItems: UploadItem[] = files.map((file) => ({
+      key: `${file.name}${Math.random().toString(36).substring(2, 15)}`,
+      url: URL.createObjectURL(file),
+      file,
+      isLoading: true,
+    }));
+
+    setItems((prev) => [...prev, ...newUploadItems]);
+
+    newUploadItems.forEach((item) => {
+      uploadQueuer.addItem({
+        item,
+        tempKey: item.key,
+      });
+    });
   };
 
-  const openFileBrowser = () => {
-    fileInputRef.current?.click();
+  const removeFromList = (urlToRemove: string) => () => {
+    const newItems = items.filter((item) => item.url !== urlToRemove);
+    setItems(newItems);
+    onChange?.(newItems.map((item) => item.url));
   };
 
   const { getRootProps, isDragActive } = useDropzone({
-    multiple: false,
+    multiple: true,
     noClick: true,
-    accept: {
-      "image/*": [],
-    },
-    onDrop: handleFileChange,
-    onDropRejected: (error) => {
-      console.log(error);
-    },
+    accept: { "image/*": [] },
+    onDropAccepted: startUploadingFiles,
   });
 
   return (
-    <div className="w-full" {...getRootProps()}>
+    <div className="w-full">
       <div className="p-2 group/file block rounded-lg w-full relative overflow-hidden">
         <input
           ref={fileInputRef}
-          id="file-upload-handle"
           type="file"
           accept="image/*"
-          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
+          multiple
+          onChange={(e) =>
+            startUploadingFiles(Array.from(e.target.files || []))
+          }
           className="hidden"
         />
-        <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
-        <div className="flex flex-col items-center justify-center">
-          <div className="relative w-full mx-auto">
-            {file ? (
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <div
-                  className={cn(
-                    "relative overflow-hidden z-40 bg-accent flex flex-row items-center md:h-32 pr-4 w-full mx-auto rounded-md",
-                    "shadow-sm"
-                  )}
-                >
-                  <div className="h-32 aspect-[2/3] flex items-center justify-center bg-card overflow-hidden hover:opacity-70">
-                    <DialogTrigger asChild>
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={file.name}
-                        className="object-cover w-full h-full cursor-pointer"
-                      />
-                    </DialogTrigger>
-                  </div>
-
-                  <div className="flex flex-col justify-between h-24 flex-1">
-                    <div className="flex justify-end w-full items-start gap-2">
-                      <span className="px-1 py-0.5 rounded-md bg-secondary text-sm text-neutral-600 dark:text-neutral-400">
-                        {(file.size / (1024 * 1024)).toFixed(2)} MB
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 justify-end items-end flex-1 w-full">
-                      <ExpandButton
-                        onClick={() => {
-                          setFile(null);
-                          onChange?.([null]);
-                        }}
-                        variant="destructive"
-                        icon={<Trash2Icon />}
-                        hoverText="Deletar"
-                      />
-
-                      <ExpandButton
-                        variant="default"
-                        onClick={openFileBrowser}
-                        icon={<RefreshCw />}
-                        hoverText="Trocar"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <DialogContent className="flex flex-col items-center justify-center">
-                  <DialogTitle>Imagem selecionada</DialogTitle>
-
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                    className="max-w-full max-h-[80vh] aspect-[2/3] object-cover rounded-lg"
-                  />
-                </DialogContent>
-              </Dialog>
-            ) : (
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {items.map((item) => (
+            <Dialog
+              key={item.key}
+              open={selectedImageUrl === item.url}
+              onOpenChange={(isOpen) =>
+                setSelectedImageUrl(isOpen ? item.url : null)
+              }
+            >
               <div
-                onClick={openFileBrowser}
                 className={cn(
-                  "relative cursor-pointer hover:shadow-2xl z-40 bg-card flex items-center justify-center gap-2 h-32 w-full mx-auto rounded-md",
-                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
+                  "relative overflow-hidden z-10 bg-accent flex flex-col items-center justify-center h-32 w-full mx-auto rounded-md",
+                  "shadow-sm group"
                 )}
               >
-                <Upload className="h-4 w-4 text-card-foreground" />
-                <p>
-                  {isDragActive
-                    ? "Solte a imagem aqui"
-                    : "Clique para selecionar uma imagem"}
-                </p>
+                <DialogTrigger
+                  asChild
+                  onClick={() => setSelectedImageUrl(item.url)}
+                >
+                  <img
+                    src={item.url}
+                    alt={`upload-${item.key}`}
+                    className="object-cover w-full h-full cursor-pointer"
+                  />
+                </DialogTrigger>
+                {item.isLoading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 text-white animate-spin" />
+                  </div>
+                )}
+                {!item.isLoading && (
+                  <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      onClick={removeFromList(item.url)}
+                      variant="destructive"
+                      size="icon"
+                    >
+                      <span className="sr-only">Remover imagem</span>
+                      <Trash2Icon />
+                    </Button>
+                  </div>
+                )}
               </div>
+              <DialogContent className="flex flex-col items-center justify-center">
+                <DialogTitle>Imagem selecionada</DialogTitle>
+                <img
+                  src={item.url}
+                  alt={`upload-${item.key}`}
+                  className="max-w-full max-h-[80vh] aspect-[2/3] object-cover rounded-lg"
+                />
+              </DialogContent>
+            </Dialog>
+          ))}
+          <div
+            {...getRootProps()}
+            onClick={() => fileInputRef.current?.click()}
+            className={cn(
+              "flex items-center justify-center cursor-pointer shadow-md z-0 bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors gap-2 h-32 w-full mx-auto rounded-md",
+              isDragActive && "border-2 border-dashed border-primary"
             )}
+          >
+            <Plus className="size-6" />
           </div>
         </div>
       </div>

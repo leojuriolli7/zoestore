@@ -69,7 +69,7 @@ function ShoppingBag() {
             >
               <div className="h-16 w-16 rounded-md bg-muted flex items-center justify-center">
                 <Image
-                  src={product.image_url}
+                  src={product.medias[0].url}
                   width={64}
                   height={64}
                   alt={`Modelo vestindo ${product.name}`}

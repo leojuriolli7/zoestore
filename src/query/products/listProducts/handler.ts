@@ -3,8 +3,12 @@ import "server-only";
 import { db } from "@/query/db";
 import type { ListProductsSchema } from "./schema";
 import type { Products } from "../types";
-import { productTags, tags as tagsSchema } from "@/query/db/schema";
-import { eq } from "drizzle-orm";
+import {
+  productMedias,
+  productTags,
+  tags as tagsSchema,
+} from "@/query/db/schema";
+import { asc, eq } from "drizzle-orm";
 
 /** Server-side fetch function. To be used inside Route Handler. */
 export async function listProducts(
@@ -36,6 +40,9 @@ export async function listProducts(
     orderBy: (product, { asc }) => asc(product.id),
     limit: limit,
     with: {
+      medias: {
+        orderBy: [asc(productMedias.sortOrder)],
+      },
       productTags: {
         with: {
           tag: true,

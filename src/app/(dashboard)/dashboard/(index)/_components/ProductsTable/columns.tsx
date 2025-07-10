@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { toast } from "sonner";
 import { useCallback } from "react";
 import { Products } from "@/query/products/types";
 import { ColumnDef, Row } from "@tanstack/react-table";
@@ -13,31 +12,14 @@ import { useDeleteProductDialogStore } from "../DeleteProductDialog/store";
 import { ProductCell } from "./ProductCell";
 import { TagsCell } from "./TagsCell";
 
-async function urlToBlob(url: string): Promise<Blob> {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return blob;
-}
-
 const Actions = ({ row }: { row: Row<Products.Product> }) => {
   const product = row.original;
 
   const setUpsertProductOpen = useUpertProductStore((s) => s.setOpen);
   const setDeleteProductOpen = useDeleteProductDialogStore((s) => s.setOpen);
 
-  const openUpsertProductModal = useCallback(async () => {
-    try {
-      const blob = await urlToBlob(product.image_url);
-
-      const file = new File([blob], "product_image", {
-        type: blob.type || "image/jpeg",
-      });
-
-      setUpsertProductOpen(true, { ...product, imageFile: file });
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao tentar editar produto:");
-    }
+  const openUpsertProductModal = useCallback(() => {
+    setUpsertProductOpen(true, product);
   }, [product, setUpsertProductOpen]);
 
   const openDeleteModal = useCallback(() => {

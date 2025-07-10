@@ -56,7 +56,7 @@ export async function generateMetadata({
         ...(product.description && { description: product.description }),
         images: [
           {
-            url: product.image_url,
+            url: product.medias[0].url,
             width: 366,
             height: 550,
             alt: `Uma modelo vestindo "${product.name}"`,
@@ -67,7 +67,7 @@ export async function generateMetadata({
         card: "summary",
         title: `ZOE STORE | ${product.name}`,
         ...(product.description && { description: product.description }),
-        images: [product.image_url],
+        images: [product.medias[0].url],
       },
     };
   } catch (error) {

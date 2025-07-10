@@ -12,7 +12,7 @@ export function ProductCell({ product }: ProductCellProps) {
         <Image
           width={48}
           height={72}
-          src={product.image_url}
+          src={product.medias[0].url}
           alt={product.name}
           className="object-cover rounded shrink-0"
         />

@@ -6,12 +6,21 @@ export declare namespace Products {
     name: string;
   };
 
+  type Media = {
+    id: number;
+    url: string;
+    altText: string | null;
+    sortOrder: number;
+    isPrimary: boolean;
+    createdAt: Date;
+  };
+
   type Product = {
     createdAt: Date;
     updatedAt: Date;
     id: number;
     name: string;
-    image_url: string;
+    medias: Media[];
     description: string | null;
     price: string;
     tags: Tag[];
@@ -28,7 +37,6 @@ export declare namespace Products {
 
   type DeleteProduct = {
     success: boolean;
-    products: Array<Omit<Product, "tags">>;
   };
 
   type ListTags = { tags: Tag[] };
@@ -42,7 +50,8 @@ export declare namespace Products {
   type HomepageTag = {
     id: number;
     name: string;
-    product_image: string;
+    productImage: string | null;
+    productImageAlt?: string | null;
   };
 
   type ListHomepageTags = { tags: HomepageTag[] };

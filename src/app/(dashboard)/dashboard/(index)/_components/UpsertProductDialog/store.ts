@@ -1,12 +1,10 @@
 import { Products } from "@/query/products/types";
 import { create } from "zustand";
 
-type ProductToUpdate = Products.Product & { imageFile: File };
-
 type Store = {
   open: boolean;
-  setOpen: (value: boolean, product?: ProductToUpdate) => void;
-  product: ProductToUpdate | null;
+  setOpen: (value: boolean, product?: Products.Product) => void;
+  product: Products.Product | null;
 };
 
 export const useUpertProductStore = create<Store>((set) => ({

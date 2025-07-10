@@ -6,6 +6,7 @@ import {
   timestamp,
   integer,
   primaryKey,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { InferSelectModel } from "drizzle-orm";
@@ -14,11 +15,22 @@ export const products = pgTable("products", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
-  image_url: text("image_url").notNull(),
   description: text("description"),
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const productMedias = pgTable("product_medias", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  url: text("media_url").notNull(),
+  altText: text("alt_text"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isPrimary: boolean("is_primary").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const tags = pgTable("tags", {
@@ -44,6 +56,14 @@ export const productTags = pgTable(
 
 export const productsRelations = relations(products, ({ many }) => ({
   productTags: many(productTags),
+  medias: many(productMedias),
+}));
+
+export const productMediasRelations = relations(productMedias, ({ one }) => ({
+  product: one(products, {
+    fields: [productMedias.productId],
+    references: [products.id],
+  }),
 }));
 
 export const tagsRelations = relations(tags, ({ many }) => ({
@@ -62,4 +82,5 @@ export const productTagsRelations = relations(productTags, ({ one }) => ({
 }));
 
 export type DB_Product = InferSelectModel<typeof products>;
+export type DB_ProductMedias = InferSelectModel<typeof productMedias>;
 export type DB_Tags = InferSelectModel<typeof tags>;

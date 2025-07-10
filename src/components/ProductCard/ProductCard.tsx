@@ -27,7 +27,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
             <Image
               fill
               priority
-              src={product.image_url}
+              src={product.medias[0].url}
               alt={product.name}
               className="object-cover rounded-md select-none"
             />

@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { getProductBySlugOptions } from "@/query/products/getProductBySlug/query";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import { appClientConfig } from "@/config/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Products } from "@/query/products/types";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { ProductImageSlider } from "./ProductImageSlider";
 
 const AddToBagButton = dynamic(
   () => import("./AddToBagButton").then((mod) => mod.AddToBagButton),
@@ -26,6 +26,7 @@ export default function ProductPage({
 }) {
   const params = useParams();
   const slug = params?.slug as string;
+
   const { data: product, isLoading } = useQuery({
     ...getProductBySlugOptions(slug),
     enabled: !initialProduct,
@@ -35,22 +36,14 @@ export default function ProductPage({
   return (
     <div className="w-full">
       <div className="container mx-auto py-8 px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="w-full aspect-[2/3] relative rounded-lg overflow-hidden shadow-md md:max-w-[400px] md:mx-auto">
+        <div className="w-full md:max-w-[400px] md:mx-auto">
           {isLoading ? (
-            <Skeleton className="w-full h-full absolute top-0 left-0" />
-          ) : product?.image_url ? (
-            <Image
-              priority
-              fetchPriority="high"
-              src={product.image_url}
-              alt={product?.name || "Produto"}
-              fill
-              className="object-cover w-full h-full"
-            />
+            <Skeleton className="w-full aspect-[2/3] rounded-lg" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
-              Imagem não disponível
-            </div>
+            <ProductImageSlider
+              images={product?.medias || []}
+              productName={product?.name}
+            />
           )}
         </div>
 

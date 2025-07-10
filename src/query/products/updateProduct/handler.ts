@@ -3,8 +3,13 @@ import { db } from "@/query/db";
 import { InternalServerError } from "@/query/errors/InternalServerError";
 import type { UpdateProductSchema } from "./schema";
 import type { Products } from "../types";
-import { products, productTags, tags as tagsSchema } from "@/query/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import {
+  productMedias,
+  products,
+  productTags,
+  tags as tagsSchema,
+} from "@/query/db/schema";
+import { asc, eq, inArray } from "drizzle-orm";
 import { generateSlug } from "@/query/core/generateSlug";
 
 export async function updateProduct(
@@ -25,7 +30,6 @@ export async function updateProduct(
         updatedAt: new Date(),
         ...(params.name !== undefined && { name: params.name }),
         ...(params.price !== undefined && { price: params.price }),
-        ...(params.imageUrl !== undefined && { image_url: params.imageUrl }),
         ...(params.description !== undefined && {
           description: params.description,
         }),
@@ -36,6 +40,23 @@ export async function updateProduct(
       })
       .where(eq(products.id, currentProduct.id))
       .returning();
+
+    if (params.medias) {
+      await tx
+        .delete(productMedias)
+        .where(eq(productMedias.productId, currentProduct.id));
+
+      if (params.medias.length > 0) {
+        await tx.insert(productMedias).values(
+          params.medias.map((url, index) => ({
+            productId: currentProduct.id,
+            url,
+            sortOrder: index,
+            isPrimary: index === 0,
+          }))
+        );
+      }
+    }
 
     if (params.tags) {
       await tx
@@ -59,6 +80,9 @@ export async function updateProduct(
     const productWithTags = await tx.query.products.findFirst({
       where: eq(products.id, currentProduct.id),
       with: {
+        medias: {
+          orderBy: [asc(productMedias.sortOrder)],
+        },
         productTags: {
           with: {
             tag: true,

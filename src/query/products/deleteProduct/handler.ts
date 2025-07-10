@@ -21,5 +21,5 @@ export async function deleteProduct({
   if (!deleted || deleted.length === 0)
     throw new InternalServerError("No deleted products found");
 
-  return { success: true, products: deleted };
+  return { success: true };
 }

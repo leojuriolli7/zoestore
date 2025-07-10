@@ -22,10 +22,8 @@ import {
 import { ImageUpload } from "@/components/ui/image-upload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductOptions } from "@/query/products/addProduct/mutation";
-import { upload } from "@vercel/blob/client";
 import { toastError } from "@/query/core/toastError";
 import { productKeys } from "@/query/products/config";
-import { appClientConfig } from "@/config/client";
 import { updateProductOptions } from "@/query/products/updateProduct/mutation";
 import { useUpertProductStore } from "./store";
 import { formSchema, FormSchema } from "./schema";
@@ -43,13 +41,13 @@ function UpsertProductForm() {
           name: product.name,
           description: product.description || undefined,
           price: product?.price,
-          image: product?.imageFile,
+          medias: product.medias.map((m) => m.url),
           tags: product?.tags.map((t) => t.name),
         }
       : {
           name: "",
           price: "",
-          image: undefined,
+          medias: [],
           description: "",
           tags: [],
         },
@@ -65,61 +63,21 @@ function UpsertProductForm() {
   const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = async (data: FormSchema) => {
-    const imageFile = data.image as File;
+    const action = product ? updateProduct : addProduct;
 
-    /** Has a product, so it's an update flow. */
-    if (product) {
-      let newImageUrl = product.image_url;
+    try {
+      await action(data);
 
-      try {
-        if (imageFile.name === appClientConfig.images.updateImageName) {
-          const { url } = await upload(imageFile.name, imageFile, {
-            access: "public",
-            handleUploadUrl: "/api/uploads/image",
-          });
+      setOpen(false);
+      form.reset();
 
-          newImageUrl = url;
-        }
-
-        await updateProduct({
-          imageUrl: newImageUrl,
-          name: data.name,
-          price: data.price,
-          description: data?.description,
-          tags: data.tags,
-        });
-      } catch (error) {
-        toastError(error);
-      }
+      queryClient.invalidateQueries({
+        queryKey: productKeys.listProducts,
+        exact: false,
+      });
+    } catch (error) {
+      toastError(error);
     }
-
-    /** Creation flow: */
-    if (!product) {
-      try {
-        const { url } = await upload(imageFile.name, imageFile, {
-          access: "public",
-          handleUploadUrl: "/api/uploads/image",
-        });
-
-        await addProduct({
-          imageUrl: url,
-          name: data.name,
-          price: data.price,
-          description: data?.description,
-          tags: data.tags,
-        });
-      } catch (error) {
-        toastError(error);
-      }
-    }
-
-    setOpen(false);
-    form.reset();
-
-    queryClient.invalidateQueries({
-      queryKey: productKeys.listProducts,
-      exact: false,
-    });
   };
 
   return (
@@ -190,21 +148,19 @@ function UpsertProductForm() {
 
         <FormField
           control={form.control}
-          name="image"
+          name="medias"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Imagem
+                Mídias
                 <span className="text-xs text-muted-foreground">
                   (Proporção recomendada: 2/3)
                 </span>
               </FormLabel>
               <FormControl>
                 <ImageUpload
-                  defaultValue={product?.imageFile}
-                  onChange={(files) => {
-                    field.onChange(files[0]);
-                  }}
+                  defaultValue={field.value}
+                  onChange={field.onChange}
                 />
               </FormControl>
 
