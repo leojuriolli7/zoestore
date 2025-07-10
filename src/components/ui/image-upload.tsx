@@ -45,6 +45,11 @@ export const ImageUpload = ({
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const [draggedItem, setDraggedItem] = useState<UploadItem | null>(null);
+  const [draggedOverItemKey, setDraggedOverItemKey] = useState<string | null>(
+    null
+  );
+
   const uploadQueuer = useAsyncQueuer(
     async (task: UploadTask) => {
       if (!task.item.file) throw new Error("No file to upload.");
@@ -107,6 +112,46 @@ export const ImageUpload = ({
     }
   );
 
+  const handleDragStart = (item: UploadItem) => {
+    setDraggedItem(item);
+  };
+
+  const handleDragEnter = (item: UploadItem) => {
+    setDraggedOverItemKey(item.key);
+  };
+
+  const handleDrop = () => {
+    if (!draggedItem || !draggedOverItemKey) return;
+
+    const dragItemIndex = items.findIndex(
+      (item) => item.key === draggedItem.key
+    );
+
+    const dragOverItemIndex = items.findIndex(
+      (item) => item.key === draggedOverItemKey
+    );
+
+    if (
+      dragItemIndex === -1 ||
+      dragOverItemIndex === -1 ||
+      dragItemIndex === dragOverItemIndex
+    ) {
+      return;
+    }
+
+    const newItems = [...items];
+    const [removed] = newItems.splice(dragItemIndex, 1);
+    newItems.splice(dragOverItemIndex, 0, removed);
+
+    setItems(newItems);
+    onChange(itemsToUrls(newItems));
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    setDraggedOverItemKey(null);
+  };
+
   const startUploadingFiles = (files: File[]) => {
     const newUploadItems: UploadItem[] = files.map((file) => ({
       key: `${file.name}${Math.random().toString(36).substring(2, 15)}`,
@@ -152,7 +197,7 @@ export const ImageUpload = ({
           className="hidden"
         />
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {items.map((item) => (
+          {items.map((item, index) => (
             <Dialog
               key={item.key}
               open={selectedImageUrl === item.url}
@@ -161,9 +206,16 @@ export const ImageUpload = ({
               }
             >
               <div
+                draggable={!item.isLoading}
+                onDragStart={() => handleDragStart(item)}
+                onDragEnter={() => handleDragEnter(item)}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                onDragOver={(e) => e.preventDefault()}
                 className={cn(
                   "relative overflow-hidden z-10 bg-accent flex flex-col items-center justify-center h-32 w-full mx-auto rounded-md",
-                  "shadow-sm group"
+                  "shadow-sm group",
+                  draggedOverItemKey === item.key && "border-2 border-primary"
                 )}
               >
                 <DialogTrigger
@@ -193,6 +245,9 @@ export const ImageUpload = ({
                     </Button>
                   </div>
                 )}
+                <div className="absolute bottom-1 left-1 bg-black/50 text-white text-xs font-extrabold size-5 flex justify-center items-center rounded-full">
+                  {index + 1}
+                </div>
               </div>
               <DialogContent className="flex flex-col items-center justify-center">
                 <DialogTitle>Imagem selecionada</DialogTitle>
@@ -216,6 +271,10 @@ export const ImageUpload = ({
           </div>
         </div>
       </div>
+      <p className="text-xs text-muted-foreground">
+        Arraste as imagens para reordená-las. A imagem principal será a primeira
+        da lista.
+      </p>
     </div>
   );
 };

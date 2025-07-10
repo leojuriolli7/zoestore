@@ -14,7 +14,7 @@ export function ProductCell({ product }: ProductCellProps) {
           height={72}
           src={product.medias[0].url}
           alt={product.name}
-          className="object-cover rounded shrink-0"
+          className="object-cover rounded shrink-0 w-12 h-[72px]"
         />
       </div>
 
