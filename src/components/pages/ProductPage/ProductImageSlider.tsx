@@ -68,7 +68,7 @@ export function ProductImageSlider({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute left-2 top-1/2 transition-all -translate-y-1/2 bg-black/20 text-white hover:bg-black/50 hover:text-white opacity-0 group-hover:opacity-100"
+          className="absolute left-2 top-1/2 transition-all -translate-y-1/2 bg-black/40 text-white hover:bg-black/60 hover:text-white opacity-0 group-hover:opacity-100"
           onClick={goToPrevious}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -77,7 +77,7 @@ export function ProductImageSlider({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-2 top-1/2 transition-all -translate-y-1/2 bg-black/20 text-white hover:bg-black/50 hover:text-white opacity-0 group-hover:opacity-100"
+          className="absolute right-2 top-1/2 transition-all -translate-y-1/2 bg-black/40 text-white hover:bg-black/60 hover:text-white opacity-0 group-hover:opacity-100"
           onClick={goToNext}
         >
           <ChevronRight className="h-4 w-4" />
@@ -101,7 +101,7 @@ export function ProductImageSlider({
               alt={`${productName} - Miniatura ${index + 1}`}
               width={64}
               height={64}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full object-top"
             />
           </button>
         ))}

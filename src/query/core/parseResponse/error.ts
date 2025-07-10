@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { API } from "../query";
 
 export function parseErrorResponse(error: unknown): API.RequestError {
+  console.error(error);
+
   if (error instanceof BaseError) {
     return NextResponse.json(
       {
