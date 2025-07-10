@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -118,6 +119,10 @@ export function UpsertTagsDialog() {
         <DialogTitle className="text-xl font-bold mb-4">
           Gerenciar categorias
         </DialogTitle>
+
+        <DialogDescription className="sr-only">
+          Formulário de gerenciamento de categorias
+        </DialogDescription>
 
         {open ? (
           <UpsertTagsForm setOpen={setOpen} />

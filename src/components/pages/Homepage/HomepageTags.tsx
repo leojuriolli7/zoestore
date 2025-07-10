@@ -97,7 +97,7 @@ export default function HomepageTags({
                   name={tag.name}
                   onMouseDown={prefetchProductsByTag(tag.name)}
                   tagName={tag.name}
-                  imageUrl={tag.productImage!}
+                  imageUrl={tag.productImage || "/image-not-found.png"}
                   key={tag.name}
                 />
               ))}

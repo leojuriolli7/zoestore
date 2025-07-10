@@ -4,6 +4,7 @@ import React from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -251,6 +252,12 @@ export function UpsertProductDialog() {
         <DialogTitle className="text-xl font-bold mb-4">
           {product ? "Atualizar produto" : "Adicionar produto"}
         </DialogTitle>
+
+        <DialogDescription className="sr-only">
+          {product
+            ? "Formulário de atualizar produto"
+            : "Formulário de adicionar produto"}
+        </DialogDescription>
 
         {open ? <UpsertProductForm /> : <div className="h-80 w-full" />}
       </DialogContent>

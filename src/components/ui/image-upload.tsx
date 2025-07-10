@@ -26,6 +26,10 @@ type ImageUploadProps = {
   defaultValue: string[];
 };
 
+function itemsToUrls(items: UploadItem[]): string[] {
+  return items.map((item) => item.url);
+}
+
 export const ImageUpload = ({
   onChange,
   defaultValue = [],
@@ -50,25 +54,41 @@ export const ImageUpload = ({
         handleUploadUrl: "/api/uploads/image",
       });
 
-      setItems((prev) => {
-        const newItems = prev.map((item) =>
-          item.key === task.tempKey
-            ? {
-                ...item,
-                url: blob.url,
-                isLoading: false,
-                file: undefined,
-              }
-            : item
-        );
+      function updateFinishedItem(item: UploadItem): UploadItem {
+        return {
+          ...item,
+          url: blob.url,
+          isLoading: false,
+          file: undefined,
+        };
+      }
 
-        onChange(newItems.map((item) => item.url));
-        return newItems;
-      });
+      setItems((prev) =>
+        prev.map((item) =>
+          item.key === task.tempKey ? updateFinishedItem(item) : item
+        )
+      );
+
+      return {
+        ...task,
+        item: updateFinishedItem(task.item),
+      };
     },
+
     {
       concurrency: 3,
       started: true,
+      onSuccess: (finishedTask) => {
+        onChange(
+          items.map((item) => {
+            if (item.key === finishedTask.tempKey) {
+              return finishedTask.item.url;
+            }
+
+            return item.url;
+          })
+        );
+      },
       onError: (_, queuer) => {
         const activeItems = queuer.peekActiveItems();
 
@@ -108,7 +128,7 @@ export const ImageUpload = ({
   const removeFromList = (urlToRemove: string) => () => {
     const newItems = items.filter((item) => item.url !== urlToRemove);
     setItems(newItems);
-    onChange?.(newItems.map((item) => item.url));
+    onChange?.(itemsToUrls(newItems));
   };
 
   const { getRootProps, isDragActive } = useDropzone({
