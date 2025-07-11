@@ -41,6 +41,7 @@ export default function ProductPage({
             <Skeleton className="w-full aspect-[2/3] rounded-lg" />
           ) : (
             <ProductImageSlider
+              productId={product?.id}
               images={product?.medias || []}
               productName={product?.name}
             />

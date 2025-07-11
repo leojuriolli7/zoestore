@@ -6,15 +6,18 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Products } from "@/query/products/types";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 interface ProductImageSliderProps {
   images: Array<Products.Media>;
   productName: string;
+  productId: number;
 }
 
 export function ProductImageSlider({
   images,
   productName,
+  productId,
 }: ProductImageSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -29,14 +32,16 @@ export function ProductImageSlider({
   if (images.length === 1) {
     return (
       <div className="w-full aspect-[2/3] relative rounded-lg overflow-hidden shadow-md">
-        <Image
-          priority
-          fetchPriority="high"
-          src={images[0].url}
-          alt={productName}
-          fill
-          className="object-cover w-full h-full"
-        />
+        <ViewTransition name={`product-${productId}`}>
+          <Image
+            priority
+            fetchPriority="high"
+            src={images[0].url}
+            alt={productName}
+            fill
+            className="object-cover w-full h-full"
+          />
+        </ViewTransition>
       </div>
     );
   }
@@ -56,14 +61,16 @@ export function ProductImageSlider({
   return (
     <div className="w-full space-y-4">
       <div className="relative aspect-[2/3] rounded-lg overflow-hidden shadow-md group">
-        <Image
-          priority
-          fetchPriority="high"
-          src={images[currentIndex].url}
-          alt={`${productName} - Imagem ${currentIndex + 1}`}
-          fill
-          className="object-cover w-full h-full"
-        />
+        <ViewTransition name={`product-${productId}`}>
+          <Image
+            priority
+            fetchPriority="high"
+            src={images[currentIndex].url}
+            alt={`${productName} - Imagem ${currentIndex + 1}`}
+            fill
+            className="object-cover w-full h-full"
+          />
+        </ViewTransition>
 
         <Button
           variant="ghost"
