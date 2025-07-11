@@ -26,30 +26,17 @@ export function ProductImageSlider({
   };
 
   /**
-   * Will loop through all images and find the DOM element that is
-   * visible (Therefore is the current image), and return that index.
+   * Calculate index using the scroll position of the carousel and
+   * the number of images rendered.
    */
   const getCurrentVisibleIndex = (): number => {
     const carousel = carouselRef.current;
     if (!carousel) return 0;
 
-    const carouselRect = carousel.getBoundingClientRect();
+    const scrollLeft = carousel.scrollLeft;
+    const slideWidth = carousel.scrollWidth / images.length;
 
-    for (let index = 0; index < images.length; index++) {
-      const element = document.getElementById(`slide-${index}`);
-      if (!element) continue;
-
-      const rect = element.getBoundingClientRect();
-      const isVisible =
-        rect.left >= carouselRect.left - 1 &&
-        rect.right <= carouselRect.right + 1;
-
-      if (isVisible) {
-        return index;
-      }
-    }
-
-    return 0;
+    return Math.round(scrollLeft / slideWidth);
   };
 
   const scrollToSlide = (index: number) => {
