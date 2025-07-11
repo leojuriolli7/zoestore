@@ -55,6 +55,7 @@ export const useShoppingBagStore = create(
     {
       name: "zoe_shopping_cart",
       storage: createJSONStorage(() => localStorage),
+      version: 1,
     }
   )
 );
