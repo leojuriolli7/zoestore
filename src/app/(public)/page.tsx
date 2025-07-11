@@ -2,7 +2,7 @@ import { Homepage } from "@/components/pages/Homepage";
 import { listHomepageTags } from "@/query/products/listHomepageTags/handler";
 import { listProducts } from "@/query/products/listProducts/handler";
 
-export const revalidate = 86400;
+export const revalidate = 60;
 
 export default async function Index() {
   const [homepageTags, products] = await Promise.all([

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { listProducts } from "@/query/products/listProducts/handler";
 import { listTags } from "@/query/products/listTags/handler";
 
-export const revalidate = 86400;
+export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
