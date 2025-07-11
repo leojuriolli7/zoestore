@@ -30,7 +30,7 @@ export function AddToBagButton({ product }: AddToBagButtonProps) {
       onClick={addOrRemoveFromBag}
       type="button"
       className={cn(
-        "absolute top-2 right-2 p-2 rounded-full shadow-md group-hover/image:block hidden cursor-pointer",
+        "absolute top-2 right-2 p-2 rounded-full shadow-md group-hover:block hidden cursor-pointer",
         "transition-all duration-300 ease-in-out transform hover:scale-110 active:scale-95",
         "backdrop-blur-sm border border-white/20",
         isAddedToBag
