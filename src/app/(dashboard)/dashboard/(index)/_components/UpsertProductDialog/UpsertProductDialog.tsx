@@ -20,7 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ImageUpload } from "@/components/ui/image-upload";
+import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductOptions } from "@/query/products/addProduct/mutation";
 import { toastError } from "@/query/core/toastError";
