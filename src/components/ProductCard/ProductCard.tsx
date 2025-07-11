@@ -24,11 +24,7 @@ export function ProductCard({ product }: { product: Products.Product }) {
       <Card className="group cursor-pointer border-0 bg-transparent shadow-none py-0">
         <CardContent className="p-0 w-full h-auto">
           <div className="relative overflow-hidden rounded-t-lg aspect-[2/3] w-full">
-            <ProductImage
-              medias={product.medias}
-              name={product.name}
-              productId={product.id}
-            />
+            <ProductImage medias={product.medias} name={product.name} />
             <Button
               variant="default"
               tabIndex={-1}

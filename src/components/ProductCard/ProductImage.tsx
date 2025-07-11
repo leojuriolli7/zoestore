@@ -8,18 +8,16 @@ import Image from "next/image";
 export function ProductImage({
   medias,
   name,
-  productId,
 }: {
   medias: Products.Product["medias"];
   name: string;
-  productId: number;
 }) {
   const firstImage = medias[0];
   const secondImage = medias.length > 1 ? medias[1] : null;
 
   return (
     <div className="relative overflow-hidden rounded-t-lg aspect-[2/3] w-full">
-      <ViewTransition name={`product-${productId}`}>
+      <ViewTransition name={`product-image-${medias[0].id}`}>
         <Image
           fill
           priority

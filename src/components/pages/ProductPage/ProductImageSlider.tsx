@@ -6,13 +6,11 @@ import { useRef, unstable_ViewTransition as ViewTransition } from "react";
 interface ProductImageSliderProps {
   images: Array<Products.Media>;
   productName: string;
-  productId: number;
 }
 
 export function ProductImageSlider({
   images,
   productName,
-  productId,
 }: ProductImageSliderProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -69,7 +67,7 @@ export function ProductImageSlider({
   if (images.length === 1) {
     return (
       <div className="w-full aspect-[2/3] relative rounded-lg overflow-hidden shadow-md">
-        <ViewTransition name={`product-${productId}`}>
+        <ViewTransition name={`product-image-${images[0].id}`}>
           <Image
             priority
             fetchPriority="high"
@@ -96,7 +94,18 @@ export function ProductImageSlider({
               id={`slide-${index}`}
               className="relative flex-shrink-0 w-full h-full snap-start"
             >
-              <ViewTransition name={`product-${productId}`}>
+              {index === 0 ? (
+                <ViewTransition name={`product-image-${image.id}`}>
+                  <Image
+                    priority={index === 0}
+                    fetchPriority={index === 0 ? "high" : "low"}
+                    src={image.url}
+                    alt={`${productName} - Imagem ${index + 1}`}
+                    fill
+                    className="object-cover w-full h-full"
+                  />
+                </ViewTransition>
+              ) : (
                 <Image
                   priority={index === 0}
                   fetchPriority={index === 0 ? "high" : "low"}
@@ -105,7 +114,7 @@ export function ProductImageSlider({
                   fill
                   className="object-cover w-full h-full"
                 />
-              </ViewTransition>
+              )}
             </div>
           ))}
         </div>
