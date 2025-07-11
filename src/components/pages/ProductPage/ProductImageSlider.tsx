@@ -71,6 +71,7 @@ export function ProductImageSlider({
           className="absolute left-2 top-1/2 transition-all -translate-y-1/2 bg-black/40 text-white hover:bg-black/60 hover:text-white opacity-0 group-hover:opacity-100"
           onClick={goToPrevious}
         >
+          <span className="sr-only">Imagem anterior</span>
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
@@ -80,6 +81,7 @@ export function ProductImageSlider({
           className="absolute right-2 top-1/2 transition-all -translate-y-1/2 bg-black/40 text-white hover:bg-black/60 hover:text-white opacity-0 group-hover:opacity-100"
           onClick={goToNext}
         >
+          <span className="sr-only">Próxima imagem</span>
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
