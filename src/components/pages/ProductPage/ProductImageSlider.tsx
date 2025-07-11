@@ -15,45 +15,74 @@ export function ProductImageSlider({
   const carouselRef = useRef<HTMLDivElement>(null);
 
   /**
-   * When the user clicks on the arrow buttons, this function finds the currently visible image
-   * and scrolls to the next or previous image in the carousel.
-   *
-   * It uses the `getBoundingClientRect` method to determine visibility and scrolls smoothly
-   * to the next or previous image based on the direction specified.
+   * Loops through each image and sets the `aria-current` attribute to true
+   * or false based on the given index.
    */
-  const onClickArrow = (direction: "back" | "next") => () => {
+  const setActiveThumbnail = (activeIndex: number) => {
+    images.forEach((_, i) => {
+      const imageThumb = document.getElementById(`thumbnail-${i}`);
+      imageThumb?.setAttribute("aria-current", (i === activeIndex).toString());
+    });
+  };
+
+  /**
+   * Will loop through all images and find the DOM element that is
+   * visible (Therefore is the current image), and return that index.
+   */
+  const getCurrentVisibleIndex = (): number => {
     const carousel = carouselRef.current;
-    if (!carousel) return;
+    if (!carousel) return 0;
 
     const carouselRect = carousel.getBoundingClientRect();
 
-    images.some((_, index) => {
+    for (let index = 0; index < images.length; index++) {
       const element = document.getElementById(`slide-${index}`);
-      if (!element) return false;
+      if (!element) continue;
 
       const rect = element.getBoundingClientRect();
-
       const isVisible =
         rect.left >= carouselRect.left - 1 &&
         rect.right <= carouselRect.right + 1;
 
       if (isVisible) {
-        const delta = direction === "next" ? 1 : -1;
-        const nextIndex = (index + delta + images.length) % images.length;
-
-        const nextElement = document.getElementById(`slide-${nextIndex}`);
-
-        if (nextElement) {
-          nextElement.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "center",
-          });
-        }
-
-        return true;
+        return index;
       }
-    });
+    }
+
+    return 0;
+  };
+
+  const scrollToSlide = (index: number) => {
+    const element = document.getElementById(`slide-${index}`);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+
+      setActiveThumbnail(index);
+    }
+  };
+
+  const onScroll = () => {
+    setActiveThumbnail(getCurrentVisibleIndex());
+  };
+
+  /**
+   * When the user clicks on the arrow buttons, this function finds the currently visible image
+   * and scrolls to the next or previous image in the carousel.
+   */
+  const onClickArrow = (direction: "back" | "next") => () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const currentIndex = getCurrentVisibleIndex();
+    const delta = direction === "next" ? 1 : -1;
+    const nextIndex = (currentIndex + delta + images.length) % images.length;
+
+    scrollToSlide(nextIndex);
   };
 
   if (!images.length) {
@@ -87,6 +116,7 @@ export function ProductImageSlider({
         <div
           className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth h-full scrollbar-hide"
           ref={carouselRef}
+          onScroll={onScroll}
         >
           {images.map((image, index) => (
             <div
@@ -142,19 +172,11 @@ export function ProductImageSlider({
         {images.map((image, index) => (
           <button
             key={image.id}
-            onClick={(e) => {
-              e.preventDefault();
-
-              const productImage = document.getElementById(`slide-${index}`);
-              if (productImage) {
-                productImage.scrollIntoView({
-                  behavior: "smooth",
-                  block: "nearest",
-                  inline: "center",
-                });
-              }
-            }}
-            className="cursor-pointer flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 border-border/50 hover:border-primary/50 opacity-80 transition-all"
+            type="button"
+            onClick={() => scrollToSlide(index)}
+            className="cursor-pointer flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 border-border/50 hover:border-primary/50 aria-[current=false]:opacity-80 transition-all aria-[current=true]:border-primary aria-[current=true]:opacity-100"
+            id={`thumbnail-${index}`}
+            aria-current={index === 0}
           >
             <Image
               src={image.url}
