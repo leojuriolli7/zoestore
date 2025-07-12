@@ -10,6 +10,10 @@ import { Products } from "@/query/products/types";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ProductImageSlider } from "./ProductImageSlider";
+import { Suspense } from "react";
+import { ProductAnalyticsTracker } from "./ProductAnalyticsTracker";
+import { logEvent } from "@/query/analytics/logEvent/client";
+import { AnalyticsEvents } from "@/query/analytics/logEvent/events.enum";
 
 const AddToBagButton = dynamic(
   () => import("./AddToBagButton").then((mod) => mod.AddToBagButton),
@@ -35,6 +39,12 @@ export default function ProductPage({
 
   return (
     <div className="w-full">
+      {product && (
+        <Suspense fallback={null}>
+          <ProductAnalyticsTracker productId={product.id} />
+        </Suspense>
+      )}
+
       <div className="container mx-auto py-8 px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="w-full md:max-w-[400px] md:mx-auto">
           {isLoading ? (
@@ -100,6 +110,13 @@ export default function ProductPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full md:w-auto"
+                  onClick={() =>
+                    logEvent({
+                      eventType: AnalyticsEvents.whatsapp_click,
+                      productId: product?.id,
+                      referrer: document.referrer,
+                    })
+                  }
                 >
                   <Button
                     size="lg"

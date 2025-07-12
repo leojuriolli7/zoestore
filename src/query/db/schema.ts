@@ -10,6 +10,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { InferSelectModel } from "drizzle-orm";
+import { AnalyticsEvents } from "../analytics/logEvent/events.enum";
 
 export const products = pgTable("products", {
   id: serial("id").primaryKey(),
@@ -81,6 +82,29 @@ export const productTagsRelations = relations(productTags, ({ one }) => ({
   }),
 }));
 
+export const analyticsEvents = pgTable("analytics_events", {
+  id: serial("id").primaryKey(),
+  eventType: text("event_type").notNull().$type<AnalyticsEvents>(),
+  productId: integer("product_id").references(() => products.id, {
+    onDelete: "set null",
+  }),
+  referrer: text("referrer"),
+  utmSource: text("utm_source"),
+  sessionId: text("session_id"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const analyticsEventsRelations = relations(
+  analyticsEvents,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [analyticsEvents.productId],
+      references: [products.id],
+    }),
+  })
+);
+
 export type DB_Product = InferSelectModel<typeof products>;
 export type DB_ProductMedias = InferSelectModel<typeof productMedias>;
 export type DB_Tags = InferSelectModel<typeof tags>;
+export type DB_AnalyticsEvents = InferSelectModel<typeof analyticsEvents>;

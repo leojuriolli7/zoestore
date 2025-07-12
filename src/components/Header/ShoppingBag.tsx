@@ -17,6 +17,8 @@ import { useShoppingBagStore } from "@/stores/shoppingBag";
 import Link from "next/link";
 import { A_MINUTE } from "@/lib/time";
 import { appClientConfig } from "@/config/client";
+import { logEvent } from "@/query/analytics/logEvent/client";
+import { AnalyticsEvents } from "@/query/analytics/logEvent/events.enum";
 
 function ShoppingBag() {
   const { products, removeProduct } = useShoppingBagStore();
@@ -176,6 +178,12 @@ export function ShoppingBagSheet() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full"
+                  onClick={() => {
+                    logEvent({
+                      eventType: AnalyticsEvents.whatsapp_click_bag,
+                      referrer: document.referrer,
+                    });
+                  }}
                 >
                   <Button
                     className="w-full text-white bg-whatsapp hover:bg-whatsapp/90"

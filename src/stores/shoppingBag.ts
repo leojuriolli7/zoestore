@@ -1,5 +1,5 @@
-"use client";
-
+import { AnalyticsEvents } from "@/query/analytics/logEvent/events.enum";
+import { logEvent } from "@/query/analytics/logEvent/client";
 import type { Products } from "@/query/products/types";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -20,6 +20,11 @@ export const useShoppingBagStore = create(
         return set({ products: [] });
       },
       addProduct(p) {
+        logEvent({
+          eventType: AnalyticsEvents.add_to_bag,
+          productId: p.id,
+          referrer: document.referrer,
+        });
         return set((state) =>
           state.products.some((product) => product.slug === p.slug)
             ? { products: state.products }
