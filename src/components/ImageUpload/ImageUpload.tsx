@@ -147,13 +147,6 @@ export const ImageUpload = ({
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    if (over?.id === "trash-droppable") {
-      const newItems = items.filter((item) => item.key !== active.id);
-      setItems(newItems);
-      onChange(itemsToUrls(newItems));
-      return;
-    }
-
     if (over && active.id !== over.id) {
       const oldIndex = items.findIndex((item) => item.key === active.id);
       const newIndex = items.findIndex((item) => item.key === over.id);

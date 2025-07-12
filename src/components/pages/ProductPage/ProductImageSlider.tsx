@@ -139,7 +139,7 @@ export function ProductImageSlider({
         <div className="absolute inset-0 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
           <button
             onClick={onClickArrow("back")}
-            className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-md transition-colors pointer-events-auto z-10"
+            className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-md transition-colors pointer-events-auto z-10"
             aria-label="Imagem anterior"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -147,7 +147,7 @@ export function ProductImageSlider({
 
           <button
             onClick={onClickArrow("next")}
-            className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-md transition-colors pointer-events-auto z-10"
+            className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-md transition-colors pointer-events-auto z-10"
             aria-label="Próxima imagem"
           >
             <ChevronRight className="h-4 w-4" />
