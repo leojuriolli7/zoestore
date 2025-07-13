@@ -1,13 +1,5 @@
 import { create } from "zustand";
-import {
-  subDays,
-  subWeeks,
-  subMonths,
-  startOfWeek,
-  endOfWeek,
-  startOfMonth,
-  endOfMonth,
-} from "date-fns";
+import { subWeeks, subMonths } from "date-fns";
 
 export type DateFilterMode = "last-week" | "last-month" | "custom";
 
@@ -22,23 +14,24 @@ type Actions = {
   setDate: (date: { from: Date | undefined; to: Date | undefined }) => void;
 };
 
+const today = new Date();
+
 export const useAnalyticsDateStore = create<State & Actions>((set) => ({
   mode: "last-month",
-  startDate: subDays(new Date(), 30),
-  endDate: new Date(),
+  startDate: subMonths(today, 1),
+  endDate: today,
   setMode: (mode) => {
-    const today = new Date();
     if (mode === "last-week") {
       set({
         mode,
-        startDate: startOfWeek(subWeeks(today, 1)),
-        endDate: endOfWeek(subWeeks(today, 1)),
+        startDate: subWeeks(today, 1),
+        endDate: today,
       });
     } else if (mode === "last-month") {
       set({
         mode,
-        startDate: startOfMonth(subMonths(today, 1)),
-        endDate: endOfMonth(subMonths(today, 1)),
+        startDate: subMonths(today, 1),
+        endDate: today,
       });
     } else {
       set({ mode });
