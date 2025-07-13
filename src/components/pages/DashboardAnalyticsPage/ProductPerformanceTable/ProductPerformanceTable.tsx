@@ -54,7 +54,7 @@ export function ProductPerformanceTable() {
       </Button>
 
       {isFetchingNextPage && (
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex justify-center items-center mt-2">
           <LoadingSpinner />
         </div>
       )}

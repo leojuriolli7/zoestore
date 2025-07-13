@@ -4,10 +4,10 @@ export declare namespace Analytics {
   };
 
   type AnalyticsSummary = {
-    totalViews: number;
-    totalAddToBag: number;
-    totalWhatsappClicks: number;
-    overallConversionRate: number;
+    totalViews: { current: number; previous: number };
+    totalAddToBag: { current: number; previous: number };
+    totalWhatsappClicks: { current: number; previous: number };
+    overallConversionRate: { current: number; previous: number };
     viewsAndConversions: {
       date: string;
       views: number;

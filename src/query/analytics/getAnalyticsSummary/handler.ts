@@ -4,15 +4,19 @@ import { and, count, eq, gte, lte, sql } from "drizzle-orm";
 import { GetAnalyticsSummarySchema } from "./schema";
 import { Analytics } from "../types";
 import { AnalyticsEvents } from "../logEvent/events.enum";
+import {
+  subWeeks,
+  subMonths,
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+} from "date-fns";
 
-export async function getAnalyticsSummary(
-  params: GetAnalyticsSummarySchema
-): Promise<Analytics.AnalyticsSummary> {
-  const { startDate, endDate } = params;
-
+async function getSummaryForPeriod(startDate?: Date, endDate?: Date) {
   const dateFilter = and(
-    startDate ? gte(analyticsEvents.createdAt, new Date(startDate)) : undefined,
-    endDate ? lte(analyticsEvents.createdAt, new Date(endDate)) : undefined
+    startDate ? gte(analyticsEvents.createdAt, startDate) : undefined,
+    endDate ? lte(analyticsEvents.createdAt, endDate) : undefined
   );
 
   const totalViewsQuery = db
@@ -48,48 +52,12 @@ export async function getAnalyticsSummary(
       )
     );
 
-  const viewsAndConversionsQuery = db
-    .select({
-      date: sql<string>`DATE_TRUNC('day', ${analyticsEvents.createdAt})`,
-      views: count(
-        sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.product_view} THEN 1 ELSE NULL END`
-      ),
-      conversions: count(
-        sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
-      ),
-    })
-    .from(analyticsEvents)
-    .where(dateFilter)
-    .groupBy(sql`DATE_TRUNC('day', ${analyticsEvents.createdAt})`)
-    .orderBy(sql`DATE_TRUNC('day', ${analyticsEvents.createdAt})`);
-
-  const trafficSourceBreakdownQuery = db
-    .select({
-      referrer: analyticsEvents.referrer,
-      views: count(
-        sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.product_view} THEN 1 ELSE NULL END`
-      ),
-      conversions: count(
-        sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
-      ),
-    })
-    .from(analyticsEvents)
-    .where(dateFilter)
-    .groupBy(analyticsEvents.referrer);
-
-  const [
-    totalViewsResult,
-    totalAddToBagResult,
-    totalWhatsappClicksResult,
-    viewsAndConversions,
-    trafficSourceBreakdownResult,
-  ] = await Promise.all([
-    totalViewsQuery,
-    totalAddToBagQuery,
-    totalWhatsappClicksQuery,
-    viewsAndConversionsQuery,
-    trafficSourceBreakdownQuery,
-  ]);
+  const [totalViewsResult, totalAddToBagResult, totalWhatsappClicksResult] =
+    await Promise.all([
+      totalViewsQuery,
+      totalAddToBagQuery,
+      totalWhatsappClicksQuery,
+    ]);
 
   const totalViews = totalViewsResult[0].value;
   const totalAddToBag = totalAddToBagResult[0].value;
@@ -98,6 +66,90 @@ export async function getAnalyticsSummary(
   const overallConversionRate =
     totalViews > 0 ? (totalWhatsappClicks / totalViews) * 100 : 0;
 
+  return {
+    totalViews,
+    totalAddToBag,
+    totalWhatsappClicks,
+    overallConversionRate,
+  };
+}
+
+export async function getAnalyticsSummary(
+  params: GetAnalyticsSummarySchema
+): Promise<Analytics.AnalyticsSummary> {
+  const { startDate, endDate, mode } = params;
+
+  const currentStartDate = startDate ? new Date(startDate) : undefined;
+  const currentEndDate = endDate ? new Date(endDate) : undefined;
+
+  let previousStartDate: Date | undefined;
+  let previousEndDate: Date | undefined;
+
+  if (mode === "last-week") {
+    const today = new Date();
+    previousStartDate = startOfWeek(subWeeks(today, 2));
+    previousEndDate = endOfWeek(subWeeks(today, 2));
+  } else if (mode === "last-month") {
+    const today = new Date();
+    previousStartDate = startOfMonth(subMonths(today, 2));
+    previousEndDate = endOfMonth(subMonths(today, 2));
+  }
+
+  const [
+    currentSummary,
+    previousSummary,
+    viewsAndConversions,
+    trafficSourceBreakdownResult,
+  ] = await Promise.all([
+    getSummaryForPeriod(currentStartDate, currentEndDate),
+    getSummaryForPeriod(previousStartDate, previousEndDate),
+    db
+      .select({
+        date: sql<string>`DATE_TRUNC('day', ${analyticsEvents.createdAt})`,
+        views: count(
+          sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.product_view} THEN 1 ELSE NULL END`
+        ),
+        conversions: count(
+          sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
+        ),
+      })
+      .from(analyticsEvents)
+      .where(
+        and(
+          currentStartDate
+            ? gte(analyticsEvents.createdAt, currentStartDate)
+            : undefined,
+          currentEndDate
+            ? lte(analyticsEvents.createdAt, currentEndDate)
+            : undefined
+        )
+      )
+      .groupBy(sql`DATE_TRUNC('day', ${analyticsEvents.createdAt})`)
+      .orderBy(sql`DATE_TRUNC('day', ${analyticsEvents.createdAt})`),
+    db
+      .select({
+        referrer: analyticsEvents.referrer,
+        views: count(
+          sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.product_view} THEN 1 ELSE NULL END`
+        ),
+        conversions: count(
+          sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
+        ),
+      })
+      .from(analyticsEvents)
+      .where(
+        and(
+          currentStartDate
+            ? gte(analyticsEvents.createdAt, currentStartDate)
+            : undefined,
+          currentEndDate
+            ? lte(analyticsEvents.createdAt, currentEndDate)
+            : undefined
+        )
+      )
+      .groupBy(analyticsEvents.referrer),
+  ]);
+
   const trafficSourceBreakdown = trafficSourceBreakdownResult.map((row) => ({
     referrer: row.referrer ?? "Acesso direto",
     views: row.views,
@@ -105,10 +157,22 @@ export async function getAnalyticsSummary(
   }));
 
   return {
-    totalViews,
-    totalAddToBag,
-    totalWhatsappClicks,
-    overallConversionRate,
+    totalViews: {
+      current: currentSummary.totalViews,
+      previous: previousSummary.totalViews,
+    },
+    totalAddToBag: {
+      current: currentSummary.totalAddToBag,
+      previous: previousSummary.totalAddToBag,
+    },
+    totalWhatsappClicks: {
+      current: currentSummary.totalWhatsappClicks,
+      previous: previousSummary.totalWhatsappClicks,
+    },
+    overallConversionRate: {
+      current: currentSummary.overallConversionRate,
+      previous: previousSummary.overallConversionRate,
+    },
     viewsAndConversions,
     trafficSourceBreakdown,
   };

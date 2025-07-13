@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAnalyticsDateStore } from "./store";
+import { useAnalyticsDateStore } from "../store";
 
 export function DateRangePicker({
   className,
