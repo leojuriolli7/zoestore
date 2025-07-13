@@ -8,11 +8,10 @@ import { listProductPerformanceQuery } from "@/query/analytics/listProductPerfor
 import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
 
 export function ProductPerformanceTable() {
   const { startDate, endDate } = useAnalyticsDateStore();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       ...listProductPerformanceQuery({
         startDate: startDate?.toISOString(),
@@ -36,22 +35,13 @@ export function ProductPerformanceTable() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">Performance dos Produtos</h2>
+      {isLoading ? (
+        <LoadingSpinner className="w-full mx-auto mt-6" />
+      ) : (
+        <DataTable columns={columns} data={products} />
+      )}
 
-      <p className="text-sm text-muted-foreground mb-2">
-        Analise as visualizações e interesse dos visitantes em cada produto.
-      </p>
-
-      <DataTable columns={columns} data={products} />
-
-      <div ref={ref} className="hidden lg:block" />
-
-      <Button
-        className="w-full lg:hidden block mt-2"
-        onClick={() => fetchNextPage()}
-      >
-        Carregar mais
-      </Button>
+      <div ref={ref} />
 
       {isFetchingNextPage && (
         <div className="w-full flex justify-center items-center mt-2">

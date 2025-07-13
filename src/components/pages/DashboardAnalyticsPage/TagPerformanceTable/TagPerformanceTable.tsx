@@ -8,11 +8,10 @@ import { listTagPerformanceQuery } from "@/query/analytics/listTagPerformance/qu
 import { useOnScreen } from "@/hooks/useOnScreen";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
 
 export function TagPerformanceTable() {
   const { startDate, endDate } = useAnalyticsDateStore();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       ...listTagPerformanceQuery({
         startDate: startDate?.toISOString(),
@@ -35,22 +34,13 @@ export function TagPerformanceTable() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">Performance das Categorias</h2>
+      {isLoading ? (
+        <LoadingSpinner className="w-full mx-auto mt-6" />
+      ) : (
+        <DataTable columns={columns} data={tags} />
+      )}
 
-      <p className="text-sm text-muted-foreground mb-2">
-        Analise as visualizações e interesse dos visitantes por cada categoria.
-      </p>
-
-      <DataTable columns={columns} data={tags} />
-
-      <div ref={ref} className="hidden lg:block" />
-
-      <Button
-        className="w-full lg:hidden block mt-2"
-        onClick={() => fetchNextPage()}
-      >
-        Carregar mais
-      </Button>
+      <div ref={ref} />
 
       {isFetchingNextPage && (
         <div className="w-full flex justify-center items-center mt-2">
