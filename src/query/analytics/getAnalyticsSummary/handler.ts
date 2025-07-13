@@ -15,8 +15,17 @@ import {
 } from "date-fns";
 
 async function getSummaryForPeriod(startDate?: Date, endDate?: Date) {
+  if (!startDate) {
+    return {
+      totalViews: 0,
+      totalAddToBag: 0,
+      totalWhatsappClicks: 0,
+      overallConversionRate: 0,
+    };
+  }
+
   const dateFilter = and(
-    startDate ? gte(analyticsEvents.createdAt, startDate) : undefined,
+    gte(analyticsEvents.createdAt, startDate),
     endDate ? lte(analyticsEvents.createdAt, endDate) : undefined
   );
 
