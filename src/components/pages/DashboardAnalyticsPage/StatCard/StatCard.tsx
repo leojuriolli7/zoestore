@@ -57,7 +57,7 @@ export function StatCard({
         ) : (
           <div className="flex items-center gap-2">
             <p className="text-2xl font-bold">
-              {value.toFixed(2)}
+              {parseFloat(value.toFixed(2))}
               {isPercent ? "%" : ""}
             </p>
             <div
