@@ -53,6 +53,12 @@ export const useShoppingBagStore = create(
             return { products: updatedProducts };
           }
 
+          logEvent({
+            eventType: AnalyticsEvents.add_to_bag,
+            productId: p.id,
+            referrer: document.referrer,
+          });
+
           return { products: [p, ...state.products] };
         });
       },
