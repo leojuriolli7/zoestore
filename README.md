@@ -2,11 +2,34 @@
 
 Brazilian storefront with product management dashboard. No cart/checkout - just product display with admin CRUD operations.
 
+Instead of checkout, users are redirected to a WhatsApp phone number with predefined messages. Included:
+
+- Group products by categories
+- Homepage, listing available products and the most popular categories (ISR/Cached)
+- Product detail page (ISR/Cached)
+- Product search with categories and search query filters
+- Incremental Static Regeneration (ISR): All products' pages are generated at build time, new products after that are generated on-demand on the first access, and cached on Vercel. The cache guarantees extremely fast response times.
+- Admin passkey authentication for accessing private CMS
+- CMS with options to create new products, edit existing products and manage categories.
+- Analytics: Understand the best performing products with analytics events: Views, conversions, referrals. Filter by week, month or custom dates, see your data in varied charts and tables.
+- 100% configured webiste metadata and SEO
+- 100% Pagespeed/Lighthouse scores
+
 ## TODOs
 
 - [ ] Sort by creation/edit date
 - [ ] Rich-text for product description
-- [ ] Multiple images per product, carousel on details page
+
+## Tech Stack:
+
+- React and Next.js, Typescript
+- Shadcn UI and Radix UI components
+- Zod, React Hook Form
+- React Query for data fetching
+- Zustand for state management
+- Vercel blob for file uploads
+- Drizzle ORM
+- Postgres SQL Database with Docker configured for local development
 
 ---
 
