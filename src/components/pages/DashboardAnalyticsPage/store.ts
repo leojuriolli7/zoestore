@@ -21,20 +21,24 @@ export const useAnalyticsDateStore = create<State & Actions>((set) => ({
   startDate: subMonths(today, 1),
   endDate: today,
   setMode: (mode) => {
-    if (mode === "last-week") {
-      set({
-        mode,
-        startDate: subWeeks(today, 1),
-        endDate: today,
-      });
-    } else if (mode === "last-month") {
-      set({
-        mode,
-        startDate: subMonths(today, 1),
-        endDate: today,
-      });
-    } else {
-      set({ mode });
+    switch (mode) {
+      case "last-week": {
+        set({
+          mode,
+          startDate: subWeeks(today, 1),
+          endDate: today,
+        });
+      }
+      case "last-month": {
+        set({
+          mode,
+          startDate: subMonths(today, 1),
+          endDate: today,
+        });
+      }
+      case "custom": {
+        set({ mode });
+      }
     }
   },
   setDate: (date) => set({ startDate: date.from, endDate: date.to }),
