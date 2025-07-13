@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Analytics } from "@/query/analytics/types";
 import Image from "next/image";
+import Link from "next/link";
 
 export const columns: ColumnDef<Analytics.ProductPerformance>[] = [
   {
@@ -10,14 +11,21 @@ export const columns: ColumnDef<Analytics.ProductPerformance>[] = [
     header: "Produto",
     cell: ({ row }) => (
       <div className="flex items-center gap-4">
-        <Image
-          src={row.original.medias[0]?.url || ""}
-          alt={row.original.name}
-          width={40}
-          height={40}
-          className="rounded-md"
-        />
-        <span>{row.original.name}</span>
+        <Link
+          href={`/products/${row.original.slug}`}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <Image
+            src={row.original.medias[0]?.url || ""}
+            alt={row.original.name}
+            width={40}
+            height={40}
+            className="rounded-md"
+          />
+        </Link>
+
+        <p className="hidden sm:block">{row.original.name}</p>
       </div>
     ),
   },

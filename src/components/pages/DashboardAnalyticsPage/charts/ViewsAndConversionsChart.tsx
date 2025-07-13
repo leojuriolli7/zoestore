@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   LineChart,
   Line,
@@ -29,6 +35,10 @@ export function ViewsAndConversionsChart({
     <Card className="bg-background">
       <CardHeader>
         <CardTitle>Visualizações e Conversões</CardTitle>
+
+        <CardDescription>
+          Total de visualizações e cliques para o WhatsApp.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>

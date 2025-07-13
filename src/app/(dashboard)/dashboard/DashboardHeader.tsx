@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { logout } from "@/lib/logout";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ChartPieIcon, HomeIcon, LayoutListIcon } from "lucide-react";
 
 export function DashboardHeader() {
   const router = useRouter();
@@ -14,17 +15,31 @@ export function DashboardHeader() {
       <div className="flex items-center gap-2">
         <h1 className="font-bold text-xl mt-0.5 mr-1">ZOE</h1>
 
-        <Link className="underline" href="/">
-          Homepage
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link className="underline" href="/">
+            <Button className="sm:hidden flex" variant="outline" size="icon">
+              <HomeIcon />
+            </Button>
 
-        <Link className="underline" href="/dashboard">
-          Produtos
-        </Link>
+            <span className="sm:block hidden">Homepage</span>
+          </Link>
 
-        <Link className="underline" href="/dashboard/analytics">
-          Análises
-        </Link>
+          <Link className="underline" href="/dashboard">
+            <Button className="sm:hidden flex" variant="outline" size="icon">
+              <LayoutListIcon />
+            </Button>
+
+            <span className="sm:block hidden">Produtos</span>
+          </Link>
+
+          <Link className="underline" href="/dashboard/analytics">
+            <Button className="sm:hidden flex" variant="outline" size="icon">
+              <ChartPieIcon />
+            </Button>
+
+            <span className="sm:block hidden">Análises</span>
+          </Link>
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
