@@ -25,6 +25,8 @@ export function StatCard({
   loading: boolean;
   tooltip?: string;
 }) {
+  console.log({ previousValue, value });
+
   const percentageChange =
     previousValue > 0 ? ((value - previousValue) / previousValue) * 100 : 0;
 
