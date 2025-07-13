@@ -9,9 +9,10 @@ import { DeleteProductDialog } from "./DeleteProductDialog/DeleteProductDialog";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { useProductsSearchInputStore } from "./ProductsTable/TableFilters";
 import { useDebounce } from "@/hooks/useDebounce";
-import { DashboardHeader } from "./DashboardHeader";
+import { UpsertProductDialog } from "./UpsertProductDialog/UpsertProductDialog";
+import { UpsertTagsDialog } from "./UpsertTagsDialog";
 
-export function DashboardProductList() {
+export function DashboardIndexPage() {
   const { query, tags } = useProductsSearchInputStore();
   const debouncedQuery = useDebounce(query, 400);
   const debouncedTags = useDebounce(tags, 400);
@@ -48,8 +49,15 @@ export function DashboardProductList() {
   const products = data?.pages.flatMap((p) => p.results);
 
   return (
-    <div className="flex flex-col gap-4 md:p-6 p-4 max-w-[1800px] mx-auto">
-      <DashboardHeader />
+    <div className="flex flex-col gap-4 pt-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Gerenciar Produtos</h1>
+
+        <div className="flex items-center gap-2">
+          <UpsertProductDialog />
+          <UpsertTagsDialog />
+        </div>
+      </div>
 
       {status === "pending" && (
         <div className="w-full flex justify-center align-center mt-20">
