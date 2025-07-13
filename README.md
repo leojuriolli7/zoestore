@@ -22,7 +22,9 @@ Instead of checkout, users are redirected to a WhatsApp phone number with predef
 
 ## Tech Stack:
 
-- React and Next.js, Typescript
+- Typescript
+- React and Next.js, Server and Client Components
+- Tailwind CSS
 - Shadcn UI and Radix UI components
 - Zod, React Hook Form
 - React Query for data fetching
@@ -33,7 +35,25 @@ Instead of checkout, users are redirected to a WhatsApp phone number with predef
 
 ---
 
-## Project Structure
+## API Project Structure
+
+This project has its backend defined via Next.js Route Handlers. The entire backend is fully end-to-end typed and was developed in a way that would be easy for AI to pick up and help develop new endpoints. It's predictable and easy to use, brings a lot of the same advantages of using tRPC (Typesafety, React Query, easy to deploy) but without many of the downsides (all routers bundled under one endpoint, causing heavy cold start times, hard to understand underlying result -- "How does it get deployed as serverless functions?" and steeper learning curve with its own APIs)
+
+**Upsides:**
+
+- Type-safety
+- Excellent separation of concerns
+- Handler/schema/query separation makes code predictable and testable
+- SSR handlers can be called directly from RSC without HTTP overhead
+- Clear patterns and better DX with utility functions reducing boilerplate
+
+**Downsides:**
+
+- High ceremony for adding endpoint (AI makes this less of an issue)
+- Small changes can require touching multiple files
+- Relies on developers following the patterns
+
+### Overview
 
 **Domain-based organization:** Each business domain (Products, Auth) has its own folder under `src/query/`.
 
