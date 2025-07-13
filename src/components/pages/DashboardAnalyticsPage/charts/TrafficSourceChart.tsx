@@ -48,7 +48,7 @@ export function TrafficSourceChart({ data }: TrafficSourceChartProps) {
         <ChartContainer
           config={{
             views: {
-              label: "Visualizações",
+              label: "Acesso direto",
             },
           }}
           className="mx-auto aspect-square max-h-[250px]"

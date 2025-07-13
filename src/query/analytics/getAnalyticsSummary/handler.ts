@@ -152,7 +152,7 @@ export async function getAnalyticsSummary(
   ]);
 
   const trafficSourceBreakdown = trafficSourceBreakdownResult.map((row) => ({
-    referrer: row.referrer ?? "Acesso direto",
+    referrer: row.referrer || "Acesso direto",
     views: row.views,
     conversionRate: row.views > 0 ? (row.conversions / row.views) * 100 : 0,
   }));
