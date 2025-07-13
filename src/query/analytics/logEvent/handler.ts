@@ -10,7 +10,7 @@ export async function logEvent(
   await db.insert(analyticsEvents).values({
     eventType: args.eventType,
     productId: args.productId,
-    referrer: args.referrer,
+    referrer: args.referrer || null,
     utmSource: args.utmSource,
     sessionId: args.sessionId,
   });
