@@ -9,6 +9,12 @@ import { waitUntil } from "@vercel/functions";
  * This is the analytics route where we collect events. To avoid ad blockers,
  * it's named `api/session` to be neutral and not be targeted by specific keywords
  * on the URL.
+ *
+ * Current events being tracked:
+ * - Click on "Contact via Whatsapp" button on product page
+ * - Click on "Contact via Whatsapp" button on shopping bag
+ * - Product views (Alongside the referrer and utm_source)
+ * - Click on "Add to bag" button
  */
 
 async function postHandler(req: NextRequest) {

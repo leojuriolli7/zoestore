@@ -1,4 +1,4 @@
-import { ProductListPage } from "@/components/pages/ProductListPage/ProductListPage";
+import { ProductListPage } from "@/components/pages/ProductListPage";
 import { ProductListPageSkeleton } from "@/components/pages/ProductListPage/ProductListPageSkeleton";
 import { Metadata, ResolvingMetadata } from "next";
 import { Suspense } from "react";

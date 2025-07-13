@@ -57,7 +57,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {renderFilters && (
-        <div className="sticky top-0 left-0 py-6 px-2 w-full z-50 bg-background">
+        <div className="sticky top-0 left-0 pb-6 w-full z-50 bg-background">
           {renderFilters({ table })}
         </div>
       )}
