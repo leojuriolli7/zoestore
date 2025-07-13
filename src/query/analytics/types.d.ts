@@ -1,4 +1,8 @@
 export declare namespace Analytics {
+  type LogEvent = {
+    success: true;
+  };
+
   type AnalyticsSummary = {
     totalViews: number;
     totalAddToBag: number;

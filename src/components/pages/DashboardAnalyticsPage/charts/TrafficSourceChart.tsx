@@ -15,10 +15,16 @@ import {
 import { Pie, PieChart, Cell } from "recharts";
 
 const COLORS = [
-  "var(--chart-1)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#D084D0",
+  "#87D068",
+  "#FFB347",
+  "#FF6B6B",
+  "#45B7D1",
 ];
 
 interface TrafficSourceChartProps {

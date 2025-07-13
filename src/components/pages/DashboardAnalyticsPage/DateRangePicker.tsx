@@ -29,6 +29,10 @@ export function DateRangePicker({
 
   return (
     <div className={cn("grid gap-2", className)}>
+      <p className="font-medium pointer-events-none select-none leading-none text-sm">
+        Filtrar por intervalo de tempo
+      </p>
+
       <Popover>
         <PopoverTrigger asChild>
           <Button

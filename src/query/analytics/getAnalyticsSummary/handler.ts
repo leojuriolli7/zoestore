@@ -99,7 +99,7 @@ export async function getAnalyticsSummary(
     totalViews > 0 ? (totalWhatsappClicks / totalViews) * 100 : 0;
 
   const trafficSourceBreakdown = trafficSourceBreakdownResult.map((row) => ({
-    referrer: row.referrer ?? "Direto",
+    referrer: row.referrer ?? "Acesso direto",
     views: row.views,
     conversionRate: row.views > 0 ? (row.conversions / row.views) * 100 : 0,
   }));

@@ -34,10 +34,11 @@ export function ViewsAndConversionsChart({
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
+
             <XAxis
               dataKey="date"
               tickFormatter={(date) =>
-                format(new Date(date), "dd/MM/yyyy", { locale: ptBR })
+                format(new Date(date), "dd/MM", { locale: ptBR })
               }
             />
 
