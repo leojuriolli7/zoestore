@@ -5,11 +5,8 @@ Brazilian storefront with product management dashboard. No cart/checkout - just 
 ## TODOs
 
 - [ ] Sort by creation/edit date
-- [ ] Add images to tags
-- [ ] Render tags in homepage
 - [ ] Rich-text for product description
 - [ ] Multiple images per product, carousel on details page
-- [ ] Add analytics
 
 ---
 

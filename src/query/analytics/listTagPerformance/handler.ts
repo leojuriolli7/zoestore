@@ -1,3 +1,4 @@
+import "server-only";
 import { db } from "@/query/db";
 import { analyticsEvents, productTags, tags } from "@/query/db/schema";
 import { and, count, eq, gte, lte, sql } from "drizzle-orm";
