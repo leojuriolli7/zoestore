@@ -44,20 +44,18 @@ export function TrafficSourceChart({ data }: TrafficSourceChartProps) {
           Entenda as fontes que direcionam visitantes para sua página.
         </CardDescription>
       </CardHeader>
+
       <CardContent>
         <ChartContainer
           config={{
             views: {
-              label: "Acesso direto",
+              label: "Número de visitas",
             },
           }}
           className="mx-auto aspect-square max-h-[250px]"
         >
           <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Pie
               data={data}
               dataKey="views"
