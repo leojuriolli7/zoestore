@@ -57,7 +57,7 @@ async function getSummaryForPeriod(startDate?: Date, endDate?: Date) {
     .from(analyticsEvents)
     .where(
       and(
-        sql`${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag})`,
+        eq(analyticsEvents.eventType, AnalyticsEvents.whatsapp_click),
         dateFilter
       )
     );
@@ -120,7 +120,7 @@ export async function getAnalyticsSummary(
           sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.product_view} THEN 1 ELSE NULL END`
         ),
         conversions: count(
-          sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
+          sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.whatsapp_click} THEN 1 ELSE NULL END`
         ),
       })
       .from(analyticsEvents)
@@ -143,7 +143,7 @@ export async function getAnalyticsSummary(
           sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.product_view} THEN 1 ELSE NULL END`
         ),
         conversions: count(
-          sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
+          sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.whatsapp_click} THEN 1 ELSE NULL END`
         ),
       })
       .from(analyticsEvents)

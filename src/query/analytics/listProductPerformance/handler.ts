@@ -32,7 +32,7 @@ export async function listProductPerformance(
         sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.add_to_bag} THEN 1 ELSE NULL END`
       ),
       whatsappClicks: count(
-        sql`CASE WHEN ${analyticsEvents.eventType} in (${AnalyticsEvents.whatsapp_click}, ${AnalyticsEvents.whatsapp_click_bag}) THEN 1 ELSE NULL END`
+        sql`CASE WHEN ${analyticsEvents.eventType} = ${AnalyticsEvents.whatsapp_click} THEN 1 ELSE NULL END`
       ),
     })
     .from(products)
