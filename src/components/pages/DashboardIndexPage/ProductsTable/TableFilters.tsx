@@ -82,7 +82,7 @@ export function TableFilters({
   const { query, setQuery, tags, setTags } = useProductsSearchInputStore();
 
   return (
-    <div className="flex flex-col sm:flex-row w-full gap-2 items-stretch sm:items-center">
+    <div className="flex flex-col sm:flex-row w-full gap-2 items-stretch sm:items-center pt-3 pb-6 -mt-3">
       {selected?.length > 0 && (
         <div className="flex items-center gap-2 order-1 sm:-order-1">
           <Button variant="outline" onClick={clearSelection}>
