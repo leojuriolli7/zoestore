@@ -2,7 +2,7 @@
 
 import { checkCartIntegrityOptions } from "@/query/products/checkCartIntegrity/query";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   Sheet,
   SheetContent,
@@ -130,6 +130,16 @@ export function ShoppingBagSheet() {
     return `${totalItems} itens`;
   };
 
+  const informProductInterest = useCallback(() => {
+    products.forEach((product) => {
+      logEvent({
+        eventType: AnalyticsEvents.whatsapp_click,
+        referrer: document.referrer,
+        productId: product.id,
+      });
+    });
+  }, [products]);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -178,12 +188,7 @@ export function ShoppingBagSheet() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full"
-                  onClick={() => {
-                    logEvent({
-                      eventType: AnalyticsEvents.whatsapp_click_bag,
-                      referrer: document.referrer,
-                    });
-                  }}
+                  onClick={informProductInterest}
                 >
                   <Button
                     className="w-full text-white bg-whatsapp hover:bg-whatsapp/90"
