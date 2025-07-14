@@ -9,7 +9,7 @@ Instead of checkout, users are redirected to a WhatsApp phone number with predef
 - Product detail page (ISR/Cached)
 - Product search with categories and search query filters
 - Incremental Static Regeneration (ISR): All products' pages are generated at build time, new products after that are generated on-demand on the first access, and cached on Vercel. The cache guarantees extremely fast response times.
-- Admin passkey authentication for accessing private CMS
+- Admin authentication for accessing private CMS. Stored in cookies, encrypted and checked server-side, protected from cookie exploits.
 - CMS with options to create new products, edit existing products and manage categories.
 - Analytics: Understand the best performing products with analytics events: Views, conversions, referrals. Filter by week, month or custom dates, see your data in varied charts and tables.
 - 100% configured webiste metadata and SEO
@@ -20,7 +20,7 @@ Instead of checkout, users are redirected to a WhatsApp phone number with predef
 - [ ] Sort by creation/edit date
 - [ ] Rich-text for product description
 
-## Tech Stack:
+## Tech Stack
 
 - Typescript
 - React and Next.js, Server and Client Components
