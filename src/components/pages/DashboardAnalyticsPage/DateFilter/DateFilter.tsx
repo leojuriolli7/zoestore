@@ -23,6 +23,7 @@ export function DateFilter() {
         <p className="font-medium pointer-events-none select-none leading-none text-sm">
           Filtrar por período
         </p>
+
         <Select value={mode} onValueChange={handleModeChange}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Selecione o período" />
@@ -30,6 +31,7 @@ export function DateFilter() {
           <SelectContent>
             <SelectItem value="last-week">Última semana</SelectItem>
             <SelectItem value="last-month">Último mês</SelectItem>
+            <SelectItem value="last-day">Último dia</SelectItem>
             <SelectItem value="custom">Personalizado</SelectItem>
           </SelectContent>
         </Select>
