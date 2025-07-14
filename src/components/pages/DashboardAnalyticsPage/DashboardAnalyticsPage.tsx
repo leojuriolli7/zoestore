@@ -1,7 +1,13 @@
 "use client";
 
+import { listTagPerformanceQuery } from "@/query/analytics/listTagPerformance/query";
+import { listProductPerformanceQuery } from "@/query/analytics/listProductPerformance/query";
 import { getAnalyticsSummaryQuery } from "@/query/analytics/getAnalyticsSummary/query";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  usePrefetchInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import { DateFilter } from "./DateFilter/DateFilter";
 import { useAnalyticsDateStore } from "./store";
 import { ViewsAndConversionsChart } from "./charts/ViewsAndConversionsChart";
@@ -13,6 +19,7 @@ import { StatCard } from "./StatCard/StatCard";
 
 export function DashboardAnalyticsPage() {
   const { mode, startDate, endDate } = useAnalyticsDateStore();
+
   const { data, isLoading: fetchingSummary } = useQuery({
     ...getAnalyticsSummaryQuery({
       mode,
@@ -21,6 +28,26 @@ export function DashboardAnalyticsPage() {
     }),
     placeholderData: keepPreviousData,
   });
+
+  /**
+   * We prefetch both queries so that both Tabs already have data,
+   * causing no layout shift for users (Flash of loading spinner) when
+   * changing tabs.
+   */
+
+  usePrefetchInfiniteQuery(
+    listTagPerformanceQuery({
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+    })
+  );
+
+  usePrefetchInfiniteQuery(
+    listProductPerformanceQuery({
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+    })
+  );
 
   return (
     <div className="flex flex-col gap-4 py-6 px-2">

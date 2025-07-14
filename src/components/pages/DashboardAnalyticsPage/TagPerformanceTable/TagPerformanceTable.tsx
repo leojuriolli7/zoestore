@@ -10,7 +10,9 @@ import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/spinner";
 
 export function TagPerformanceTable() {
-  const { startDate, endDate } = useAnalyticsDateStore();
+  const startDate = useAnalyticsDateStore((s) => s.startDate);
+  const endDate = useAnalyticsDateStore((s) => s.endDate);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       ...listTagPerformanceQuery({
