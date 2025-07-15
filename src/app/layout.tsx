@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ZOE STORE",
     description: META_DESCRIPTION,
-    url: "https://zoestore-alpha.vercel.app/",
+    url: "https://zoemultistore.com.br/",
     siteName: "ZOE STORE",
     images: [
       {
