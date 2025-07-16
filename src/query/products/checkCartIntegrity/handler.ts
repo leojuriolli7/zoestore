@@ -10,7 +10,9 @@ import type { Products } from "../types";
 export async function checkCartIntegrity(
   params: CheckCartIntegritySchema
 ): Promise<Products.CardIntegrityStatus> {
-  const { productSlugs } = params;
+  const { productSlugs: slugs } = params;
+
+  const productSlugs = slugs.map((s) => decodeURIComponent(s));
 
   const existingProducts = await db
     .select({ slug: products.slug })

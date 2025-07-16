@@ -35,7 +35,7 @@ async function getHandler(req: NextRequest, params: ProductRouteParams) {
 
   if (!slug) throw new BadRequestError("Slug inválido.");
 
-  return await getProductBySlug(slug);
+  return await getProductBySlug(decodeURIComponent(slug));
 }
 
 export const POST = createRouteHandler(postHandler);

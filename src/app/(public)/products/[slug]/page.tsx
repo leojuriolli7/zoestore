@@ -45,7 +45,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const product = await getProductBySlug(slug);
+    const product = await getProductBySlug(decodeURIComponent(slug));
 
     return {
       title: product.name,
@@ -83,7 +83,9 @@ export default async function ProductById({
 }) {
   const { slug } = await params;
 
-  const product = await getProductBySlug(slug).catch(notFound);
+  const product = await getProductBySlug(decodeURIComponent(slug)).catch(
+    notFound
+  );
 
   return <ProductPage product={product} />;
 }
