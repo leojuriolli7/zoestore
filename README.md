@@ -1,5 +1,17 @@
 # Zoe Store
 
+Link: https://zoemultistore.com.br
+
+Recommendation: Check out the backend for frontend API design in this repository (Inside `src/query`), designed to work easily with AI and developers.
+
+## Images
+
+<img width="1440" height="820" alt="Screenshot 2025-07-20 at 21 08 17" src="https://github.com/user-attachments/assets/3af9082b-e336-41c0-88d6-024be58a1d81" />
+<img width="1440" height="694" alt="Screenshot 2025-07-20 at 21 07 56" src="https://github.com/user-attachments/assets/5a9a7abb-6e4d-4eb5-8f0b-43791cbb6b70" />
+<img width="1899" height="879" alt="Screenshot 2025-07-13 at 19 48 56" src="https://github.com/user-attachments/assets/7ca5b52d-a2df-4b7d-b0ed-7bb81afe3c12" />
+<img width="1440" height="820" alt="Screenshot 2025-07-20 at 21 08 47" src="https://github.com/user-attachments/assets/07506db7-62c8-4c22-b988-c7682e71d54b" />
+
+
 Brazilian storefront with product management dashboard. No cart/checkout - just product display with admin CRUD operations.
 
 Instead of checkout, users are redirected to a WhatsApp phone number with predefined messages. Included:
@@ -37,7 +49,7 @@ Instead of checkout, users are redirected to a WhatsApp phone number with predef
 
 ## API Project Structure
 
-This project has its backend defined via Next.js Route Handlers. The entire backend is fully end-to-end typed and was developed in a way that would be easy for AI to pick up and help develop new endpoints. It's predictable and easy to use, brings a lot of the same advantages of using tRPC (Typesafety, React Query, easy to deploy) but without many of the downsides (all routers bundled under one endpoint, causing heavy cold start times, hard to understand underlying result -- "How does it get deployed as serverless functions?" and steeper learning curve with its own APIs)
+This project has its backend defined via Next.js Route Handlers. The entire backend is fully end-to-end typed and was developed in a way that would be easy for AI to follow and implement new endpoints. It's predictable and easy to use, brings a lot of the same advantages of using tRPC (Typesafety, React Query, easy to deploy) but without many of the downsides (all routers bundled under one endpoint, causing heavy cold start times, hard to understand underlying result -- "How does it get deployed as serverless functions?" and steeper learning curve with its own APIs)
 
 **Upsides:**
 
