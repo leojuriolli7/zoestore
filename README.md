@@ -51,6 +51,10 @@ Instead of checkout, users are redirected to a WhatsApp phone number with predef
 
 This project has its backend defined via Next.js Route Handlers. The entire backend is fully end-to-end typed and was developed in a way that would be easy for AI to follow and implement new endpoints. It's predictable and easy to use, brings a lot of the same advantages of using tRPC (Typesafety, React Query, easy to deploy) but without many of the downsides (all routers bundled under one endpoint, causing heavy cold start times, hard to understand underlying result -- "How does it get deployed as serverless functions?" and steeper learning curve with its own APIs)
 
+Also, tRPC bundles all routers into a single serverless function (typically /api/trpc/[trpc].ts). This means every request - even to a simple endpoint - must load and initialize the entire router tree with all dependencies. Cal.com documented this exact issue: their single tRPC function with 20+ routers experienced cold start times of 7-30 seconds. When they migrated to separate API routes, cold starts dropped from 15 seconds to 2-3 seconds.
+
+My approach provides all the benefits of tRPC - end-to-end type safety, automatic client generation through React Query, input validation - while maintaining code splitting. Each API route (`/api/products/:id`, `/api/products`, `/api/login`) only bundles its specific dependencies, resulting in smaller function sizes and faster cold starts.
+
 **Upsides:**
 
 - Type-safety
@@ -58,6 +62,7 @@ This project has its backend defined via Next.js Route Handlers. The entire back
 - Handler/schema/query separation makes code predictable and testable
 - SSR handlers can be called directly from RSC without HTTP overhead
 - Clear patterns and better DX with utility functions reducing boilerplate
+- Code-splitting
 
 **Downsides:**
 
