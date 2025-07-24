@@ -13,7 +13,7 @@ export function WhatsAppFloatingButton() {
         rel="noopener noreferrer"
         className="group relative flex items-center"
       >
-        <div className="absolute right-full mr-2 w-max whitespace-nowrap rounded-xl bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground shadow-md transition-all duration-300 ease-in-out opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0">
+        <div className="absolute right-full mr-2 w-max whitespace-nowrap rounded-xl bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground shadow-md transition-all duration-300 ease-in-out opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 sm:pointer-events-auto pointer-events-none">
           Clique para nos contatar no WhatsApp
         </div>
         <Button
