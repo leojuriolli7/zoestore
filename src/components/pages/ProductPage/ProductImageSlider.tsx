@@ -124,8 +124,7 @@ export function ProductImageSlider({
                 </ViewTransition>
               ) : (
                 <Image
-                  priority={index === 0}
-                  fetchPriority={index === 0 ? "high" : "low"}
+                  priority
                   src={image.url}
                   alt={`${productName} - Imagem ${index + 1}`}
                   fill
