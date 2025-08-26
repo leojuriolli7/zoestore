@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import type { Products } from "@/query/products/types";
 import Image from "next/image";
 
@@ -17,22 +16,20 @@ export function ProductImage({
 
   return (
     <div className="relative overflow-hidden rounded-t-lg aspect-[2/3] w-full">
-      <ViewTransition name={`product-image-${medias[0].id}`}>
-        <Image
-          fill
-          priority
-          src={firstImage.url}
-          alt={name}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className={cn(
-            "absolute inset-0 object-cover rounded-md select-none",
-            "transition-all duration-600 ease-in-out",
-            {
-              "hover:opacity-0 hover:scale-[102%]": secondImage,
-            }
-          )}
-        />
-      </ViewTransition>
+      <Image
+        fill
+        priority
+        src={firstImage.url}
+        alt={name}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className={cn(
+          "absolute inset-0 object-cover rounded-md select-none",
+          "transition-all duration-600 ease-in-out",
+          {
+            "hover:opacity-0 hover:scale-[102%]": secondImage,
+          }
+        )}
+      />
 
       {secondImage && (
         <Image

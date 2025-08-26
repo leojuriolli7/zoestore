@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Products } from "@/query/products/types";
-import { useRef, unstable_ViewTransition as ViewTransition } from "react";
+import { useRef } from "react";
 
 interface ProductImageSliderProps {
   images: Array<Products.Media>;
@@ -83,16 +83,14 @@ export function ProductImageSlider({
   if (images.length === 1) {
     return (
       <div className="w-full aspect-[2/3] relative rounded-lg overflow-hidden shadow-md">
-        <ViewTransition name={`product-image-${images[0].id}`}>
-          <Image
-            priority
-            fetchPriority="high"
-            src={images[0].url}
-            alt={productName}
-            fill
-            className="object-cover w-full h-full"
-          />
-        </ViewTransition>
+        <Image
+          priority
+          fetchPriority="high"
+          src={images[0].url}
+          alt={productName}
+          fill
+          className="object-cover w-full h-full"
+        />
       </div>
     );
   }
@@ -111,26 +109,14 @@ export function ProductImageSlider({
               id={`slide-${index}`}
               className="relative flex-shrink-0 w-full h-full snap-start"
             >
-              {index === 0 ? (
-                <ViewTransition name={`product-image-${image.id}`}>
-                  <Image
-                    priority={index === 0}
-                    fetchPriority={index === 0 ? "high" : "low"}
-                    src={image.url}
-                    alt={`${productName} - Imagem ${index + 1}`}
-                    fill
-                    className="object-cover w-full h-full"
-                  />
-                </ViewTransition>
-              ) : (
-                <Image
-                  priority
-                  src={image.url}
-                  alt={`${productName} - Imagem ${index + 1}`}
-                  fill
-                  className="object-cover w-full h-full"
-                />
-              )}
+              <Image
+                priority={index === 0}
+                fetchPriority={index === 0 ? "high" : "low"}
+                src={image.url}
+                alt={`${productName} - Imagem ${index + 1}`}
+                fill
+                className="object-cover w-full h-full"
+              />
             </div>
           ))}
         </div>
